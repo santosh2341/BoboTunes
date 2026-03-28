@@ -1287,7 +1287,6 @@
             }
         }
 
-        /* ── FLOAT EMOJI ── */
         .fe {
             position: fixed;
             font-size: 28px;
@@ -1306,6 +1305,280 @@
                 transform: translateY(-220px) scale(.4);
                 opacity: 0;
             }
+        }
+
+        /* ── CONTEXT MENU ── */
+        .ctx-menu {
+            position: fixed;
+            z-index: 9000;
+            background: #1e1e2a;
+            border: 1px solid var(--b2);
+            border-radius: 12px;
+            padding: 6px;
+            min-width: 180px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, .7);
+            animation: ctxIn .15s ease;
+        }
+
+        @keyframes ctxIn {
+            from {
+                opacity: 0;
+                transform: scale(.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .ctx-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: .78rem;
+            color: var(--t2);
+            transition: background .12s;
+        }
+
+        .ctx-item:hover {
+            background: var(--surface);
+            color: var(--t1);
+        }
+
+        .ctx-item svg {
+            flex-shrink: 0;
+        }
+
+        .ctx-item.danger {
+            color: var(--red);
+        }
+
+        .ctx-item.danger:hover {
+            background: rgba(239, 68, 68, .1);
+        }
+
+        .ctx-divider {
+            height: 1px;
+            background: var(--b1);
+            margin: 4px 0;
+        }
+
+        /* ── SEARCH RESULT - play now button ── */
+        .ri {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 7px 9px;
+            border-radius: var(--rs);
+            cursor: pointer;
+            border: 1px solid transparent;
+            position: relative;
+        }
+
+        .ri:hover,
+        .ri:active {
+            background: var(--surface);
+        }
+
+        .ri img {
+            width: 62px;
+            height: 40px;
+            border-radius: 5px;
+            object-fit: cover;
+            background: var(--bg4);
+            flex-shrink: 0;
+        }
+
+        .ri-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .ri-title {
+            font-size: .75rem;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .ri-ch {
+            font-size: .6rem;
+            color: var(--t3);
+            margin-top: 2px;
+        }
+
+        .ri-acts {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .ri-play {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--green);
+            color: #000;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .ri-play:active {
+            opacity: .8;
+        }
+
+        .ri-more {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: none;
+            border: none;
+            color: var(--t3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .ri-more:hover {
+            color: var(--t1);
+        }
+
+        /* ── FAVORITES ── */
+        .fav-section {
+            padding: 0 14px 14px;
+        }
+
+        .fav-empty {
+            padding: 16px;
+            text-align: center;
+            font-size: .7rem;
+            color: var(--t3);
+            font-style: italic;
+        }
+
+        .fav-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .fav-item:hover {
+            background: var(--surface);
+            border-color: var(--b2);
+        }
+
+        .fav-item img {
+            width: 38px;
+            height: 38px;
+            border-radius: 6px;
+            object-fit: cover;
+            background: var(--bg4);
+            flex-shrink: 0;
+        }
+
+        .fav-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .fav-title {
+            font-size: .72rem;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .fav-ch {
+            font-size: .58rem;
+            color: var(--t3);
+        }
+
+        .fav-acts {
+            display: flex;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .fav-btn {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: none;
+            border: none;
+            color: var(--t3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .fav-btn:hover {
+            color: var(--green);
+        }
+
+        .fav-btn.del:hover {
+            color: var(--red);
+        }
+
+        /* ── QUEUE 3-dot ── */
+        .qi {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .qi:hover,
+        .qi:active {
+            background: var(--surface);
+        }
+
+        .qi.now {
+            background: rgba(29, 185, 84, .08);
+            border-color: rgba(29, 185, 84, .22);
+        }
+
+        .qi-more {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: none;
+            border: none;
+            color: var(--t3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            flex-shrink: 0;
+        }
+
+        .qi:hover .qi-more {
+            opacity: 1;
+        }
+
+        .qi-more:hover {
+            color: var(--t1);
         }
     </style>
 </head>
@@ -1551,6 +1824,16 @@
                         <div class="slink" id="slink">click "+ Invite" for link</div>
                         <button class="cpbtn" onclick="copyLink()">copy</button>
                     </div>
+                </div>
+            </div>
+
+            <!-- Favorites -->
+            <div class="card">
+                <div style="padding:14px 14px 10px;">
+                    <div class="stitle">❤ Favorites</div>
+                </div>
+                <div class="fav-section" id="fav-list">
+                    <div class="fav-empty">no favorites yet — heart a song to save it</div>
                 </div>
             </div>
 
@@ -1894,8 +2177,19 @@
       <div class="qi-n">${i === idx ? '▶' : i + 1}</div>
       <img src="${esc(it.thumb)}" onerror="this.style.opacity='.1'" loading="lazy"/>
       <div class="qi-inf"><div class="qi-t">${esc(it.title)}</div><div class="qi-c">${esc(it.channel || '')}</div></div>
-      <button class="qdel">✕</button>`;
-                d.querySelector('.qdel').onclick = e => { e.stopPropagation(); if (it._k) remove(ref(db, `rooms/${ROOM}/queue/${it._k}`)); };
+      <button class="qi-more" title="More">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+      </button>`;
+                d.querySelector('.qi-more').onclick = e => {
+                    e.stopPropagation();
+                    showCtxMenu(e, [
+                        { icon: '▶', label: 'Play now', action: () => playIdx(i) },
+                        { icon: '❤', label: 'Add to favorites', action: () => addFav(it) },
+                        { icon: '↗', label: 'Share song', action: () => shareItem(it) },
+                        null, // divider
+                        { icon: '🗑', label: 'Remove from queue', action: () => { if (it._k) remove(ref(db, `rooms/${ROOM}/queue/${it._k}`)); }, danger: true },
+                    ]);
+                };
                 d.onclick = () => playIdx(i);
                 el.appendChild(d);
             });
@@ -1937,11 +2231,34 @@
             el.innerHTML = '';
             items.forEach(it => {
                 const d = document.createElement('div'); d.className = 'ri';
-                d.innerHTML = `<img src="${esc(it.thumb)}" onerror="this.style.opacity='.2'" loading="lazy"/>
+                d.innerHTML = `
+      <img src="${esc(it.thumb)}" onerror="this.style.opacity='.2'" loading="lazy"/>
       <div class="ri-info"><div class="ri-title">${esc(it.title)}</div><div class="ri-ch">${esc(it.channel)}</div></div>
-      <button class="radd">+</button>`;
-                d.querySelector('.radd').onclick = e => { e.stopPropagation(); addQ(it); };
-                d.onclick = () => addQ(it);
+      <div class="ri-acts">
+        <button class="ri-play" title="Play now">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <button class="ri-more" title="More options">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+        </button>
+      </div>`;
+                // Play now — immediately play this song
+                d.querySelector('.ri-play').onclick = e => {
+                    e.stopPropagation();
+                    playNow(it);
+                };
+                // 3-dot menu
+                d.querySelector('.ri-more').onclick = e => {
+                    e.stopPropagation();
+                    showCtxMenu(e, [
+                        { icon: '▶', label: 'Play now', action: () => playNow(it) },
+                        { icon: '➕', label: 'Add to queue', action: () => addQ(it) },
+                        { icon: '❤', label: 'Add to favorites', action: () => addFav(it) },
+                        { icon: '↗', label: 'Share song', action: () => shareItem(it) },
+                    ]);
+                };
+                // Click row = play now if something is playing, else add to queue
+                d.onclick = () => { if (curVid) playNow(it); else addQ(it); };
                 el.appendChild(d);
             });
         }
@@ -1996,7 +2313,111 @@
             document.body.appendChild(el); setTimeout(() => el.remove(), 2500);
         }
 
-        // ── Share / invite ──
+        // ── Play Now (skip queue) ──
+        function playNow(item) {
+            // Add to front of queue right after current, then play it
+            push(rr('queue'), { vid: item.vid, title: item.title, channel: item.channel || '', thumb: item.thumb });
+            toast(`▶ Playing now: ${item.title.slice(0, 30)}…`);
+            // Play after queue updates
+            setTimeout(() => {
+                const newIdx = queue.findIndex(q => q.vid === item.vid);
+                if (newIdx >= 0) playIdx(newIdx);
+                else {
+                    // Fallback: play directly
+                    setNowPlaying(item);
+                    playVid(item.vid, true);
+                    set(rr('playback/cur'), { i: -1, vid: item.vid, title: item.title, channel: item.channel || '', thumb: item.thumb, by: UID, ts: Date.now() });
+                    set(rr('playback/state'), { p: true, vid: item.vid, by: UID, ts: Date.now() });
+                }
+            }, 700);
+        }
+
+        // ── Context Menu ──
+        let activeCtx = null;
+        function showCtxMenu(e, items) {
+            closeCtx();
+            const menu = document.createElement('div');
+            menu.className = 'ctx-menu';
+            items.forEach(item => {
+                if (!item) {
+                    const div = document.createElement('div');
+                    div.className = 'ctx-divider';
+                    menu.appendChild(div);
+                    return;
+                }
+                const row = document.createElement('div');
+                row.className = 'ctx-item' + (item.danger ? ' danger' : '');
+                row.innerHTML = `<span style="font-size:14px;width:18px;text-align:center;">${item.icon}</span><span>${esc(item.label)}</span>`;
+                row.onclick = () => { closeCtx(); item.action(); };
+                menu.appendChild(row);
+            });
+            // Position menu near click
+            const x = Math.min(e.clientX, window.innerWidth - 200);
+            const y = Math.min(e.clientY, window.innerHeight - (items.length * 44));
+            menu.style.left = x + 'px';
+            menu.style.top = y + 'px';
+            document.body.appendChild(menu);
+            activeCtx = menu;
+            setTimeout(() => document.addEventListener('click', closeCtx, { once: true }), 10);
+        }
+        function closeCtx() {
+            if (activeCtx) { activeCtx.remove(); activeCtx = null; }
+        }
+
+        // ── Favorites ──
+        let favs = JSON.parse(localStorage.getItem('bt_favs') || '[]');
+
+        function saveFavs() { localStorage.setItem('bt_favs', JSON.stringify(favs)); }
+
+        function addFav(item) {
+            if (favs.find(f => f.vid === item.vid)) { toast('Already in favorites ❤'); return; }
+            favs.unshift({ vid: item.vid, title: item.title, channel: item.channel || '', thumb: item.thumb });
+            saveFavs(); renderFavs();
+            toast('❤ Added to favorites!');
+        }
+
+        function removeFav(vid) {
+            favs = favs.filter(f => f.vid !== vid);
+            saveFavs(); renderFavs();
+            toast('Removed from favorites');
+        }
+
+        function renderFavs() {
+            const el = document.getElementById('fav-list');
+            if (!favs.length) { el.innerHTML = '<div class="fav-empty">no favorites yet — heart a song to save it</div>'; return; }
+            el.innerHTML = '';
+            favs.forEach(it => {
+                const d = document.createElement('div');
+                d.className = 'fav-item';
+                d.innerHTML = `
+      <img src="${esc(it.thumb)}" onerror="this.style.opacity='.1'" loading="lazy"/>
+      <div class="fav-info"><div class="fav-title">${esc(it.title)}</div><div class="fav-ch">${esc(it.channel || '')}</div></div>
+      <div class="fav-acts">
+        <button class="fav-btn" title="Add to queue">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 11H7.83l4.88-4.88c.39-.39.39-1.03 0-1.42-.39-.39-1.02-.39-1.41 0l-6.59 6.59c-.39.39-.39 1.02 0 1.41l6.59 6.59c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L7.83 13H19c.55 0 1-.45 1-1s-.45-1-1-1z"/></svg>
+        </button>
+        <button class="fav-btn del" title="Remove">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+        </button>
+      </div>`;
+                d.querySelector('.fav-btn').onclick = e => { e.stopPropagation(); addQ(it); };
+                d.querySelector('.fav-btn.del').onclick = e => { e.stopPropagation(); removeFav(it.vid); };
+                d.onclick = () => playNow(it);
+                el.appendChild(d);
+            });
+        }
+
+        // Init favorites
+        renderFavs();
+
+        // ── Share item ──
+        function shareItem(item) {
+            const url = `${location.origin}${location.pathname}?v=${item.vid}&room=${ROOM}`;
+            navigator.clipboard.writeText(url).catch(() => { });
+            toast('🔗 Song link copied!');
+        }
+
+        // ── Float emoji ──
         window.invite = function () {
             const link = `${location.origin}${location.pathname}?room=${ROOM}`;
             document.getElementById('slink').textContent = link;
