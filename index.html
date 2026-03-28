@@ -280,10 +280,20 @@
         }
 
         @media(max-width:800px) {
+
+            html,
+            body {
+                overflow-x: hidden;
+                max-width: 100vw;
+            }
+
             .app {
                 grid-template-columns: 1fr;
                 padding: calc(var(--nav) + .75rem) .75rem calc(var(--mob) + 1rem);
                 gap: .75rem;
+                width: 100%;
+                max-width: 100vw;
+                overflow-x: hidden;
             }
 
             .sidebar {
@@ -308,6 +318,40 @@
 
             .card-search {
                 order: 2;
+            }
+
+            /* Force all cards to fit screen */
+            .card {
+                width: 100%;
+                max-width: 100%;
+                overflow: hidden;
+            }
+
+            /* Fix reactions overflow */
+            .reactions-bar {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+
+            .reactions-bar::-webkit-scrollbar {
+                display: none;
+            }
+
+            /* Fix search tabs */
+            .search-tabs {
+                width: 100%;
+            }
+
+            /* Fix nav overflow */
+            nav {
+                width: 100vw;
+                overflow: hidden;
+            }
+
+            .pill {
+                max-width: 90px;
             }
         }
 
@@ -856,10 +900,12 @@
             display: flex;
             gap: 7px;
             margin-bottom: .9rem;
+            width: 100%;
         }
 
         .search-input {
             flex: 1;
+            min-width: 0;
             background: var(--bg4);
             border: 1.5px solid var(--border2);
             border-radius: var(--r-sm);
@@ -869,6 +915,7 @@
             color: var(--text);
             outline: none;
             transition: all .2s;
+            width: 100%;
         }
 
         .search-input:focus {
@@ -1384,6 +1431,7 @@
             bottom: 0;
             left: 0;
             right: 0;
+            width: 100vw;
             height: var(--mob);
             background: rgba(12, 12, 20, 0.98);
             backdrop-filter: blur(28px);
@@ -1392,6 +1440,7 @@
             z-index: 300;
             align-items: center;
             gap: 10px;
+            overflow: hidden;
         }
 
         @media(max-width:800px) {
