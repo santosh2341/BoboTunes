@@ -14,13 +14,12 @@
             --bg3: #18181f;
             --bg4: #1f1f2a;
             --surface: #232332;
-            --surface2: #2a2a3d;
             --border: rgba(255, 255, 255, 0.06);
             --border2: rgba(255, 255, 255, 0.12);
             --accent: #1db954;
             --accent2: #1ed760;
             --accent-dim: rgba(29, 185, 84, 0.15);
-            --accent-glow: rgba(29, 185, 84, 0.35);
+            --accent-glow: rgba(29, 185, 84, 0.4);
             --purple: #7c3aed;
             --pink: #ec4899;
             --blue: #3b82f6;
@@ -39,7 +38,8 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        html {
+        html,
+        body {
             height: 100%;
         }
 
@@ -51,6 +51,7 @@
             overflow-x: hidden;
         }
 
+        /* ── BACKGROUND ── */
         .bg-orbs {
             position: fixed;
             inset: 0;
@@ -73,6 +74,7 @@
             background: var(--accent);
             top: -100px;
             left: -100px;
+            animation-delay: 0s;
         }
 
         .orb2 {
@@ -128,6 +130,7 @@
             z-index: 9998;
         }
 
+        /* ── NAV ── */
         nav {
             position: sticky;
             top: 0;
@@ -137,9 +140,10 @@
             justify-content: space-between;
             padding: 0 1.25rem;
             height: 64px;
-            background: rgba(10, 10, 15, 0.9);
+            background: rgba(10, 10, 15, 0.92);
             backdrop-filter: blur(24px);
             border-bottom: 1px solid var(--border);
+            box-shadow: 0 4px 32px rgba(0, 0, 0, 0.4);
         }
 
         .logo {
@@ -193,15 +197,16 @@
             height: 7px;
             border-radius: 50%;
             background: var(--text3);
+            flex-shrink: 0;
         }
 
         .dot.live {
             background: var(--accent);
             box-shadow: 0 0 8px var(--accent);
-            animation: pulse 2s infinite;
+            animation: dotPulse 2s infinite;
         }
 
-        @keyframes pulse {
+        @keyframes dotPulse {
 
             0%,
             100% {
@@ -209,7 +214,7 @@
             }
 
             50% {
-                box-shadow: 0 0 20px var(--accent);
+                box-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent-glow);
             }
         }
 
@@ -248,6 +253,7 @@
             color: var(--text);
         }
 
+        /* ── LAYOUT ── */
         .app {
             display: grid;
             grid-template-columns: 1fr 300px;
@@ -259,13 +265,14 @@
             z-index: 1;
         }
 
-        @media(max-width:860px) {
+        @media (max-width: 860px) {
             .app {
                 grid-template-columns: 1fr;
                 padding: 0.75rem 0.75rem 9rem;
             }
         }
 
+        /* ── CARDS ── */
         .card {
             background: rgba(24, 24, 31, 0.75);
             border: 1px solid var(--border);
@@ -305,6 +312,20 @@
             margin-bottom: 1rem;
         }
 
+        .sync-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 0.55rem;
+            color: var(--accent);
+            background: var(--accent-dim);
+            border-radius: 100px;
+            padding: 2px 7px;
+            font-weight: 700;
+            margin-left: 6px;
+        }
+
+        /* ── VIDEO PLAYER ── */
         .video-wrap {
             position: relative;
             aspect-ratio: 16/9;
@@ -377,6 +398,7 @@
             display: none;
         }
 
+        /* ── NOW PLAYING ── */
         .now-playing-bar {
             padding: 1rem 1.25rem;
             background: linear-gradient(135deg, rgba(29, 185, 84, 0.08) 0%, rgba(124, 58, 237, 0.05) 100%);
@@ -401,6 +423,12 @@
             min-width: 0;
         }
 
+        .np-title-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
         .np-title {
             font-size: 0.9rem;
             font-weight: 700;
@@ -419,53 +447,6 @@
             display: flex;
             gap: 6px;
             flex-shrink: 0;
-        }
-
-        .eq-bars {
-            display: flex;
-            align-items: flex-end;
-            gap: 2px;
-            height: 16px;
-            margin-left: 8px;
-        }
-
-        .eq-bar {
-            width: 3px;
-            background: var(--accent);
-            border-radius: 2px;
-            animation: barBounce 0.8s ease-in-out infinite;
-        }
-
-        .eq-bar:nth-child(1) {
-            animation-delay: 0s;
-            height: 40%;
-        }
-
-        .eq-bar:nth-child(2) {
-            animation-delay: .15s;
-            height: 100%;
-        }
-
-        .eq-bar:nth-child(3) {
-            animation-delay: .3s;
-            height: 60%;
-        }
-
-        .eq-bar:nth-child(4) {
-            animation-delay: .45s;
-            height: 80%;
-        }
-
-        @keyframes barBounce {
-
-            0%,
-            100% {
-                transform: scaleY(0.4);
-            }
-
-            50% {
-                transform: scaleY(1);
-            }
         }
 
         .icon-btn {
@@ -490,6 +471,50 @@
             transform: scale(1.1);
         }
 
+        /* EQ bars */
+        .eq-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 16px;
+        }
+
+        .eq-bar {
+            width: 3px;
+            background: var(--accent);
+            border-radius: 2px;
+            animation: barBounce 0.8s ease-in-out infinite;
+        }
+
+        .eq-bar:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .eq-bar:nth-child(2) {
+            animation-delay: 0.15s;
+        }
+
+        .eq-bar:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .eq-bar:nth-child(4) {
+            animation-delay: 0.45s;
+        }
+
+        @keyframes barBounce {
+
+            0%,
+            100% {
+                transform: scaleY(0.3);
+            }
+
+            50% {
+                transform: scaleY(1);
+            }
+        }
+
+        /* ── REACTIONS ── */
         .reactions-bar {
             padding: 0.85rem 1.25rem;
             border-top: 1px solid var(--border);
@@ -559,6 +584,7 @@
             }
         }
 
+        /* ── SEARCH ── */
         .search-tabs {
             display: flex;
             gap: 4px;
@@ -628,6 +654,9 @@
             cursor: pointer;
             transition: all 0.2s;
             white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .search-btn:hover {
@@ -647,6 +676,15 @@
             overflow-y: auto;
             scrollbar-width: thin;
             scrollbar-color: var(--surface) transparent;
+        }
+
+        .results-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .results-list::-webkit-scrollbar-thumb {
+            background: var(--surface);
+            border-radius: 4px;
         }
 
         .result-item {
@@ -724,12 +762,14 @@
             color: var(--text3);
         }
 
+        /* ── SIDEBAR ── */
         .sidebar {
             display: flex;
             flex-direction: column;
             gap: 1rem;
         }
 
+        /* Room */
         .user-row {
             display: flex;
             align-items: center;
@@ -846,6 +886,7 @@
             border-color: var(--accent);
         }
 
+        /* Queue */
         .queue-header {
             display: flex;
             align-items: center;
@@ -878,6 +919,15 @@
             scrollbar-color: var(--surface) transparent;
         }
 
+        .queue-list::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .queue-list::-webkit-scrollbar-thumb {
+            background: var(--surface);
+            border-radius: 3px;
+        }
+
         .q-item {
             display: flex;
             align-items: center;
@@ -896,7 +946,7 @@
 
         .q-item.playing {
             background: rgba(29, 185, 84, 0.08);
-            border-color: rgba(29, 185, 84, 0.2);
+            border-color: rgba(29, 185, 84, 0.25);
         }
 
         .q-num {
@@ -976,6 +1026,7 @@
             font-style: italic;
         }
 
+        /* Chat */
         .chat-body {
             padding: 0 1.25rem 1.25rem;
         }
@@ -989,6 +1040,15 @@
             margin-bottom: 10px;
             scrollbar-width: thin;
             scrollbar-color: var(--surface) transparent;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: var(--surface);
+            border-radius: 3px;
         }
 
         .msg {
@@ -1075,20 +1135,21 @@
             transform: scale(1.05);
         }
 
+        /* Mobile bottom bar */
         .mobile-bar {
             display: none;
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(15, 15, 22, 0.97);
+            background: rgba(12, 12, 18, 0.97);
             backdrop-filter: blur(24px);
             border-top: 1px solid var(--border2);
             padding: 12px 16px 28px;
             z-index: 300;
         }
 
-        @media(max-width:860px) {
+        @media (max-width: 860px) {
             .mobile-bar {
                 display: flex;
                 align-items: center;
@@ -1149,11 +1210,12 @@
             color: #000;
         }
 
+        /* Toast */
         #toast {
             position: fixed;
             bottom: 5.5rem;
             left: 50%;
-            transform: translateX(-50%) translateY(60px);
+            transform: translateX(-50%) translateY(80px);
             background: var(--bg3);
             color: var(--text);
             border: 1px solid var(--border2);
@@ -1172,6 +1234,7 @@
             transform: translateX(-50%) translateY(0);
         }
 
+        /* Spinner */
         .spinner {
             width: 14px;
             height: 14px;
@@ -1180,6 +1243,7 @@
             border-radius: 50%;
             animation: spin 0.7s linear infinite;
             display: inline-block;
+            vertical-align: middle;
         }
 
         @keyframes spin {
@@ -1187,23 +1251,12 @@
                 transform: rotate(360deg);
             }
         }
-
-        .sync-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 0.58rem;
-            color: var(--accent);
-            background: var(--accent-dim);
-            border-radius: 100px;
-            padding: 2px 8px;
-            font-weight: 700;
-            margin-left: 6px;
-        }
     </style>
 </head>
 
 <body>
+
+    <!-- Background -->
     <div class="bg-orbs">
         <div class="orb orb1"></div>
         <div class="orb orb2"></div>
@@ -1211,6 +1264,7 @@
         <div class="orb orb4"></div>
     </div>
 
+    <!-- Nav -->
     <nav>
         <div class="logo">
             <div class="logo-icon">🎵</div>
@@ -1218,16 +1272,21 @@
         </div>
         <div class="nav-right">
             <div class="pill">
-                <div class="dot" id="conn-dot"></div><span id="conn-label">solo</span>
+                <div class="dot" id="conn-dot"></div>
+                <span id="conn-label">solo</span>
             </div>
-            <button class="nav-btn" onclick="openRoom()">+ Invite</button>
+            <button class="nav-btn" id="invite-btn" onclick="openRoom()">+ Invite</button>
             <button class="nav-btn-ghost" onclick="changeName()">✏</button>
         </div>
     </nav>
 
+    <!-- App -->
     <div class="app">
+
+        <!-- LEFT COLUMN -->
         <div style="display:flex;flex-direction:column;gap:1rem;">
 
+            <!-- Player Card -->
             <div class="card">
                 <div class="video-wrap">
                     <div class="vid-placeholder" id="vid-placeholder">
@@ -1241,27 +1300,30 @@
                     <iframe id="yt-iframe" allowfullscreen
                         allow="autoplay; encrypted-media; gyroscope; picture-in-picture"
                         referrerpolicy="strict-origin-when-cross-origin"
-                        sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-forms"></iframe>
+                        sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-forms">
+                    </iframe>
                 </div>
+
                 <div class="now-playing-bar">
                     <img class="np-thumb" id="np-thumb" src="" onerror="this.style.opacity='0.1'" />
                     <div class="np-info">
-                        <div style="display:flex;align-items:center;">
+                        <div class="np-title-row">
                             <div class="np-title" id="np-title">Nothing playing</div>
                             <div class="eq-bars" id="eq-bars" style="display:none;">
-                                <div class="eq-bar"></div>
-                                <div class="eq-bar"></div>
-                                <div class="eq-bar"></div>
-                                <div class="eq-bar"></div>
+                                <div class="eq-bar" style="height:40%;"></div>
+                                <div class="eq-bar" style="height:100%;"></div>
+                                <div class="eq-bar" style="height:60%;"></div>
+                                <div class="eq-bar" style="height:80%;"></div>
                             </div>
                         </div>
-                        <div class="np-channel" id="np-channel">add a song from search</div>
+                        <div class="np-channel" id="np-channel">add a song from search below</div>
                     </div>
                     <div class="np-actions">
-                        <button class="icon-btn" onclick="shareCurrentSong()" title="Share">↗</button>
-                        <button class="icon-btn" onclick="skipNext()" title="Skip">⏭</button>
+                        <button class="icon-btn" title="Share song" onclick="shareCurrentSong()">↗</button>
+                        <button class="icon-btn" title="Skip" onclick="skipNext()">⏭</button>
                     </div>
                 </div>
+
                 <div class="reactions-bar">
                     <span class="react-label">react</span>
                     <button class="react-btn" onclick="sendReaction('🔥')">🔥 fire</button>
@@ -1273,6 +1335,7 @@
                 </div>
             </div>
 
+            <!-- Search Card -->
             <div class="card">
                 <div class="card-pad" style="padding-bottom:0.75rem;">
                     <div class="section-title">Find Music</div>
@@ -1280,47 +1343,57 @@
                         <button class="s-tab active" onclick="setTab('search',this)">🔍 Search YouTube</button>
                         <button class="s-tab" onclick="setTab('url',this)">🔗 Paste Link</button>
                     </div>
+
                     <div id="tab-search">
                         <div class="search-row">
                             <input class="search-input" id="search-input" placeholder="song, artist, album…"
-                                oninput="liveSearch()" onkeydown="if(event.key==='Enter')doSearch()" />
-                            <button class="search-btn" id="search-btn" onclick="doSearch()"><span
-                                    id="search-btn-text">Search</span></button>
+                                oninput="onSearchInput()" onkeydown="if(event.key==='Enter') doSearch()" />
+                            <button class="search-btn" id="search-btn" onclick="doSearch()">
+                                <span id="search-btn-text">Search</span>
+                            </button>
                         </div>
                         <div class="results-list" id="results-list">
                             <div class="search-empty">🎵 search for any song or artist</div>
                         </div>
                     </div>
+
                     <div id="tab-url" style="display:none;">
                         <div class="search-row">
                             <input class="search-input" id="url-input" placeholder="https://youtube.com/watch?v=…"
-                                onkeydown="if(event.key==='Enter')addFromUrl()" />
+                                onkeydown="if(event.key==='Enter') addFromUrl()" />
                             <button class="search-btn" onclick="addFromUrl()">Add</button>
                         </div>
+                        <p style="font-size:0.7rem;color:var(--text3);text-align:center;padding:0.5rem 0;">
+                            Paste any YouTube link — watch, shorts or youtu.be
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- SIDEBAR -->
         <div class="sidebar">
+
+            <!-- Room Card -->
             <div class="card">
                 <div class="card-pad">
                     <div class="section-title">The Room</div>
                     <div class="user-row">
-                        <div class="avatar avatar-you" style="position:relative;"><span id="my-avatar-letter">Y</span>
+                        <div class="avatar avatar-you" style="position:relative;">
+                            <span id="my-avatar-letter">Y</span>
                             <div class="online-ring on"></div>
                         </div>
-                        <div style="flex:1;">
+                        <div style="flex:1;min-width:0;">
                             <div class="user-name" id="my-name" onclick="changeName()">You</div>
                             <div class="user-status">tap to edit name</div>
                         </div>
                     </div>
                     <div class="user-row">
-                        <div class="avatar avatar-them" style="position:relative;"><span
-                                id="friend-avatar-letter">F</span>
+                        <div class="avatar avatar-them" style="position:relative;">
+                            <span id="friend-avatar-letter">F</span>
                             <div class="online-ring" id="friend-ring"></div>
                         </div>
-                        <div style="flex:1;">
+                        <div style="flex:1;min-width:0;">
                             <div class="user-name" id="friend-name">Your friend</div>
                             <div class="user-status" id="friend-state">not here yet</div>
                         </div>
@@ -1332,32 +1405,38 @@
                 </div>
             </div>
 
+            <!-- Queue Card -->
             <div class="card">
                 <div class="queue-header">
-                    <div class="section-title" style="margin:0;">Queue<span class="sync-badge">⚡ live</span></div>
+                    <div class="section-title" style="margin:0;">
+                        Queue <span class="sync-badge">⚡ live</span>
+                    </div>
                     <button class="clear-btn" onclick="clearQueue()">clear all</button>
                 </div>
                 <div class="queue-list" id="queue-list">
-                    <div class="queue-empty">nothing queued yet ♪</div>
+                    <div class="queue-empty" id="q-empty">nothing queued yet ♪</div>
                 </div>
             </div>
 
+            <!-- Chat Card -->
             <div class="card">
                 <div style="padding:1.25rem 1.25rem 0.75rem;">
-                    <div class="section-title">Chat<span class="sync-badge">⚡ live</span></div>
+                    <div class="section-title">Chat <span class="sync-badge">⚡ live</span></div>
                 </div>
                 <div class="chat-body">
                     <div class="chat-messages" id="chat-messages"></div>
                     <div class="chat-row">
                         <input class="chat-input" id="chat-input" placeholder="say something…"
-                            onkeydown="if(event.key==='Enter')sendMsg()" />
+                            onkeydown="if(event.key==='Enter') sendMsg()" />
                         <button class="send-btn" onclick="sendMsg()">→</button>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 
+    <!-- Mobile Bottom Bar -->
     <div class="mobile-bar">
         <img class="mob-thumb" id="mob-thumb" src="" onerror="this.style.opacity='0.1'" />
         <div class="mob-info">
@@ -1372,230 +1451,342 @@
 
     <div id="toast"></div>
 
+    <!-- ══════════════════════════════════════════════════
+     FIREBASE + APP LOGIC
+══════════════════════════════════════════════════ -->
     <script type="module">
+
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getDatabase, ref, set, get, push, onValue, remove, onDisconnect, serverTimestamp }
-            from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+        import {
+            getDatabase, ref, set, push, remove, onValue, onDisconnect, serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
+        /* ─── CONFIG ─────────────────────────────────────── */
         const YT_KEY = 'AIzaSyAy5Lo0jp8eipVgjBSeUh0Z2p2Jnye7Jz0';
-        const FB = { apiKey: "AIzaSyBTP9LLpbHUD9IgPhxoGEtnEVNrq29ZD_Y", authDomain: "bobotunes-e2eaa.firebaseapp.com", databaseURL: "https://bobotunes-e2eaa-default-rtdb.firebaseio.com", projectId: "bobotunes-e2eaa", storageBucket: "bobotunes-e2eaa.firebasestorage.app", messagingSenderId: "204304527499", appId: "1:204304527499:web:bf80e706fe4bee3139a48e" };
 
-        const fbApp = initializeApp(FB);
-        const db = getDatabase(fbApp);
-
-        // ── STATE ──
-        const S = {
-            myName: localStorage.getItem('bt_name') || 'You',
-            myId: localStorage.getItem('bt_uid') || (() => { const id = Math.random().toString(36).slice(2, 10); localStorage.setItem('bt_uid', id); return id; })(),
-            roomId: null,
-            queue: [],
-            currentIdx: -1,
-            searchTimer: null,
-            lastPlaybackBy: null,
-            seenMsgCount: 0,
+        const firebaseConfig = {
+            apiKey: "AIzaSyBTP9LLpbHUD9IgPhxoGEtnEVNrq29ZD_Y",
+            authDomain: "bobotunes-e2eaa.firebaseapp.com",
+            databaseURL: "https://bobotunes-e2eaa-default-rtdb.firebaseio.com",
+            projectId: "bobotunes-e2eaa",
+            storageBucket: "bobotunes-e2eaa.firebasestorage.app",
+            messagingSenderId: "204304527499",
+            appId: "1:204304527499:web:bf80e706fe4bee3139a48e"
         };
 
-        // ── INIT ──
-        document.getElementById('my-name').textContent = S.myName;
-        document.getElementById('my-avatar-letter').textContent = S.myName[0].toUpperCase();
+        const fbApp = initializeApp(firebaseConfig);
+        const db = getDatabase(fbApp);
 
-        const params = new URLSearchParams(location.search);
-        const urlRoom = params.get('room');
-        if (urlRoom) joinRoom(urlRoom);
-        const vParam = params.get('v');
+        /* ─── LOCAL STATE ────────────────────────────────── */
+        // Persistent user identity
+        if (!localStorage.getItem('bt_uid')) {
+            localStorage.setItem('bt_uid', Math.random().toString(36).slice(2, 12));
+        }
+        const MY_ID = localStorage.getItem('bt_uid');
+        const MY_NAME = () => localStorage.getItem('bt_name') || 'You';
 
-        function rref(path) { return ref(db, `rooms/${S.roomId}/${path}`); }
+        let roomId = null;   // current room ID
+        let localQueue = [];     // mirror of Firebase queue [{_key, vid, title, channel, thumb}, ...]
+        let currentIdx = -1;     // which queue index is playing
+        let searchTimer = null;   // debounce timer for live search
+        let seenMsgKeys = new Set(); // track rendered chat messages
+        let seenRxnKeys = new Set(); // track rendered reactions
 
-        // ── ROOM ──
+        /* ─── HELPERS ────────────────────────────────────── */
+        function roomRef(path) { return ref(db, `rooms/${roomId}/${path}`); }
+
+        function esc(s) {
+            return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function toast(msg) {
+            const el = document.getElementById('toast');
+            el.textContent = msg;
+            el.classList.add('show');
+            clearTimeout(window._toastTimer);
+            window._toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
+        }
+
+        function updateNowPlaying(item) {
+            document.getElementById('np-title').textContent = item ? item.title : 'Nothing playing';
+            document.getElementById('np-channel').textContent = item ? (item.channel || '') : 'add a song from search below';
+            const thumb = document.getElementById('np-thumb');
+            thumb.src = item ? item.thumb : ''; thumb.style.opacity = item ? '1' : '0.1';
+            document.getElementById('eq-bars').style.display = item ? 'flex' : 'none';
+            document.getElementById('mob-title').textContent = item ? item.title : 'Nothing playing';
+            document.getElementById('mob-ch').textContent = item ? (item.channel || '') : 'add a song above';
+            const mthumb = document.getElementById('mob-thumb');
+            mthumb.src = item ? item.thumb : ''; mthumb.style.opacity = item ? '1' : '0.1';
+        }
+
+        function loadIframe(vid) {
+            const iframe = document.getElementById('yt-iframe');
+            const src = `https://www.youtube.com/embed/${vid}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+            iframe.setAttribute('src', src);
+            iframe.style.display = 'block';
+            document.getElementById('vid-placeholder').style.display = 'none';
+        }
+
+        function clearIframe() {
+            const iframe = document.getElementById('yt-iframe');
+            iframe.removeAttribute('src');
+            iframe.style.display = 'none';
+            document.getElementById('vid-placeholder').style.display = 'flex';
+        }
+
+        /* ─── INIT ───────────────────────────────────────── */
+        document.getElementById('my-name').textContent = MY_NAME();
+        document.getElementById('my-avatar-letter').textContent = MY_NAME()[0].toUpperCase();
+
+        // Check URL params on load
+        const urlParams = new URLSearchParams(location.search);
+        const paramRoom = urlParams.get('room');
+        const paramVid = urlParams.get('v');
+
+        if (paramRoom) {
+            // Someone joined via invite link
+            enterRoom(paramRoom);
+        }
+
+        if (paramVid) {
+            // Song shared via link — load it after a short delay so room is ready
+            setTimeout(async () => {
+                const item = await fetchVideoDetails(paramVid);
+                if (item) addItemToQueue(item);
+            }, 1000);
+        }
+
+        /* ─── ROOM MANAGEMENT ────────────────────────────── */
         window.openRoom = function () {
-            if (!S.roomId) { S.roomId = Math.random().toString(36).slice(2, 7).toUpperCase(); history.replaceState({}, '', `?room=${S.roomId}`); }
-            setupRoom();
-            const link = `${location.origin}${location.pathname}?room=${S.roomId}`;
+            if (!roomId) {
+                // Create a new room
+                const newId = Math.random().toString(36).slice(2, 7).toUpperCase();
+                enterRoom(newId);
+                history.replaceState({}, '', `?room=${newId}`);
+            }
+            const link = buildRoomLink();
             document.getElementById('share-link-text').textContent = link;
             navigator.clipboard.writeText(link).catch(() => { });
             toast('🔗 Room link copied — send to your friend!');
         };
 
-        function joinRoom(id) {
-            S.roomId = id;
-            setupRoom();
-            const link = `${location.origin}${location.pathname}?room=${id}`;
-            document.getElementById('share-link-text').textContent = link;
+        function buildRoomLink() {
+            return `${location.origin}${location.pathname}?room=${roomId}`;
         }
 
-        function setupRoom() {
-            // Presence
-            const presRef = ref(db, `rooms/${S.roomId}/presence/${S.myId}`);
-            set(presRef, { name: S.myName, online: true, ts: serverTimestamp() });
-            onDisconnect(presRef).remove();
+        function enterRoom(id) {
+            roomId = id;
 
+            // Update UI
             document.getElementById('conn-dot').classList.add('live');
-            document.getElementById('conn-label').textContent = 'room ' + S.roomId;
+            document.getElementById('conn-label').textContent = 'room ' + id;
+            document.getElementById('share-link-text').textContent = buildRoomLink();
 
-            // Presence listener
-            onValue(ref(db, `rooms/${S.roomId}/presence`), snap => {
+            // Write my presence to Firebase
+            const myPresenceRef = ref(db, `rooms/${roomId}/presence/${MY_ID}`);
+            set(myPresenceRef, {
+                name: MY_NAME(),
+                online: true,
+                joined: serverTimestamp()
+            });
+            // Remove presence when I disconnect
+            onDisconnect(myPresenceRef).remove();
+
+            // ── LISTEN: presence ──────────────────────────────
+            onValue(ref(db, `rooms/${roomId}/presence`), snap => {
                 const data = snap.val() || {};
-                const others = Object.entries(data).filter(([k]) => k !== S.myId);
+                const others = Object.entries(data).filter(([uid]) => uid !== MY_ID);
+
                 if (others.length > 0) {
-                    const info = others[0][1];
-                    document.getElementById('friend-name').textContent = info.name || 'Friend';
-                    document.getElementById('friend-avatar-letter').textContent = (info.name || 'F')[0].toUpperCase();
+                    const [, info] = others[0];
+                    const fname = info.name || 'Friend';
+                    document.getElementById('friend-name').textContent = fname;
+                    document.getElementById('friend-avatar-letter').textContent = fname[0].toUpperCase();
                     document.getElementById('friend-ring').classList.add('on');
-                    document.getElementById('friend-state').textContent = 'in the room ✓';
+                    document.getElementById('friend-state').textContent = '● online';
                 } else {
                     document.getElementById('friend-ring').classList.remove('on');
                     document.getElementById('friend-state').textContent = 'not here yet';
                 }
             });
 
-            // Queue listener
-            onValue(rref('queue'), snap => {
-                const raw = snap.val();
-                S.queue = raw ? Object.entries(raw).map(([k, v]) => ({ ...v, _key: k })) : [];
+            // ── LISTEN: queue ─────────────────────────────────
+            onValue(ref(db, `rooms/${roomId}/queue`), snap => {
+                const raw = snap.val() || {};
+                localQueue = Object.entries(raw).map(([k, v]) => ({ ...v, _key: k }));
                 renderQueue();
-                // Auto-play first song if nothing playing
-                if (S.currentIdx < 0 && S.queue.length > 0) playIdx(0);
             });
 
-            // Playback listener — sync from other user
-            onValue(rref('playback'), snap => {
-                if (!snap.val()) return;
+            // ── LISTEN: playback ──────────────────────────────
+            onValue(ref(db, `rooms/${roomId}/playback`), snap => {
+                if (!snap.val()) { clearIframe(); updateNowPlaying(null); currentIdx = -1; renderQueue(); return; }
                 const { idx, vid, title, channel, thumb, by } = snap.val();
-                if (by === S.myId) return; // ignore own events
-                S.currentIdx = idx;
-                loadPlayer({ vid, title, channel, thumb });
+                // Always apply — both devices need to sync, even if triggered by self
+                currentIdx = idx >= 0 ? idx : -1;
+                if (vid) {
+                    loadIframe(vid);
+                    updateNowPlaying({ vid, title, channel, thumb });
+                }
                 renderQueue();
             });
 
-            // Reactions listener
-            onValue(rref('reactions'), snap => {
+            // ── LISTEN: reactions ─────────────────────────────
+            onValue(ref(db, `rooms/${roomId}/reactions`), snap => {
                 if (!snap.val()) return;
-                const entries = Object.values(snap.val());
-                const latest = entries[entries.length - 1];
-                if (latest && latest.by !== S.myId && Date.now() - latest.ts < 3000) spawnEmoji(latest.emoji);
+                Object.entries(snap.val()).forEach(([key, rx]) => {
+                    if (seenRxnKeys.has(key)) return;
+                    seenRxnKeys.add(key);
+                    // Only animate if it came from the OTHER person and is recent
+                    if (rx.by !== MY_ID && Date.now() - rx.ts < 4000) {
+                        for (let i = 0; i < 4; i++) setTimeout(() => spawnEmoji(rx.emoji), i * 120);
+                    }
+                });
             });
 
-            // Chat listener
-            onValue(rref('chat'), snap => {
+            // ── LISTEN: chat ──────────────────────────────────
+            onValue(ref(db, `rooms/${roomId}/chat`), snap => {
                 if (!snap.val()) return;
-                const msgs = Object.values(snap.val());
-                renderAllChat(msgs);
+                Object.entries(snap.val()).forEach(([key, msg]) => {
+                    if (seenMsgKeys.has(key)) return;
+                    seenMsgKeys.add(key);
+                    appendChatBubble(msg.text, msg.uid === MY_ID, msg.name, msg.ts);
+                });
             });
-
-            // Load song from URL param if any
-            if (vParam) fetchVideoDetails(vParam).then(item => { if (item) addItem(item); });
         }
 
-        // ── PLAYER ──
-        function loadPlayer(item) {
-            const src = `https://www.youtube.com/embed/${item.vid}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
-            const iframe = document.getElementById('yt-iframe');
-            iframe.setAttribute('src', src);
-            iframe.style.display = 'block';
-            document.getElementById('vid-placeholder').style.display = 'none';
-            document.getElementById('np-title').textContent = item.title;
-            document.getElementById('np-channel').textContent = item.channel || '';
-            const t = document.getElementById('np-thumb'); t.src = item.thumb; t.style.opacity = '1';
-            document.getElementById('eq-bars').style.display = 'flex';
-            document.getElementById('mob-title').textContent = item.title;
-            document.getElementById('mob-ch').textContent = item.channel || '';
-            const m = document.getElementById('mob-thumb'); m.src = item.thumb; m.style.opacity = '1';
-        }
-
-        function clearPlayer() {
-            const iframe = document.getElementById('yt-iframe');
-            iframe.removeAttribute('src'); iframe.style.display = 'none';
-            document.getElementById('vid-placeholder').style.display = 'flex';
-            document.getElementById('np-title').textContent = 'Nothing playing';
-            document.getElementById('np-channel').textContent = 'add a song from search';
-            document.getElementById('np-thumb').src = '';
-            document.getElementById('eq-bars').style.display = 'none';
-            document.getElementById('mob-title').textContent = 'Nothing playing';
-            document.getElementById('mob-ch').textContent = 'add a song above';
-            document.getElementById('mob-thumb').src = '';
-        }
-
+        /* ─── PLAYBACK ───────────────────────────────────── */
         function playIdx(i) {
-            if (i < 0 || i >= S.queue.length) return;
-            S.currentIdx = i;
-            const item = S.queue[i];
-            loadPlayer(item);
-            renderQueue();
-            if (S.roomId) set(rref('playback'), { idx: i, vid: item.vid, title: item.title, channel: item.channel || '', thumb: item.thumb, by: S.myId, ts: Date.now() });
+            if (!roomId) {
+                // Solo mode — no Firebase
+                if (i < 0 || i >= localQueue.length) return;
+                currentIdx = i;
+                const item = localQueue[i];
+                loadIframe(item.vid);
+                updateNowPlaying(item);
+                renderQueue();
+                return;
+            }
+            if (i < 0 || i >= localQueue.length) return;
+            const item = localQueue[i];
+            // Write to Firebase — both devices will react via the listener above
+            set(roomRef('playback'), {
+                idx: i,
+                vid: item.vid,
+                title: item.title,
+                channel: item.channel || '',
+                thumb: item.thumb,
+                by: MY_ID,
+                ts: Date.now()
+            });
         }
 
         window.skipNext = function () {
-            if (S.currentIdx < S.queue.length - 1) playIdx(S.currentIdx + 1);
+            if (currentIdx < localQueue.length - 1) playIdx(currentIdx + 1);
             else toast('🎵 End of queue');
         };
 
-        // ── QUEUE ──
-        window.addItem = function (item) {
-            if (!S.roomId) {
-                S.queue.push(item);
+        /* ─── QUEUE ──────────────────────────────────────── */
+        function addItemToQueue(item) {
+            if (!roomId) {
+                // Solo — local only
+                localQueue.push({ ...item, _key: Date.now().toString() });
                 renderQueue();
-                if (S.currentIdx < 0) { S.currentIdx = 0; loadPlayer(item); }
+                if (currentIdx < 0) playIdx(0);
                 else toast(`Added: ${item.title.slice(0, 36)}…`);
                 return;
             }
-            push(rref('queue'), { vid: item.vid, title: item.title, channel: item.channel || '', thumb: item.thumb });
+            push(roomRef('queue'), {
+                vid: item.vid,
+                title: item.title,
+                channel: item.channel || '',
+                thumb: item.thumb
+            });
             toast(`Added: ${item.title.slice(0, 36)}…`);
-        };
+            // If nothing is playing, start the first song shortly after queue updates
+            if (currentIdx < 0) {
+                setTimeout(() => {
+                    if (localQueue.length > 0 && currentIdx < 0) playIdx(0);
+                }, 800);
+            }
+        }
 
         function renderQueue() {
             const list = document.getElementById('queue-list');
-            if (!S.queue.length) { list.innerHTML = '<div class="queue-empty">nothing queued yet ♪</div>'; return; }
+            if (!localQueue.length) {
+                list.innerHTML = '<div class="queue-empty">nothing queued yet ♪</div>';
+                return;
+            }
             list.innerHTML = '';
-            S.queue.forEach((item, i) => {
+            localQueue.forEach((item, i) => {
                 const el = document.createElement('div');
-                el.className = 'q-item' + (i === S.currentIdx ? ' playing' : '');
+                el.className = 'q-item' + (i === currentIdx ? ' playing' : '');
                 el.innerHTML = `
-      <div class="q-num">${i === S.currentIdx ? '▶' : i + 1}</div>
-      <img class="q-thumb" src="${esc(item.thumb)}" onerror="this.style.opacity='0.1'" loading="lazy"/>
-      <div class="q-info"><div class="q-title">${esc(item.title)}</div><div class="q-ch">${esc(item.channel || '')}</div></div>
-      <button class="q-del" data-i="${i}">✕</button>`;
-                el.querySelector('.q-del').onclick = e => { e.stopPropagation(); removeItem(i); };
-                el.onclick = e => { if (!e.target.classList.contains('q-del')) playIdx(i); };
+      <div class="q-num">${i === currentIdx ? '▶' : i + 1}</div>
+      <img class="q-thumb" src="${esc(item.thumb)}" onerror="this.style.opacity='0.1'" loading="lazy" />
+      <div class="q-info">
+        <div class="q-title">${esc(item.title)}</div>
+        <div class="q-ch">${esc(item.channel || '')}</div>
+      </div>
+      <button class="q-del" data-key="${esc(item._key || '')}">✕</button>
+    `;
+                el.querySelector('.q-del').addEventListener('click', e => {
+                    e.stopPropagation();
+                    removeFromQueue(i, item._key);
+                });
+                el.addEventListener('click', () => playIdx(i));
                 list.appendChild(el);
             });
         }
 
-        window.removeItem = function (i) {
-            if (!S.roomId) {
-                S.queue.splice(i, 1);
-                if (i === S.currentIdx) { S.currentIdx = -1; clearPlayer(); }
+        function removeFromQueue(i, key) {
+            if (!roomId) {
+                localQueue.splice(i, 1);
+                if (i === currentIdx) { currentIdx = -1; clearIframe(); updateNowPlaying(null); }
                 renderQueue(); return;
             }
-            const item = S.queue[i];
-            if (item._key) remove(ref(db, `rooms/${S.roomId}/queue/${item._key}`));
-        };
+            if (key) remove(ref(db, `rooms/${roomId}/queue/${key}`));
+        }
 
         window.clearQueue = function () {
             if (!confirm('Clear the queue?')) return;
-            if (S.roomId) { remove(rref('queue')); remove(rref('playback')); }
-            S.queue = []; S.currentIdx = -1; renderQueue(); clearPlayer();
+            if (roomId) { remove(roomRef('queue')); remove(roomRef('playback')); }
+            localQueue = []; currentIdx = -1;
+            clearIframe(); updateNowPlaying(null); renderQueue();
         };
 
-        // ── SEARCH ──
-        window.liveSearch = function () {
-            clearTimeout(S.searchTimer);
+        /* ─── SEARCH ─────────────────────────────────────── */
+        window.onSearchInput = function () {
+            clearTimeout(searchTimer);
             const q = document.getElementById('search-input').value.trim();
-            if (q.length < 2) return;
-            S.searchTimer = setTimeout(() => doSearch(), 500);
+            if (q.length >= 2) searchTimer = setTimeout(doSearch, 500);
         };
 
         window.doSearch = async function () {
             const q = document.getElementById('search-input').value.trim();
             if (!q) return;
-            const btn = document.getElementById('search-btn'), txt = document.getElementById('search-btn-text');
-            txt.innerHTML = '<span class="spinner"></span>'; btn.disabled = true;
+            const btn = document.getElementById('search-btn');
+            const txt = document.getElementById('search-btn-text');
+            txt.innerHTML = '<span class="spinner"></span>';
+            btn.disabled = true;
             try {
-                const res = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=${encodeURIComponent(q)}&type=video&key=${YT_KEY}`);
+                const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=${encodeURIComponent(q)}&type=video&key=${YT_KEY}`;
+                const res = await fetch(url);
                 const data = await res.json();
                 if (data.error) { toast('API error: ' + data.error.message); return; }
-                renderResults((data.items || []).map(it => ({ vid: it.id.videoId, title: it.snippet.title, channel: it.snippet.channelTitle, thumb: it.snippet.thumbnails?.medium?.url || it.snippet.thumbnails?.default?.url })));
-            } catch (e) { toast('Search failed'); }
-            finally { txt.textContent = 'Search'; btn.disabled = false; }
+                const items = (data.items || []).map(it => ({
+                    vid: it.id.videoId,
+                    title: it.snippet.title,
+                    channel: it.snippet.channelTitle,
+                    thumb: it.snippet.thumbnails?.medium?.url || it.snippet.thumbnails?.default?.url || ''
+                }));
+                renderResults(items);
+            } catch (e) {
+                toast('Search failed — check connection');
+                console.error(e);
+            } finally {
+                txt.textContent = 'Search';
+                btn.disabled = false;
+            }
         };
 
         function renderResults(items) {
@@ -1603,10 +1794,18 @@
             if (!items.length) { list.innerHTML = '<div class="search-empty">no results found</div>'; return; }
             list.innerHTML = '';
             items.forEach(item => {
-                const el = document.createElement('div'); el.className = 'result-item';
-                el.innerHTML = `<img class="result-thumb" src="${esc(item.thumb)}" onerror="this.style.opacity='0.2'" loading="lazy"/><div class="result-info"><div class="result-title">${esc(item.title)}</div><div class="result-channel">${esc(item.channel)}</div></div><button class="add-btn">+</button>`;
-                el.querySelector('.add-btn').onclick = e => { e.stopPropagation(); addItem(item); };
-                el.onclick = () => addItem(item);
+                const el = document.createElement('div');
+                el.className = 'result-item';
+                el.innerHTML = `
+      <img class="result-thumb" src="${esc(item.thumb)}" onerror="this.style.opacity='0.2'" loading="lazy" />
+      <div class="result-info">
+        <div class="result-title">${esc(item.title)}</div>
+        <div class="result-channel">${esc(item.channel)}</div>
+      </div>
+      <button class="add-btn" title="Add to queue">+</button>
+    `;
+                el.querySelector('.add-btn').addEventListener('click', e => { e.stopPropagation(); addItemToQueue(item); });
+                el.addEventListener('click', () => addItemToQueue(item));
                 list.appendChild(el);
             });
         }
@@ -1614,93 +1813,114 @@
         async function fetchVideoDetails(vid) {
             try {
                 const res = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${vid}&key=${YT_KEY}`);
-                const data = await res.json(); const it = data.items?.[0]; if (!it) return null;
-                return { vid, title: it.snippet.title, channel: it.snippet.channelTitle, thumb: it.snippet.thumbnails?.medium?.url || `https://i.ytimg.com/vi/${vid}/mqdefault.jpg` };
-            } catch { return { vid, title: 'YouTube video', channel: '', thumb: `https://i.ytimg.com/vi/${vid}/mqdefault.jpg` }; }
+                const data = await res.json();
+                const it = data.items?.[0];
+                if (!it) return null;
+                return {
+                    vid,
+                    title: it.snippet.title,
+                    channel: it.snippet.channelTitle,
+                    thumb: it.snippet.thumbnails?.medium?.url || `https://i.ytimg.com/vi/${vid}/mqdefault.jpg`
+                };
+            } catch {
+                return { vid, title: 'YouTube video', channel: '', thumb: `https://i.ytimg.com/vi/${vid}/mqdefault.jpg` };
+            }
         }
 
         window.addFromUrl = async function () {
             const raw = document.getElementById('url-input').value.trim();
-            const vid = extractId(raw); if (!vid) { toast('⚠️ Paste a valid YouTube link'); return; }
+            const vid = extractYouTubeId(raw);
+            if (!vid) { toast('⚠️ Paste a valid YouTube link'); return; }
             const item = await fetchVideoDetails(vid);
-            if (item) { addItem(item); document.getElementById('url-input').value = ''; }
+            if (item) { addItemToQueue(item); document.getElementById('url-input').value = ''; }
         };
 
-        function extractId(url) { const m = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([^&\n?#]+)/); return m ? m[1] : null; }
+        function extractYouTubeId(url) {
+            const m = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([^&\n?#]+)/);
+            return m ? m[1] : null;
+        }
 
         window.setTab = function (tab, el) {
-            document.querySelectorAll('.s-tab').forEach(t => t.classList.remove('active')); el.classList.add('active');
+            document.querySelectorAll('.s-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
             document.getElementById('tab-search').style.display = tab === 'search' ? 'block' : 'none';
             document.getElementById('tab-url').style.display = tab === 'url' ? 'block' : 'none';
         };
 
-        // ── CHAT ──
+        /* ─── CHAT ───────────────────────────────────────── */
         window.sendMsg = function () {
-            const input = document.getElementById('chat-input'), msg = input.value.trim(); if (!msg) return; input.value = '';
-            if (!S.roomId) { appendLocalMsg(msg, true); return; }
-            push(rref('chat'), { text: msg, name: S.myName, uid: S.myId, ts: Date.now() });
+            const input = document.getElementById('chat-input');
+            const msg = input.value.trim();
+            if (!msg) return;
+            input.value = '';
+            if (!roomId) { appendChatBubble(msg, true, MY_NAME(), Date.now()); return; }
+            push(roomRef('chat'), { text: msg, name: MY_NAME(), uid: MY_ID, ts: Date.now() });
         };
 
-        function renderAllChat(msgs) {
+        function appendChatBubble(text, isMe, name, ts) {
             const box = document.getElementById('chat-messages');
-            if (msgs.length <= S.seenMsgCount) return;
-            const newMsgs = msgs.slice(S.seenMsgCount);
-            S.seenMsgCount = msgs.length;
-            newMsgs.forEach(m => {
-                const el = document.createElement('div'); el.className = 'msg ' + (m.uid === S.myId ? 'me' : 'them');
-                const time = new Date(m.ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                el.innerHTML = `<div class="bubble">${esc(m.text)}</div><div class="msg-time">${time} · ${esc(m.name)}</div>`;
-                box.appendChild(el);
-            });
+            const el = document.createElement('div');
+            el.className = 'msg ' + (isMe ? 'me' : 'them');
+            const time = new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            el.innerHTML = `
+    <div class="bubble">${esc(text)}</div>
+    <div class="msg-time">${time} · ${esc(name)}</div>
+  `;
+            box.appendChild(el);
             box.scrollTop = box.scrollHeight;
         }
 
-        function appendLocalMsg(text, isMe) {
-            const box = document.getElementById('chat-messages'), el = document.createElement('div');
-            el.className = 'msg ' + (isMe ? 'me' : 'them');
-            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            el.innerHTML = `<div class="bubble">${esc(text)}</div><div class="msg-time">${time} · ${esc(S.myName)}</div>`;
-            box.appendChild(el); box.scrollTop = box.scrollHeight;
-        }
-
-        // ── REACTIONS ──
+        /* ─── REACTIONS ──────────────────────────────────── */
         window.sendReaction = function (emoji) {
-            for (let i = 0; i < 4; i++) setTimeout(() => spawnEmoji(emoji), i * 100);
-            if (S.roomId) push(rref('reactions'), { emoji, by: S.myId, ts: Date.now() });
-            if (S.roomId) push(rref('chat'), { text: `reacted ${emoji}`, name: S.myName, uid: S.myId, ts: Date.now() });
-            else appendLocalMsg(`reacted ${emoji}`, true);
+            // Animate locally immediately
+            for (let i = 0; i < 4; i++) setTimeout(() => spawnEmoji(emoji), i * 120);
+            // Push to Firebase so friend sees it too
+            if (roomId) push(roomRef('reactions'), { emoji, by: MY_ID, ts: Date.now() });
+            // Also send to chat
+            const msg = `reacted ${emoji}`;
+            if (roomId) push(roomRef('chat'), { text: msg, name: MY_NAME(), uid: MY_ID, ts: Date.now() });
+            else appendChatBubble(msg, true, MY_NAME(), Date.now());
         };
 
         function spawnEmoji(emoji) {
-            const el = document.createElement('div'); el.className = 'float-emoji'; el.textContent = emoji;
-            el.style.left = (15 + Math.random() * 70) + 'vw'; el.style.bottom = '100px';
-            document.body.appendChild(el); setTimeout(() => el.remove(), 2600);
+            const el = document.createElement('div');
+            el.className = 'float-emoji';
+            el.textContent = emoji;
+            el.style.left = (10 + Math.random() * 80) + 'vw';
+            el.style.bottom = '90px';
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 2600);
         }
 
+        /* ─── SHARE / COPY ───────────────────────────────── */
         window.shareCurrentSong = function () {
-            const item = S.queue[S.currentIdx]; if (!item) { toast('Nothing playing'); return; }
-            const url = `${location.origin}${location.pathname}?v=${item.vid}${S.roomId ? '&room=' + S.roomId : ''}`;
-            navigator.clipboard.writeText(url).catch(() => { }); toast('🔗 Song link copied!');
+            if (currentIdx < 0 || !localQueue[currentIdx]) { toast('Nothing playing'); return; }
+            const item = localQueue[currentIdx];
+            const url = `${location.origin}${location.pathname}?v=${item.vid}${roomId ? '&room=' + roomId : ''}`;
+            navigator.clipboard.writeText(url).catch(() => { });
+            toast('🔗 Song link copied!');
         };
 
         window.copyShareLink = function () {
             const t = document.getElementById('share-link-text').textContent;
             if (t.startsWith('click')) { openRoom(); return; }
-            navigator.clipboard.writeText(t).catch(() => { }); toast('✓ Copied!');
+            navigator.clipboard.writeText(t).catch(() => { });
+            toast('✓ Link copied!');
         };
 
+        /* ─── NAME ───────────────────────────────────────── */
         window.changeName = function () {
-            const n = prompt('Your name in Bobo Tunes:', S.myName);
+            const n = prompt('Your name in Bobo Tunes:', MY_NAME());
             if (n && n.trim()) {
-                S.myName = n.trim(); localStorage.setItem('bt_name', S.myName);
-                document.getElementById('my-name').textContent = S.myName;
-                document.getElementById('my-avatar-letter').textContent = S.myName[0].toUpperCase();
-                if (S.roomId) set(ref(db, `rooms/${S.roomId}/presence/${S.myId}/name`), S.myName);
+                const name = n.trim();
+                localStorage.setItem('bt_name', name);
+                document.getElementById('my-name').textContent = name;
+                document.getElementById('my-avatar-letter').textContent = name[0].toUpperCase();
+                // Update presence in Firebase
+                if (roomId) set(ref(db, `rooms/${roomId}/presence/${MY_ID}/name`), name);
             }
         };
 
-        function esc(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
-        window.toast = function (msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(window._tt); window._tt = setTimeout(() => t.classList.remove('show'), 2800); };
     </script>
 </body>
 
