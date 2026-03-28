@@ -356,6 +356,15 @@
             aspect-ratio: 16/9;
             background: var(--bg2);
             overflow: hidden;
+            width: 100%;
+        }
+
+        @media(max-width:800px) {
+            .card-player .video-wrap {
+                border-radius: 0;
+                margin: 0;
+                width: 100%;
+            }
         }
 
         .vid-placeholder {
@@ -1576,6 +1585,11 @@
         const MY_ID = localStorage.getItem('bt_uid');
         const myName = () => localStorage.getItem('bt_name') || 'You';
 
+        // Persistent room — always the same room for this device pair
+        if (!localStorage.getItem('bt_room'))
+            localStorage.setItem('bt_room', Math.random().toString(36).slice(2, 7).toUpperCase());
+        const PERSISTENT_ROOM = localStorage.getItem('bt_room');
+
         /* ── STATE ── */
         let roomId = null;
         let localQueue = [];
@@ -1602,16 +1616,27 @@
         // Pause = reload src without autoplay. Resume = reload with autoplay=1.
         // This always works regardless of browser/platform.
 
-        function buildSrc(vid, play) {
-            return `https://www.youtube.com/embed/${vid}?autoplay=${play ? 1 : 0}&rel=0&modestbranding=1&playsinline=1`;
+        function buildSrc(vid) {
+            return `https://www.youtube.com/embed/${vid}?autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1`;
         }
 
         function loadIframe(vid, play = true) {
             const iframe = document.getElementById('yt-iframe');
-            iframe.src = buildSrc(vid, play);
-            iframe.style.display = 'block';
-            document.getElementById('vid-placeholder').style.display = 'none';
+            // Only reload src if it's a different video
+            const newSrc = buildSrc(vid);
+            if (!currentVid || currentVid !== vid) {
+                iframe.src = newSrc;
+                iframe.style.display = 'block';
+                document.getElementById('vid-placeholder').style.display = 'none';
+            }
             currentVid = vid;
+            // Use postMessage to play/pause without reloading
+            setTimeout(() => {
+                try {
+                    const cmd = play ? '{"event":"command","func":"playVideo","args":""}' : '{"event":"command","func":"pauseVideo","args":""}';
+                    iframe.contentWindow.postMessage(cmd, '*');
+                } catch (e) { }
+            }, 300);
             setPlaying(play);
         }
 
@@ -1659,7 +1684,12 @@
         const paramRoom = params.get('room');
         const paramVid = params.get('v');
 
-        if (paramRoom) enterRoom(paramRoom);
+        // Always enter the persistent room (or the one from URL)
+        const roomToJoin = paramRoom || PERSISTENT_ROOM;
+        enterRoom(roomToJoin);
+        // Update URL to reflect the room
+        if (!paramRoom) history.replaceState({}, '', `?room=${roomToJoin}`);
+
         if (paramVid) setTimeout(async () => {
             const item = await fetchVideoDetails(paramVid);
             if (item) addItemToQueue(item);
@@ -1667,11 +1697,7 @@
 
         /* ── ROOM ── */
         window.openRoom = function () {
-            if (!roomId) {
-                const id = Math.random().toString(36).slice(2, 7).toUpperCase();
-                enterRoom(id);
-                history.replaceState({}, '', `?room=${id}`);
-            }
+            // Always use the same persistent room link
             const link = `${location.origin}${location.pathname}?room=${roomId}`;
             document.getElementById('share-link-text').textContent = link;
             navigator.clipboard.writeText(link).catch(() => { });
