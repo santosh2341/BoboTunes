@@ -379,14 +379,74 @@
             background: radial-gradient(ellipse at 50% 40%, #1a1a26 0%, var(--bg) 70%);
         }
 
-        /* On mobile: hide the video wrap entirely, show a compact spotify-style player */
+        .pulse-ring {
+            width: 76px;
+            height: 76px;
+            border-radius: 50%;
+            background: var(--accent-dim);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .pulse-ring::before,
+        .pulse-ring::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            border: 1.5px solid var(--accent);
+            animation: ringPulse 2.8s ease-out infinite;
+        }
+
+        .pulse-ring::before {
+            width: 100%;
+            height: 100%;
+            opacity: 0.5;
+        }
+
+        .pulse-ring::after {
+            width: 150%;
+            height: 150%;
+            animation-delay: -1.4s;
+            opacity: 0.2;
+        }
+
+        @keyframes ringPulse {
+            0% {
+                transform: scale(0.85);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1.7);
+                opacity: 0;
+            }
+        }
+
+        /* Mobile — kill video completely, show spotify player */
         @media(max-width:800px) {
             .video-wrap {
-                display: none !important;
+                max-height: 0 !important;
+                overflow: hidden !important;
+                aspect-ratio: unset !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                border: none !important;
+                opacity: 0 !important;
+                pointer-events: none !important;
             }
 
             .mob-spotify-player {
                 display: flex !important;
+            }
+
+            .now-playing-bar {
+                display: none !important;
+            }
+
+            .controls-bar {
+                display: none !important;
             }
         }
 
@@ -1806,6 +1866,16 @@
         const rref = p => ref(db, `rooms/${roomId}/${p}`);
         const esc = s => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
+        // On mobile, move the iframe to a hidden container so it doesn't affect layout
+        if (window.innerWidth <= 800) {
+            const hiddenDiv = document.createElement('div');
+            hiddenDiv.style.cssText = 'position:fixed;width:1px;height:1px;top:-9999px;left:-9999px;overflow:hidden;opacity:0;pointer-events:none;z-index:-1;';
+            hiddenDiv.id = 'yt-hidden-container';
+            document.body.appendChild(hiddenDiv);
+            const iframe = document.getElementById('yt-iframe');
+            hiddenDiv.appendChild(iframe);
+        }
+
         window.toast = msg => {
             const el = document.getElementById('toast');
             el.textContent = msg; el.classList.add('show');
@@ -1824,21 +1894,21 @@
 
         function loadIframe(vid, play = true) {
             const iframe = document.getElementById('yt-iframe');
-            // Only reload src if it's a different video
-            const newSrc = buildSrc(vid);
             if (!currentVid || currentVid !== vid) {
-                iframe.src = newSrc;
-                iframe.style.display = 'block';
-                document.getElementById('vid-placeholder').style.display = 'none';
+                iframe.src = buildSrc(vid);
+                // Only show iframe visually on desktop
+                if (window.innerWidth > 800) {
+                    iframe.style.display = 'block';
+                    document.getElementById('vid-placeholder').style.display = 'none';
+                }
             }
             currentVid = vid;
-            // Use postMessage to play/pause without reloading
             setTimeout(() => {
                 try {
                     const cmd = play ? '{"event":"command","func":"playVideo","args":""}' : '{"event":"command","func":"pauseVideo","args":""}';
                     iframe.contentWindow.postMessage(cmd, '*');
                 } catch (e) { }
-            }, 300);
+            }, 400);
             setPlaying(play);
         }
 
