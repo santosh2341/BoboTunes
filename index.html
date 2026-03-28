@@ -1,2318 +1,974 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Bobo Tunes 🎵</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-    <style>
-        :root {
-            --bg: #0a0a0f;
-            --bg2: #111118;
-            --bg3: #18181f;
-            --bg4: #1f1f2a;
-            --surface: #232332;
-            --border: rgba(255, 255, 255, 0.06);
-            --border2: rgba(255, 255, 255, 0.12);
-            --accent: #1db954;
-            --accent2: #1ed760;
-            --accent-dim: rgba(29, 185, 84, 0.15);
-            --accent-glow: rgba(29, 185, 84, 0.4);
-            --purple: #7c3aed;
-            --pink: #ec4899;
-            --blue: #3b82f6;
-            --text: #fff;
-            --text2: #b3b3b3;
-            --text3: #6b6b80;
-            --red: #ef4444;
-            --r: 14px;
-            --r-sm: 10px;
-            --nav: 60px;
-            --mob: 72px;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        html,
-        body {
-            height: 100%;
-        }
-
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        /* BG */
-        .bg-orbs {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(90px);
-            opacity: 0.12;
-            animation: orbFloat 14s ease-in-out infinite;
-        }
-
-        .orb1 {
-            width: 500px;
-            height: 500px;
-            background: var(--accent);
-            top: -150px;
-            left: -150px;
-        }
-
-        .orb2 {
-            width: 350px;
-            height: 350px;
-            background: var(--purple);
-            top: 40%;
-            right: -100px;
-            animation-delay: -5s;
-        }
-
-        .orb3 {
-            width: 300px;
-            height: 300px;
-            background: var(--pink);
-            bottom: 10%;
-            left: 10%;
-            animation-delay: -9s;
-        }
-
-        .orb4 {
-            width: 250px;
-            height: 250px;
-            background: var(--blue);
-            bottom: -80px;
-            right: 20%;
-            animation-delay: -3s;
-        }
-
-        @keyframes orbFloat {
-
-            0%,
-            100% {
-                transform: translate(0, 0) scale(1);
-            }
-
-            33% {
-                transform: translate(25px, -25px) scale(1.04);
-            }
-
-            66% {
-                transform: translate(-18px, 18px) scale(0.96);
-            }
-        }
-
-        body::after {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-            opacity: 0.025;
-            pointer-events: none;
-            z-index: 9998;
-        }
-
-        /* NAV */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 200;
-            height: var(--nav);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 1rem;
-            background: rgba(10, 10, 15, 0.94);
-            backdrop-filter: blur(24px);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 9px;
-            text-decoration: none;
-        }
-
-        .logo-svg {
-            width: 36px;
-            height: 36px;
-            flex-shrink: 0;
-        }
-
-        .logo-text {
-            font-size: 1.2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #fff 30%, var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -0.02em;
-        }
-
-        @media(max-width:380px) {
-            .logo-text {
-                display: none;
-            }
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .pill {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            padding: 5px 10px;
-            border-radius: 100px;
-            background: var(--bg3);
-            border: 1px solid var(--border2);
-            font-size: 0.62rem;
-            color: var(--text3);
-            font-weight: 600;
-            max-width: 120px;
-        }
-
-        .pill-text {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--text3);
-            flex-shrink: 0;
-        }
-
-        .dot.live {
-            background: var(--accent);
-            animation: dotPulse 2s infinite;
-        }
-
-        @keyframes dotPulse {
-
-            0%,
-            100% {
-                box-shadow: 0 0 0 0 var(--accent-glow);
-            }
-
-            50% {
-                box-shadow: 0 0 0 5px rgba(29, 185, 84, 0);
-            }
-        }
-
-        .nav-btn {
-            background: var(--accent);
-            color: #000;
-            border: none;
-            border-radius: 100px;
-            padding: 7px 14px;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 0.7rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all .2s;
-            white-space: nowrap;
-        }
-
-        .nav-btn:hover {
-            background: var(--accent2);
-            transform: scale(1.04);
-        }
-
-        .nav-btn:active {
-            transform: scale(0.96);
-        }
-
-        .nav-btn-ghost {
-            background: var(--bg3);
-            color: var(--text3);
-            border: 1px solid var(--border2);
-            border-radius: 100px;
-            padding: 7px 12px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all .2s;
-        }
-
-        .nav-btn-ghost:hover {
-            background: var(--surface);
-            color: var(--text);
-        }
-
-        /* LAYOUT */
-        .app {
-            display: grid;
-            grid-template-columns: 1fr 288px;
-            gap: 1rem;
-            max-width: 1080px;
-            margin: 0 auto;
-            padding: calc(var(--nav) + 1rem) 1rem 2rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        @media(max-width:800px) {
-
-            html,
-            body {
-                overflow-x: hidden;
-                max-width: 100vw;
-            }
-
-            .app {
-                grid-template-columns: 1fr;
-                padding: calc(var(--nav) + .75rem) .75rem calc(var(--mob) + 1rem);
-                gap: .75rem;
-                width: 100%;
-                max-width: 100vw;
-                overflow-x: hidden;
-            }
-
-            .sidebar {
-                display: contents;
-            }
-
-            .card-room {
-                order: 10;
-            }
-
-            .card-queue {
-                order: 11;
-            }
-
-            .card-chat {
-                order: 12;
-            }
-
-            .card-player {
-                order: 1;
-            }
-
-            .card-search {
-                order: 2;
-            }
-
-            /* Force all cards to fit screen */
-            .card {
-                width: 100%;
-                max-width: 100%;
-                overflow: hidden;
-            }
-
-            /* Fix reactions overflow */
-            .reactions-bar {
-                overflow-x: auto;
-                flex-wrap: nowrap;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: none;
-            }
-
-            .reactions-bar::-webkit-scrollbar {
-                display: none;
-            }
-
-            /* Fix search tabs */
-            .search-tabs {
-                width: 100%;
-            }
-
-            /* Fix nav overflow */
-            nav {
-                width: 100vw;
-                overflow: hidden;
-            }
-
-            .pill {
-                max-width: 90px;
-            }
-        }
-
-        /* CARDS */
-        .card {
-            background: rgba(20, 20, 28, 0.82);
-            border: 1px solid var(--border);
-            border-radius: var(--r);
-            backdrop-filter: blur(16px);
-            overflow: hidden;
-            transition: border-color .2s;
-        }
-
-        .card:hover {
-            border-color: var(--border2);
-        }
-
-        .card-pad {
-            padding: 1.1rem;
-        }
-
-        .section-title {
-            font-size: 0.58rem;
-            font-weight: 700;
-            letter-spacing: .14em;
-            text-transform: uppercase;
-            color: var(--text3);
-            margin-bottom: .9rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .sync-badge {
-            font-size: .5rem;
-            color: var(--accent);
-            background: var(--accent-dim);
-            border-radius: 100px;
-            padding: 1px 6px;
-            font-weight: 700;
-        }
-
-        /* VIDEO */
-        .video-wrap {
-            position: relative;
-            aspect-ratio: 16/9;
-            background: var(--bg2);
-            overflow: hidden;
-            width: 100%;
-        }
-
-        #yt-iframe {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: none;
-        }
-
-        .vid-placeholder {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 14px;
-            background: radial-gradient(ellipse at 50% 40%, #1a1a26 0%, var(--bg) 70%);
-        }
-
-        .pulse-ring {
-            width: 76px;
-            height: 76px;
-            border-radius: 50%;
-            background: var(--accent-dim);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .pulse-ring::before,
-        .pulse-ring::after {
-            content: '';
-            position: absolute;
-            border-radius: 50%;
-            border: 1.5px solid var(--accent);
-            animation: ringPulse 2.8s ease-out infinite;
-        }
-
-        .pulse-ring::before {
-            width: 100%;
-            height: 100%;
-            opacity: 0.5;
-        }
-
-        .pulse-ring::after {
-            width: 150%;
-            height: 150%;
-            animation-delay: -1.4s;
-            opacity: 0.2;
-        }
-
-        @keyframes ringPulse {
-            0% {
-                transform: scale(0.85);
-                opacity: 1;
-            }
-
-            100% {
-                transform: scale(1.7);
-                opacity: 0;
-            }
-        }
-
-        /* Mobile — kill video completely, show spotify player */
-        @media(max-width:800px) {
-            .video-wrap {
-                max-height: 0 !important;
-                overflow: hidden !important;
-                aspect-ratio: unset !important;
-                padding: 0 !important;
-                margin: 0 !important;
-                border: none !important;
-                opacity: 0 !important;
-                pointer-events: none !important;
-            }
-
-            .mob-spotify-player {
-                display: flex !important;
-            }
-
-            .now-playing-bar {
-                display: none !important;
-            }
-
-            .controls-bar {
-                display: none !important;
-            }
-        }
-
-        /* Spotify-style mobile player card section */
-        .mob-spotify-player {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            padding: 1.5rem 1.25rem 1rem;
-            background: linear-gradient(180deg, rgba(29, 185, 84, 0.12) 0%, transparent 100%);
-        }
-
-        .mob-album-art {
-            width: 200px;
-            height: 200px;
-            border-radius: 12px;
-            object-fit: cover;
-            background: var(--bg4);
-            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7);
-            margin-bottom: 1.5rem;
-        }
-
-        .mob-album-placeholder {
-            width: 200px;
-            height: 200px;
-            border-radius: 12px;
-            background: var(--bg4);
-            border: 1px solid var(--border2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .mob-track-info {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-        }
-
-        .mob-track-text {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .mob-track-title {
-            font-size: 1rem;
-            font-weight: 700;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .mob-track-channel {
-            font-size: 0.75rem;
-            color: var(--text3);
-            margin-top: 3px;
-        }
-
-        .mob-like-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: none;
-            border: none;
-            color: var(--text3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            flex-shrink: 0;
-            transition: all .2s;
-        }
-
-        .mob-like-btn:hover {
-            color: var(--accent);
-        }
-
-        .mob-controls {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            padding: 0 0.5rem;
-        }
-
-        .mob-ctrl-svg {
-            background: none;
-            border: none;
-            color: var(--text2);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 8px;
-            transition: all .2s;
-            border-radius: 50%;
-        }
-
-        .mob-ctrl-svg:hover {
-            color: var(--text);
-            transform: scale(1.1);
-        }
-
-        .mob-ctrl-svg:active {
-            transform: scale(0.9);
-        }
-
-        .mob-play-svg {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: var(--accent);
-            color: #000;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 20px var(--accent-glow);
-            transition: all .2s;
-            flex-shrink: 0;
-        }
-
-        .mob-play-svg:hover {
-            background: var(--accent2);
-            transform: scale(1.06);
-        }
-
-        .mob-play-svg:active {
-            transform: scale(0.95);
-        }
-
-
-        /* NOW PLAYING */
-        .now-playing-bar {
-            padding: .9rem 1.1rem;
-            background: linear-gradient(135deg, rgba(29, 185, 84, 0.07), rgba(124, 58, 237, 0.04));
-            border-top: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .np-thumb {
-            width: 48px;
-            height: 48px;
-            border-radius: 8px;
-            object-fit: cover;
-            background: var(--bg4);
-            flex-shrink: 0;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
-        }
-
-        .np-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .np-title-row {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-        }
-
-        .np-title {
-            font-size: .85rem;
-            font-weight: 700;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .np-channel {
-            font-size: .64rem;
-            color: var(--text3);
-            margin-top: 3px;
-        }
-
-        .np-actions {
-            display: flex;
-            gap: 5px;
-            flex-shrink: 0;
-        }
-
-        .icon-btn {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            background: var(--bg4);
-            border: 1px solid var(--border2);
-            color: var(--text2);
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all .18s;
-        }
-
-        .icon-btn:hover {
-            background: var(--accent);
-            color: #000;
-            border-color: var(--accent);
-            transform: scale(1.1);
-        }
-
-        /* EQ */
-        .eq-bars {
-            display: flex;
-            align-items: flex-end;
-            gap: 2px;
-            height: 14px;
-            flex-shrink: 0;
-        }
-
-        .eq-bar {
-            width: 3px;
-            border-radius: 2px;
-            animation: eqB .9s ease-in-out infinite;
-        }
-
-        .eq-bar:nth-child(1) {
-            background: var(--accent);
-            animation-delay: 0s;
-        }
-
-        .eq-bar:nth-child(2) {
-            background: var(--accent2);
-            animation-delay: .18s;
-        }
-
-        .eq-bar:nth-child(3) {
-            background: var(--accent);
-            animation-delay: .36s;
-        }
-
-        .eq-bar:nth-child(4) {
-            background: var(--accent2);
-            animation-delay: .54s;
-        }
-
-        @keyframes eqB {
-
-            0%,
-            100% {
-                transform: scaleY(0.25);
-            }
-
-            50% {
-                transform: scaleY(1);
-            }
-        }
-
-        /* CONTROLS */
-        .controls-bar {
-            padding: .7rem 1.1rem;
-            border-top: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-        }
-
-        .ctrl-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--bg4);
-            border: 1px solid var(--border2);
-            color: var(--text2);
-            font-size: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all .18s;
-        }
-
-        .ctrl-btn:hover {
-            background: var(--surface);
-            color: var(--text);
-        }
-
-        .ctrl-btn:active {
-            transform: scale(0.9);
-        }
-
-        .ctrl-btn.play-pause {
-            width: 52px;
-            height: 52px;
-            font-size: 20px;
-            background: var(--accent);
-            color: #000;
-            border-color: var(--accent);
-            box-shadow: 0 0 20px var(--accent-glow);
-        }
-
-        .ctrl-btn.play-pause:hover {
-            background: var(--accent2);
-        }
-
-        /* REACTIONS */
-        .reactions-bar {
-            padding: .75rem 1.1rem;
-            border-top: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            flex-wrap: wrap;
-        }
-
-        .react-label {
-            font-size: .58rem;
-            color: var(--text3);
-            font-weight: 700;
-            letter-spacing: .08em;
-            text-transform: uppercase;
-            margin-right: 3px;
-            flex-shrink: 0;
-        }
-
-        .react-btn {
-            background: var(--bg4);
-            border: 1px solid var(--border2);
-            border-radius: 100px;
-            padding: 5px 11px;
-            font-size: .72rem;
-            cursor: pointer;
-            color: var(--text2);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            transition: all .15s;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .react-btn:hover {
-            background: var(--surface);
-            border-color: var(--accent);
-            color: var(--text);
-            transform: scale(1.06);
-        }
-
-        .react-btn:active {
-            transform: scale(0.93);
-        }
-
-        .float-emoji {
-            position: fixed;
-            font-size: 30px;
-            pointer-events: none;
-            z-index: 9997;
-            animation: floatUp 2.5s ease-out forwards;
-        }
-
-        @keyframes floatUp {
-            0% {
-                transform: translateY(0) scale(0.7) rotate(-8deg);
-                opacity: 1;
-            }
-
-            40% {
-                transform: translateY(-90px) scale(1.2) rotate(4deg);
-                opacity: 1;
-            }
-
-            100% {
-                transform: translateY(-240px) scale(0.3) rotate(12deg);
-                opacity: 0;
-            }
-        }
-
-        /* SEARCH */
-        .search-tabs {
-            display: flex;
-            gap: 4px;
-            background: var(--bg);
-            border-radius: var(--r-sm);
-            padding: 3px;
-            margin-bottom: .9rem;
-        }
-
-        .s-tab {
-            flex: 1;
-            padding: 7px;
-            border-radius: 7px;
-            border: none;
-            background: none;
-            color: var(--text3);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: .7rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all .15s;
-            text-align: center;
-        }
-
-        .s-tab.active {
-            background: var(--surface);
-            color: var(--text);
-        }
-
-        .search-row {
-            display: flex;
-            gap: 7px;
-            margin-bottom: .9rem;
-            width: 100%;
-        }
-
-        .search-input {
-            flex: 1;
-            min-width: 0;
-            background: var(--bg4);
-            border: 1.5px solid var(--border2);
-            border-radius: var(--r-sm);
-            padding: 10px 13px;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: .8rem;
-            color: var(--text);
-            outline: none;
-            transition: all .2s;
-            width: 100%;
-        }
-
-        .search-input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-dim);
-        }
-
-        .search-input::placeholder {
-            color: var(--text3);
-        }
-
-        .search-btn {
-            background: var(--accent);
-            color: #000;
-            border: none;
-            border-radius: var(--r-sm);
-            padding: 10px 16px;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: .75rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all .2s;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .search-btn:hover {
-            background: var(--accent2);
-        }
-
-        .search-btn:disabled {
-            opacity: .4;
-            cursor: not-allowed;
-        }
-
-        .results-list {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-            max-height: 260px;
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: var(--surface) transparent;
-        }
-
-        .results-list::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .results-list::-webkit-scrollbar-thumb {
-            background: var(--surface);
-            border-radius: 4px;
-        }
-
-        .result-item {
-            display: flex;
-            align-items: center;
-            gap: 9px;
-            padding: 7px 9px;
-            border-radius: var(--r-sm);
-            cursor: pointer;
-            transition: all .14s;
-            border: 1px solid transparent;
-        }
-
-        .result-item:hover {
-            background: var(--surface);
-            border-color: var(--border2);
-        }
-
-        .result-item:active {
-            background: var(--bg4);
-        }
-
-        .result-thumb {
-            width: 64px;
-            height: 40px;
-            border-radius: 5px;
-            object-fit: cover;
-            flex-shrink: 0;
-            background: var(--bg4);
-        }
-
-        .result-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .result-title {
-            font-size: .76rem;
-            font-weight: 600;
-            color: var(--text);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .result-channel {
-            font-size: .6rem;
-            color: var(--text3);
-            margin-top: 2px;
-        }
-
-        .add-btn {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: var(--bg4);
-            border: 1px solid var(--border2);
-            color: var(--accent);
-            font-size: 17px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            flex-shrink: 0;
-            transition: all .15s;
-        }
-
-        .add-btn:hover {
-            background: var(--accent);
-            color: #000;
-            border-color: var(--accent);
-            transform: scale(1.15);
-        }
-
-        .search-empty {
-            padding: 2rem 1rem;
-            text-align: center;
-            font-size: .76rem;
-            color: var(--text3);
-        }
-
-        /* ROOM */
-        .user-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 9px 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .user-row:last-child {
-            border-bottom: none;
-        }
-
-        .avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            font-size: .8rem;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            position: relative;
-        }
-
-        .avatar-you {
-            background: linear-gradient(135deg, var(--accent), #0a8f39);
-            color: #000;
-        }
-
-        .avatar-them {
-            background: linear-gradient(135deg, var(--purple), var(--pink));
-            color: #fff;
-        }
-
-        .online-ring {
-            position: absolute;
-            inset: -3px;
-            border-radius: 50%;
-            border: 2px solid transparent;
-        }
-
-        .online-ring.on {
-            border-color: var(--accent);
-        }
-
-        .online-ring.on::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            right: -1px;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--accent);
-            border: 2px solid var(--bg3);
-        }
-
-        .user-name {
-            font-size: .8rem;
-            font-weight: 700;
-            color: var(--text);
-            cursor: pointer;
-        }
-
-        .user-name:hover {
-            color: var(--accent);
-        }
-
-        .user-status {
-            font-size: .6rem;
-            color: var(--text3);
-            margin-top: 2px;
-        }
-
-        .share-box {
-            margin-top: .75rem;
-            background: var(--bg);
-            border: 1px dashed var(--border2);
-            border-radius: var(--r-sm);
-            padding: 9px 11px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .share-text {
-            flex: 1;
-            font-size: .6rem;
-            color: var(--text3);
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            font-family: monospace;
-        }
-
-        .copy-btn {
-            background: none;
-            border: 1px solid var(--border2);
-            border-radius: 6px;
-            padding: 3px 9px;
-            font-size: .6rem;
-            color: var(--accent);
-            cursor: pointer;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-weight: 700;
-            transition: all .15s;
-            white-space: nowrap;
-        }
-
-        .copy-btn:hover {
-            background: var(--accent);
-            color: #000;
-            border-color: var(--accent);
-        }
-
-        /* QUEUE */
-        .queue-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1.1rem 1.1rem .7rem;
-        }
-
-        .clear-btn {
-            background: none;
-            border: none;
-            font-size: .6rem;
-            color: var(--text3);
-            cursor: pointer;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            transition: color .15s;
-        }
-
-        .clear-btn:hover {
-            color: var(--red);
-        }
-
-        .queue-list {
-            padding: 0 .9rem .9rem;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            max-height: 240px;
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: var(--surface) transparent;
-        }
-
-        .queue-list::-webkit-scrollbar {
-            width: 3px;
-        }
-
-        .queue-list::-webkit-scrollbar-thumb {
-            background: var(--surface);
-            border-radius: 3px;
-        }
-
-        .q-item {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            padding: 7px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all .12s;
-            border: 1px solid transparent;
-        }
-
-        .q-item:hover {
-            background: var(--surface);
-            border-color: var(--border2);
-        }
-
-        .q-item:active {
-            background: var(--bg4);
-        }
-
-        .q-item.playing {
-            background: rgba(29, 185, 84, 0.08);
-            border-color: rgba(29, 185, 84, 0.25);
-        }
-
-        .q-num {
-            font-size: .58rem;
-            color: var(--text3);
-            width: 14px;
-            text-align: center;
-            flex-shrink: 0;
-        }
-
-        .q-item.playing .q-num {
-            color: var(--accent);
-        }
-
-        .q-thumb {
-            width: 38px;
-            height: 26px;
-            border-radius: 4px;
-            object-fit: cover;
-            background: var(--bg4);
-            flex-shrink: 0;
-        }
-
-        .q-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .q-title {
-            font-size: .7rem;
-            font-weight: 600;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            color: var(--text);
-        }
-
-        .q-item.playing .q-title {
-            color: var(--accent);
-        }
-
-        .q-ch {
-            font-size: .57rem;
-            color: var(--text3);
-        }
-
-        .q-del {
-            background: none;
-            border: none;
-            color: var(--text3);
-            cursor: pointer;
-            font-size: 11px;
-            width: 22px;
-            height: 22px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: all .12s;
-        }
-
-        .q-item:hover .q-del {
-            opacity: 1;
-        }
-
-        .q-del:hover {
-            background: rgba(239, 68, 68, 0.15);
-            color: var(--red);
-        }
-
-        .queue-empty {
-            padding: 1.5rem;
-            text-align: center;
-            font-size: .7rem;
-            color: var(--text3);
-            font-style: italic;
-        }
-
-        /* CHAT */
-        .chat-body {
-            padding: 0 1.1rem 1.1rem;
-        }
-
-        .chat-messages {
-            display: flex;
-            flex-direction: column;
-            gap: 7px;
-            max-height: 200px;
-            overflow-y: auto;
-            margin-bottom: 9px;
-            scrollbar-width: thin;
-            scrollbar-color: var(--surface) transparent;
-        }
-
-        .chat-messages::-webkit-scrollbar {
-            width: 3px;
-        }
-
-        .chat-messages::-webkit-scrollbar-thumb {
-            background: var(--surface);
-            border-radius: 3px;
-        }
-
-        .msg {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-        }
-
-        .msg.me {
-            align-items: flex-end;
-        }
-
-        .msg.them {
-            align-items: flex-start;
-        }
-
-        .bubble {
-            max-width: 88%;
-            padding: 7px 11px;
-            font-size: .74rem;
-            line-height: 1.5;
-            border-radius: 13px;
-        }
-
-        .msg.me .bubble {
-            background: var(--accent);
-            color: #000;
-            border-bottom-right-radius: 3px;
-            font-weight: 600;
-        }
-
-        .msg.them .bubble {
-            background: var(--surface);
-            color: var(--text);
-            border-bottom-left-radius: 3px;
-            border: 1px solid var(--border2);
-        }
-
-        .msg-time {
-            font-size: .54rem;
-            color: var(--text3);
-        }
-
-        .chat-row {
-            display: flex;
-            gap: 7px;
-        }
-
-        .chat-input {
-            flex: 1;
-            background: var(--bg4);
-            border: 1.5px solid var(--border2);
-            border-radius: var(--r-sm);
-            padding: 9px 13px;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: .76rem;
-            color: var(--text);
-            outline: none;
-            transition: all .2s;
-        }
-
-        .chat-input:focus {
-            border-color: var(--accent);
-        }
-
-        .chat-input::placeholder {
-            color: var(--text3);
-        }
-
-        .send-btn {
-            background: var(--accent);
-            border: none;
-            border-radius: var(--r-sm);
-            color: #000;
-            padding: 9px 15px;
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: 700;
-            transition: all .15s;
-        }
-
-        .send-btn:hover {
-            background: var(--accent2);
-        }
-
-        .send-btn:active {
-            transform: scale(0.94);
-        }
-
-        /* MOBILE BAR */
-        .mob-bar {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 100vw;
-            height: var(--mob);
-            background: rgba(12, 12, 20, 0.98);
-            backdrop-filter: blur(28px);
-            border-top: 1px solid var(--border2);
-            padding: 0 1rem;
-            z-index: 300;
-            align-items: center;
-            gap: 10px;
-            overflow: hidden;
-        }
-
-        @media(max-width:800px) {
-            .mob-bar {
-                display: flex;
-            }
-        }
-
-        .mob-thumb {
-            width: 44px;
-            height: 44px;
-            border-radius: 8px;
-            object-fit: cover;
-            background: var(--bg4);
-            flex-shrink: 0;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
-        }
-
-        .mob-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .mob-title {
-            font-size: .76rem;
-            font-weight: 700;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .mob-ch {
-            font-size: .6rem;
-            color: var(--text3);
-            margin-top: 2px;
-        }
-
-        .mob-actions {
-            display: flex;
-            gap: 5px;
-            align-items: center;
-        }
-
-        .mob-ctrl {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            background: var(--bg3);
-            border: 1px solid var(--border2);
-            color: var(--text2);
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all .18s;
-        }
-
-        .mob-ctrl:hover {
-            background: var(--surface);
-            color: var(--text);
-        }
-
-        .mob-ctrl:active {
-            transform: scale(0.9);
-        }
-
-        .mob-ctrl.play {
-            background: var(--accent);
-            color: #000;
-            border-color: var(--accent);
-            font-size: 15px;
-        }
-
-        .mob-ctrl.play:hover {
-            background: var(--accent2);
-        }
-
-        /* TOAST */
-        #toast {
-            position: fixed;
-            bottom: calc(var(--mob) + .6rem);
-            left: 50%;
-            transform: translateX(-50%) translateY(80px);
-            background: rgba(28, 28, 40, 0.97);
-            color: var(--text);
-            border: 1px solid var(--border2);
-            border-radius: 100px;
-            padding: 9px 20px;
-            font-size: .72rem;
-            font-weight: 600;
-            z-index: 9999;
-            pointer-events: none;
-            transition: transform .3s cubic-bezier(.34, 1.56, .64, 1);
-            white-space: nowrap;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-        }
-
-        #toast.show {
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .spinner {
-            width: 13px;
-            height: 13px;
-            border: 2px solid rgba(0, 0, 0, 0.25);
-            border-top-color: #000;
-            border-radius: 50%;
-            animation: spin .65s linear infinite;
-            display: inline-block;
-            vertical-align: middle;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Bobo Tunes 🎵</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0a0a0f; --bg2:#111118; --bg3:#18181f; --bg4:#1f1f2a;
+  --surface:#232332; --border:rgba(255,255,255,0.06); --border2:rgba(255,255,255,0.12);
+  --accent:#1db954; --accent2:#1ed760; --accent-dim:rgba(29,185,84,0.15); --accent-glow:rgba(29,185,84,0.4);
+  --purple:#7c3aed; --pink:#ec4899; --blue:#3b82f6;
+  --text:#fff; --text2:#b3b3b3; --text3:#6b6b80; --red:#ef4444;
+  --r:14px; --r-sm:10px; --nav:60px; --mob:72px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;}
+body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+/* BG */
+.bg-orbs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:0.12;animation:orbFloat 14s ease-in-out infinite;}
+.orb1{width:500px;height:500px;background:var(--accent);top:-150px;left:-150px;}
+.orb2{width:350px;height:350px;background:var(--purple);top:40%;right:-100px;animation-delay:-5s;}
+.orb3{width:300px;height:300px;background:var(--pink);bottom:10%;left:10%;animation-delay:-9s;}
+.orb4{width:250px;height:250px;background:var(--blue);bottom:-80px;right:20%;animation-delay:-3s;}
+@keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1);}33%{transform:translate(25px,-25px) scale(1.04);}66%{transform:translate(-18px,18px) scale(0.96);}}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:0.025;pointer-events:none;z-index:9998;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);display:flex;align-items:center;justify-content:space-between;padding:0 1rem;background:rgba(10,10,15,0.94);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none;}
+.logo-svg{width:36px;height:36px;flex-shrink:0;}
+.logo-text{font-size:1.2rem;font-weight:800;background:linear-gradient(135deg,#fff 30%,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-0.02em;}
+@media(max-width:380px){.logo-text{display:none;}}
+.nav-right{display:flex;align-items:center;gap:6px;}
+.pill{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:100px;background:var(--bg3);border:1px solid var(--border2);font-size:0.62rem;color:var(--text3);font-weight:600;max-width:120px;}
+.pill-text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--text3);flex-shrink:0;}
+.dot.live{background:var(--accent);animation:dotPulse 2s infinite;}
+@keyframes dotPulse{0%,100%{box-shadow:0 0 0 0 var(--accent-glow);}50%{box-shadow:0 0 0 5px rgba(29,185,84,0);}}
+.nav-btn{background:var(--accent);color:#000;border:none;border-radius:100px;padding:7px 14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.nav-btn:hover{background:var(--accent2);transform:scale(1.04);}
+.nav-btn:active{transform:scale(0.96);}
+.nav-btn-ghost{background:var(--bg3);color:var(--text3);border:1px solid var(--border2);border-radius:100px;padding:7px 12px;font-size:0.8rem;cursor:pointer;transition:all .2s;}
+.nav-btn-ghost:hover{background:var(--surface);color:var(--text);}
+
+/* LAYOUT */
+.app{display:grid;grid-template-columns:1fr 288px;gap:1rem;max-width:1080px;margin:0 auto;padding:calc(var(--nav) + 1rem) 1rem 2rem;position:relative;z-index:1;}
+@media(max-width:800px){
+  html,body{overflow-x:hidden;max-width:100vw;}
+  .app{
+    grid-template-columns:1fr;
+    padding:calc(var(--nav) + .75rem) .75rem calc(var(--mob) + 1rem);
+    gap:.75rem;
+    width:100%;
+    max-width:100vw;
+    overflow-x:hidden;
+  }
+  .sidebar{display:contents;}
+  .card-room{order:10;}.card-queue{order:11;}.card-chat{order:12;}
+  .card-player{order:1;}.card-search{order:2;}
+  /* Force all cards to fit screen */
+  .card{width:100%;max-width:100%;overflow:hidden;}
+  /* Fix reactions overflow */
+  .reactions-bar{overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  .reactions-bar::-webkit-scrollbar{display:none;}
+  /* Fix search tabs */
+  .search-tabs{width:100%;}
+  /* Fix nav overflow */
+  nav{width:100vw;overflow:hidden;}
+  .pill{max-width:90px;}
+}
+
+/* CARDS */
+.card{background:rgba(20,20,28,0.82);border:1px solid var(--border);border-radius:var(--r);backdrop-filter:blur(16px);overflow:hidden;transition:border-color .2s;}
+.card:hover{border-color:var(--border2);}
+.card-pad{padding:1.1rem;}
+.section-title{font-size:0.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);margin-bottom:.9rem;display:flex;align-items:center;gap:6px;}
+.sync-badge{font-size:.5rem;color:var(--accent);background:var(--accent-dim);border-radius:100px;padding:1px 6px;font-weight:700;}
+
+/* VIDEO */
+.video-wrap{position:relative;aspect-ratio:16/9;background:var(--bg2);overflow:hidden;width:100%;}
+#yt-iframe{position:absolute;inset:0;width:100%;height:100%;border:none;display:none;}
+.vid-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:radial-gradient(ellipse at 50% 40%,#1a1a26 0%,var(--bg) 70%);}
+.pulse-ring{width:76px;height:76px;border-radius:50%;background:var(--accent-dim);display:flex;align-items:center;justify-content:center;position:relative;}
+.pulse-ring::before,.pulse-ring::after{content:'';position:absolute;border-radius:50%;border:1.5px solid var(--accent);animation:ringPulse 2.8s ease-out infinite;}
+.pulse-ring::before{width:100%;height:100%;opacity:0.5;}
+.pulse-ring::after{width:150%;height:150%;animation-delay:-1.4s;opacity:0.2;}
+@keyframes ringPulse{0%{transform:scale(0.85);opacity:1;}100%{transform:scale(1.7);opacity:0;}}
+
+/* Mobile — kill video completely, show spotify player */
+@media(max-width:800px){
+  .video-wrap{
+    max-height:0 !important;
+    overflow:hidden !important;
+    aspect-ratio:unset !important;
+    padding:0 !important;
+    margin:0 !important;
+    border:none !important;
+    opacity:0 !important;
+    pointer-events:none !important;
+  }
+  .mob-spotify-player{ display:flex !important; }
+  .now-playing-bar{ display:none !important; }
+  .controls-bar{ display:none !important; }
+}
+
+/* Spotify-style mobile player card section */
+.mob-spotify-player{
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  padding:1.5rem 1.25rem 1rem;
+  background:linear-gradient(180deg,rgba(29,185,84,0.12) 0%,transparent 100%);
+}
+.mob-album-art{
+  width:200px;height:200px;border-radius:12px;
+  object-fit:cover;background:var(--bg4);
+  box-shadow:0 16px 48px rgba(0,0,0,0.7);
+  margin-bottom:1.5rem;
+}
+.mob-album-placeholder{
+  width:200px;height:200px;border-radius:12px;
+  background:var(--bg4);border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:1.5rem;
+}
+.mob-track-info{width:100%;display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
+.mob-track-text{flex:1;min-width:0;}
+.mob-track-title{font-size:1rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mob-track-channel{font-size:0.75rem;color:var(--text3);margin-top:3px;}
+.mob-like-btn{width:36px;height:36px;border-radius:50%;background:none;border:none;color:var(--text3);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .2s;}
+.mob-like-btn:hover{color:var(--accent);}
+.mob-controls{display:flex;align-items:center;justify-content:space-between;width:100%;padding:0 0.5rem;}
+.mob-ctrl-svg{background:none;border:none;color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:8px;transition:all .2s;border-radius:50%;}
+.mob-ctrl-svg:hover{color:var(--text);transform:scale(1.1);}
+.mob-ctrl-svg:active{transform:scale(0.9);}
+.mob-play-svg{width:56px;height:56px;border-radius:50%;background:var(--accent);color:#000;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px var(--accent-glow);transition:all .2s;flex-shrink:0;}
+.mob-play-svg:hover{background:var(--accent2);transform:scale(1.06);}
+.mob-play-svg:active{transform:scale(0.95);}
+
+
+/* NOW PLAYING */
+.now-playing-bar{padding:.9rem 1.1rem;background:linear-gradient(135deg,rgba(29,185,84,0.07),rgba(124,58,237,0.04));border-top:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+.np-thumb{width:48px;height:48px;border-radius:8px;object-fit:cover;background:var(--bg4);flex-shrink:0;box-shadow:0 4px 16px rgba(0,0,0,0.5);}
+.np-info{flex:1;min-width:0;}
+.np-title-row{display:flex;align-items:center;gap:7px;}
+.np-title{font-size:.85rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.np-channel{font-size:.64rem;color:var(--text3);margin-top:3px;}
+.np-actions{display:flex;gap:5px;flex-shrink:0;}
+.icon-btn{width:34px;height:34px;border-radius:50%;background:var(--bg4);border:1px solid var(--border2);color:var(--text2);font-size:13px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .18s;}
+.icon-btn:hover{background:var(--accent);color:#000;border-color:var(--accent);transform:scale(1.1);}
+
+/* EQ */
+.eq-bars{display:flex;align-items:flex-end;gap:2px;height:14px;flex-shrink:0;}
+.eq-bar{width:3px;border-radius:2px;animation:eqB .9s ease-in-out infinite;}
+.eq-bar:nth-child(1){background:var(--accent);animation-delay:0s;}
+.eq-bar:nth-child(2){background:var(--accent2);animation-delay:.18s;}
+.eq-bar:nth-child(3){background:var(--accent);animation-delay:.36s;}
+.eq-bar:nth-child(4){background:var(--accent2);animation-delay:.54s;}
+@keyframes eqB{0%,100%{transform:scaleY(0.25);}50%{transform:scaleY(1);}}
+
+/* CONTROLS */
+.controls-bar{padding:.7rem 1.1rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:center;gap:12px;}
+.ctrl-btn{width:40px;height:40px;border-radius:50%;background:var(--bg4);border:1px solid var(--border2);color:var(--text2);font-size:15px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .18s;}
+.ctrl-btn:hover{background:var(--surface);color:var(--text);}
+.ctrl-btn:active{transform:scale(0.9);}
+.ctrl-btn.play-pause{width:52px;height:52px;font-size:20px;background:var(--accent);color:#000;border-color:var(--accent);box-shadow:0 0 20px var(--accent-glow);}
+.ctrl-btn.play-pause:hover{background:var(--accent2);}
+
+/* REACTIONS */
+.reactions-bar{padding:.75rem 1.1rem;border-top:1px solid var(--border);display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+.react-label{font-size:.58rem;color:var(--text3);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-right:3px;flex-shrink:0;}
+.react-btn{background:var(--bg4);border:1px solid var(--border2);border-radius:100px;padding:5px 11px;font-size:.72rem;cursor:pointer;color:var(--text2);font-family:'Plus Jakarta Sans',sans-serif;transition:all .15s;display:flex;align-items:center;gap:4px;}
+.react-btn:hover{background:var(--surface);border-color:var(--accent);color:var(--text);transform:scale(1.06);}
+.react-btn:active{transform:scale(0.93);}
+.float-emoji{position:fixed;font-size:30px;pointer-events:none;z-index:9997;animation:floatUp 2.5s ease-out forwards;}
+@keyframes floatUp{0%{transform:translateY(0) scale(0.7) rotate(-8deg);opacity:1;}40%{transform:translateY(-90px) scale(1.2) rotate(4deg);opacity:1;}100%{transform:translateY(-240px) scale(0.3) rotate(12deg);opacity:0;}}
+
+/* SEARCH */
+.search-tabs{display:flex;gap:4px;background:var(--bg);border-radius:var(--r-sm);padding:3px;margin-bottom:.9rem;}
+.s-tab{flex:1;padding:7px;border-radius:7px;border:none;background:none;color:var(--text3);font-family:'Plus Jakarta Sans',sans-serif;font-size:.7rem;font-weight:600;cursor:pointer;transition:all .15s;text-align:center;}
+.s-tab.active{background:var(--surface);color:var(--text);}
+.search-row{display:flex;gap:7px;margin-bottom:.9rem;width:100%;}
+.search-input{flex:1;min-width:0;background:var(--bg4);border:1.5px solid var(--border2);border-radius:var(--r-sm);padding:10px 13px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;color:var(--text);outline:none;transition:all .2s;width:100%;}
+.search-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim);}
+.search-input::placeholder{color:var(--text3);}
+.search-btn{background:var(--accent);color:#000;border:none;border-radius:var(--r-sm);padding:10px 16px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.75rem;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap;display:flex;align-items:center;gap:5px;}
+.search-btn:hover{background:var(--accent2);}
+.search-btn:disabled{opacity:.4;cursor:not-allowed;}
+.results-list{display:flex;flex-direction:column;gap:3px;max-height:260px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--surface) transparent;}
+.results-list::-webkit-scrollbar{width:4px;}
+.results-list::-webkit-scrollbar-thumb{background:var(--surface);border-radius:4px;}
+.result-item{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:var(--r-sm);cursor:pointer;transition:all .14s;border:1px solid transparent;}
+.result-item:hover{background:var(--surface);border-color:var(--border2);}
+.result-item:active{background:var(--bg4);}
+.result-thumb{width:64px;height:40px;border-radius:5px;object-fit:cover;flex-shrink:0;background:var(--bg4);}
+.result-info{flex:1;min-width:0;}
+.result-title{font-size:.76rem;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.result-channel{font-size:.6rem;color:var(--text3);margin-top:2px;}
+.add-btn{width:30px;height:30px;border-radius:50%;background:var(--bg4);border:1px solid var(--border2);color:var(--accent);font-size:17px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .15s;}
+.add-btn:hover{background:var(--accent);color:#000;border-color:var(--accent);transform:scale(1.15);}
+.search-empty{padding:2rem 1rem;text-align:center;font-size:.76rem;color:var(--text3);}
+
+/* ROOM */
+.user-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);}
+.user-row:last-child{border-bottom:none;}
+.avatar{width:36px;height:36px;border-radius:50%;font-size:.8rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;}
+.avatar-you{background:linear-gradient(135deg,var(--accent),#0a8f39);color:#000;}
+.avatar-them{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;}
+.online-ring{position:absolute;inset:-3px;border-radius:50%;border:2px solid transparent;}
+.online-ring.on{border-color:var(--accent);}
+.online-ring.on::after{content:'';position:absolute;bottom:-1px;right:-1px;width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid var(--bg3);}
+.user-name{font-size:.8rem;font-weight:700;color:var(--text);cursor:pointer;}
+.user-name:hover{color:var(--accent);}
+.user-status{font-size:.6rem;color:var(--text3);margin-top:2px;}
+.share-box{margin-top:.75rem;background:var(--bg);border:1px dashed var(--border2);border-radius:var(--r-sm);padding:9px 11px;display:flex;align-items:center;gap:8px;}
+.share-text{flex:1;font-size:.6rem;color:var(--text3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:monospace;}
+.copy-btn{background:none;border:1px solid var(--border2);border-radius:6px;padding:3px 9px;font-size:.6rem;color:var(--accent);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;transition:all .15s;white-space:nowrap;}
+.copy-btn:hover{background:var(--accent);color:#000;border-color:var(--accent);}
+
+/* QUEUE */
+.queue-header{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 1.1rem .7rem;}
+.clear-btn{background:none;border:none;font-size:.6rem;color:var(--text3);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:color .15s;}
+.clear-btn:hover{color:var(--red);}
+.queue-list{padding:0 .9rem .9rem;display:flex;flex-direction:column;gap:2px;max-height:240px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--surface) transparent;}
+.queue-list::-webkit-scrollbar{width:3px;}
+.queue-list::-webkit-scrollbar-thumb{background:var(--surface);border-radius:3px;}
+.q-item{display:flex;align-items:center;gap:7px;padding:7px;border-radius:8px;cursor:pointer;transition:all .12s;border:1px solid transparent;}
+.q-item:hover{background:var(--surface);border-color:var(--border2);}
+.q-item:active{background:var(--bg4);}
+.q-item.playing{background:rgba(29,185,84,0.08);border-color:rgba(29,185,84,0.25);}
+.q-num{font-size:.58rem;color:var(--text3);width:14px;text-align:center;flex-shrink:0;}
+.q-item.playing .q-num{color:var(--accent);}
+.q-thumb{width:38px;height:26px;border-radius:4px;object-fit:cover;background:var(--bg4);flex-shrink:0;}
+.q-info{flex:1;min-width:0;}
+.q-title{font-size:.7rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text);}
+.q-item.playing .q-title{color:var(--accent);}
+.q-ch{font-size:.57rem;color:var(--text3);}
+.q-del{background:none;border:none;color:var(--text3);cursor:pointer;font-size:11px;width:22px;height:22px;border-radius:4px;display:flex;align-items:center;justify-content:center;opacity:0;transition:all .12s;}
+.q-item:hover .q-del{opacity:1;}
+.q-del:hover{background:rgba(239,68,68,0.15);color:var(--red);}
+.queue-empty{padding:1.5rem;text-align:center;font-size:.7rem;color:var(--text3);font-style:italic;}
+
+/* CHAT */
+.chat-body{padding:0 1.1rem 1.1rem;}
+.chat-messages{display:flex;flex-direction:column;gap:7px;max-height:200px;overflow-y:auto;margin-bottom:9px;scrollbar-width:thin;scrollbar-color:var(--surface) transparent;}
+.chat-messages::-webkit-scrollbar{width:3px;}
+.chat-messages::-webkit-scrollbar-thumb{background:var(--surface);border-radius:3px;}
+.msg{display:flex;flex-direction:column;gap:3px;}
+.msg.me{align-items:flex-end;}.msg.them{align-items:flex-start;}
+.bubble{max-width:88%;padding:7px 11px;font-size:.74rem;line-height:1.5;border-radius:13px;}
+.msg.me .bubble{background:var(--accent);color:#000;border-bottom-right-radius:3px;font-weight:600;}
+.msg.them .bubble{background:var(--surface);color:var(--text);border-bottom-left-radius:3px;border:1px solid var(--border2);}
+.msg-time{font-size:.54rem;color:var(--text3);}
+.chat-row{display:flex;gap:7px;}
+.chat-input{flex:1;background:var(--bg4);border:1.5px solid var(--border2);border-radius:var(--r-sm);padding:9px 13px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.76rem;color:var(--text);outline:none;transition:all .2s;}
+.chat-input:focus{border-color:var(--accent);}
+.chat-input::placeholder{color:var(--text3);}
+.send-btn{background:var(--accent);border:none;border-radius:var(--r-sm);color:#000;padding:9px 15px;cursor:pointer;font-size:15px;font-weight:700;transition:all .15s;}
+.send-btn:hover{background:var(--accent2);}
+.send-btn:active{transform:scale(0.94);}
+
+/* MOBILE BAR */
+.mob-bar{display:none;position:fixed;bottom:0;left:0;right:0;width:100vw;height:var(--mob);background:rgba(12,12,20,0.98);backdrop-filter:blur(28px);border-top:1px solid var(--border2);padding:0 1rem;z-index:300;align-items:center;gap:10px;overflow:hidden;}
+@media(max-width:800px){.mob-bar{display:flex;}}
+.mob-thumb{width:44px;height:44px;border-radius:8px;object-fit:cover;background:var(--bg4);flex-shrink:0;box-shadow:0 4px 14px rgba(0,0,0,0.6);}
+.mob-info{flex:1;min-width:0;}
+.mob-title{font-size:.76rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mob-ch{font-size:.6rem;color:var(--text3);margin-top:2px;}
+.mob-actions{display:flex;gap:5px;align-items:center;}
+.mob-ctrl{width:34px;height:34px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);font-size:13px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .18s;}
+.mob-ctrl:hover{background:var(--surface);color:var(--text);}
+.mob-ctrl:active{transform:scale(0.9);}
+.mob-ctrl.play{background:var(--accent);color:#000;border-color:var(--accent);font-size:15px;}
+.mob-ctrl.play:hover{background:var(--accent2);}
+
+/* TOAST */
+#toast{position:fixed;bottom:calc(var(--mob) + .6rem);left:50%;transform:translateX(-50%) translateY(80px);background:rgba(28,28,40,0.97);color:var(--text);border:1px solid var(--border2);border-radius:100px;padding:9px 20px;font-size:.72rem;font-weight:600;z-index:9999;pointer-events:none;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,0.5);}
+#toast.show{transform:translateX(-50%) translateY(0);}
+
+.spinner{width:13px;height:13px;border:2px solid rgba(0,0,0,0.25);border-top-color:#000;border-radius:50%;animation:spin .65s linear infinite;display:inline-block;vertical-align:middle;}
+@keyframes spin{to{transform:rotate(360deg);}}
+</style>
 </head>
-
 <body>
 
-    <div class="bg-orbs">
-        <div class="orb orb1"></div>
-        <div class="orb orb2"></div>
-        <div class="orb orb3"></div>
-        <div class="orb orb4"></div>
-    </div>
+<div class="bg-orbs">
+  <div class="orb orb1"></div><div class="orb orb2"></div>
+  <div class="orb orb3"></div><div class="orb orb4"></div>
+</div>
 
-    <nav>
-        <a class="logo" href="#">
-            <svg class="logo-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="36" height="36" rx="10" fill="#1db954" />
-                <path d="M9 19C9 14.029 13.029 10 18 10C22.971 10 27 14.029 27 19" stroke="white" stroke-width="2.2"
-                    stroke-linecap="round" />
-                <rect x="7" y="19" width="4" height="7" rx="2" fill="white" />
-                <rect x="25" y="19" width="4" height="7" rx="2" fill="white" />
-                <rect x="13.5" y="21" width="2.2" height="4.5" rx="1.1" fill="rgba(0,50,20,0.7)" />
-                <rect x="16.9" y="19.5" width="2.2" height="7.5" rx="1.1" fill="rgba(0,50,20,0.9)" />
-                <rect x="20.3" y="22" width="2.2" height="3.5" rx="1.1" fill="rgba(0,50,20,0.7)" />
+<nav>
+  <a class="logo" href="#">
+    <svg class="logo-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="36" height="36" rx="10" fill="#1db954"/>
+      <path d="M9 19C9 14.029 13.029 10 18 10C22.971 10 27 14.029 27 19" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+      <rect x="7" y="19" width="4" height="7" rx="2" fill="white"/>
+      <rect x="25" y="19" width="4" height="7" rx="2" fill="white"/>
+      <rect x="13.5" y="21" width="2.2" height="4.5" rx="1.1" fill="rgba(0,50,20,0.7)"/>
+      <rect x="16.9" y="19.5" width="2.2" height="7.5" rx="1.1" fill="rgba(0,50,20,0.9)"/>
+      <rect x="20.3" y="22" width="2.2" height="3.5" rx="1.1" fill="rgba(0,50,20,0.7)"/>
+    </svg>
+    <span class="logo-text">Bobo Tunes</span>
+  </a>
+  <div class="nav-right">
+    <div class="pill"><div class="dot" id="conn-dot"></div><span class="pill-text" id="conn-label">solo</span></div>
+    <button class="nav-btn" onclick="openRoom()">+ Invite</button>
+    <button class="nav-btn-ghost" onclick="changeName()">✏</button>
+  </div>
+</nav>
+
+<div class="app">
+  <div style="display:flex;flex-direction:column;gap:.9rem;">
+
+    <!-- Player -->
+    <div class="card card-player">
+
+      <!-- Desktop video (hidden on mobile) -->
+      <div class="video-wrap">
+        <div class="vid-placeholder" id="vid-placeholder">
+          <div class="pulse-ring">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+              <path d="M9 18V5l12-2v13" stroke="#1db954" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="6" cy="18" r="3" stroke="#1db954" stroke-width="2"/>
+              <circle cx="18" cy="16" r="3" stroke="#1db954" stroke-width="2"/>
             </svg>
-            <span class="logo-text">Bobo Tunes</span>
-        </a>
-        <div class="nav-right">
-            <div class="pill">
-                <div class="dot" id="conn-dot"></div><span class="pill-text" id="conn-label">solo</span>
-            </div>
-            <button class="nav-btn" onclick="openRoom()">+ Invite</button>
-            <button class="nav-btn-ghost" onclick="changeName()">✏</button>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-weight:700;font-size:.88rem;color:var(--text2);">Nothing playing yet</div>
+            <div style="font-size:.68rem;margin-top:5px;color:var(--text3);">search a song and add it to the queue</div>
+          </div>
         </div>
-    </nav>
+        <iframe id="yt-iframe" allowfullscreen
+          allow="autoplay; encrypted-media; gyroscope; picture-in-picture"
+          referrerpolicy="strict-origin-when-cross-origin"
+          sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-forms">
+        </iframe>
+      </div>
 
-    <div class="app">
-        <div style="display:flex;flex-direction:column;gap:.9rem;">
-
-            <!-- Player -->
-            <div class="card card-player">
-
-                <!-- Desktop video (hidden on mobile) -->
-                <div class="video-wrap">
-                    <div class="vid-placeholder" id="vid-placeholder">
-                        <div class="pulse-ring">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-                                <path d="M9 18V5l12-2v13" stroke="#1db954" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                                <circle cx="6" cy="18" r="3" stroke="#1db954" stroke-width="2" />
-                                <circle cx="18" cy="16" r="3" stroke="#1db954" stroke-width="2" />
-                            </svg>
-                        </div>
-                        <div style="text-align:center;">
-                            <div style="font-weight:700;font-size:.88rem;color:var(--text2);">Nothing playing yet</div>
-                            <div style="font-size:.68rem;margin-top:5px;color:var(--text3);">search a song and add it to
-                                the queue</div>
-                        </div>
-                    </div>
-                    <iframe id="yt-iframe" allowfullscreen
-                        allow="autoplay; encrypted-media; gyroscope; picture-in-picture"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-forms">
-                    </iframe>
-                </div>
-
-                <!-- Mobile Spotify-style player (hidden on desktop) -->
-                <div class="mob-spotify-player" id="mob-spotify-player">
-                    <img class="mob-album-art" id="mob-album-art" src="" onerror="this.style.opacity='0.2'" />
-                    <div id="mob-album-placeholder" class="mob-album-placeholder" style="display:none;">
-                        <svg width="60" height="60" viewBox="0 0 24 24" fill="none">
-                            <path d="M9 18V5l12-2v13" stroke="#1db954" stroke-width="1.5" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                            <circle cx="6" cy="18" r="3" stroke="#1db954" stroke-width="1.5" />
-                            <circle cx="18" cy="16" r="3" stroke="#1db954" stroke-width="1.5" />
-                        </svg>
-                    </div>
-                    <div class="mob-track-info">
-                        <div class="mob-track-text">
-                            <div class="mob-track-title" id="mob-track-title">Nothing playing</div>
-                            <div class="mob-track-channel" id="mob-track-channel">add a song below</div>
-                        </div>
-                        <button class="mob-like-btn" onclick="shareCurrentSong()">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round">
-                                <circle cx="18" cy="5" r="3" />
-                                <circle cx="6" cy="12" r="3" />
-                                <circle cx="18" cy="19" r="3" />
-                                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-                                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="mob-controls">
-                        <button class="mob-ctrl-svg" onclick="playPrev()">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" />
-                            </svg>
-                        </button>
-                        <button class="mob-play-svg" id="mob-play-svg-btn" onclick="togglePlayPause()">
-                            <svg id="mob-svg-play" width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M8 5v14l11-7z" />
-                            </svg>
-                            <svg id="mob-svg-pause" width="26" height="26" viewBox="0 0 24 24" fill="currentColor"
-                                style="display:none;">
-                                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-                            </svg>
-                        </button>
-                        <button class="mob-ctrl-svg" onclick="skipNext()">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M6 18l8.5-6L6 6v12zM16 6h2v12h-2z" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="now-playing-bar">
-                    <img class="np-thumb" id="np-thumb" src="" onerror="this.style.opacity='0.1'" />
-                    <div class="np-info">
-                        <div class="np-title-row">
-                            <div class="np-title" id="np-title">Nothing playing</div>
-                            <div class="eq-bars" id="eq-bars" style="display:none;">
-                                <div class="eq-bar" style="height:40%;"></div>
-                                <div class="eq-bar" style="height:100%;"></div>
-                                <div class="eq-bar" style="height:55%;"></div>
-                                <div class="eq-bar" style="height:80%;"></div>
-                            </div>
-                        </div>
-                        <div class="np-channel" id="np-channel">add a song from search below</div>
-                    </div>
-                    <div class="np-actions">
-                        <button class="icon-btn" title="Share song" onclick="shareCurrentSong()">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="18" cy="5" r="3" />
-                                <circle cx="6" cy="12" r="3" />
-                                <circle cx="18" cy="19" r="3" />
-                                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-                                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="controls-bar">
-                    <button class="ctrl-btn" onclick="playPrev()" title="Previous">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" />
-                        </svg>
-                    </button>
-                    <button class="ctrl-btn play-pause" id="play-pause-btn" onclick="togglePlayPause()">
-                        <svg id="pp-icon-play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M8 5v14l11-7z" />
-                        </svg>
-                        <svg id="pp-icon-pause" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"
-                            style="display:none;">
-                            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-                        </svg>
-                    </button>
-                    <button class="ctrl-btn" onclick="skipNext()" title="Next">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M6 18l8.5-6L6 6v12zm2-8.14L11.03 12 8 14.14V9.86zM16 6h2v12h-2z" />
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="reactions-bar">
-                    <span class="react-label">react</span>
-                    <button class="react-btn" onclick="sendReaction('🔥')">🔥 fire</button>
-                    <button class="react-btn" onclick="sendReaction('❤️')">❤️ love</button>
-                    <button class="react-btn" onclick="sendReaction('😭')">😭 feels</button>
-                    <button class="react-btn" onclick="sendReaction('🎉')">🎉 bop</button>
-                    <button class="react-btn" onclick="sendReaction('✨')">✨ vibe</button>
-                    <button class="react-btn" onclick="sendReaction('🤌')">🤌 chef</button>
-                </div>
-            </div>
-
-            <!-- Search -->
-            <div class="card card-search">
-                <div class="card-pad" style="padding-bottom:.75rem;">
-                    <div class="section-title">Find Music</div>
-                    <div class="search-tabs">
-                        <button class="s-tab active" onclick="setTab('search',this)">
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2.5" stroke-linecap="round"
-                                style="vertical-align:middle;margin-right:4px;">
-                                <circle cx="11" cy="11" r="8" />
-                                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                            </svg>Search
-                        </button>
-                        <button class="s-tab" onclick="setTab('url',this)">
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2.5" stroke-linecap="round"
-                                style="vertical-align:middle;margin-right:4px;">
-                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-                            </svg>Link
-                        </button>
-                    </div>
-                    <div id="tab-search">
-                        <div class="search-row">
-                            <input class="search-input" id="search-input" placeholder="song, artist, album…"
-                                oninput="onSearchInput()" onkeydown="if(event.key==='Enter')doSearch()" />
-                            <button class="search-btn" id="search-btn" onclick="doSearch()">
-                                <span id="search-btn-text">Search</span>
-                            </button>
-                        </div>
-                        <div class="results-list" id="results-list">
-                            <div class="search-empty">🎵 type to search songs</div>
-                        </div>
-                    </div>
-                    <div id="tab-url" style="display:none;">
-                        <div class="search-row">
-                            <input class="search-input" id="url-input" placeholder="https://youtube.com/watch?v=…"
-                                onkeydown="if(event.key==='Enter')addFromUrl()" />
-                            <button class="search-btn" onclick="addFromUrl()">Add</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <!-- Mobile Spotify-style player (hidden on desktop) -->
+      <div class="mob-spotify-player" id="mob-spotify-player">
+        <img class="mob-album-art" id="mob-album-art" src="" onerror="this.style.opacity='0.2'" />
+        <div id="mob-album-placeholder" class="mob-album-placeholder" style="display:none;">
+          <svg width="60" height="60" viewBox="0 0 24 24" fill="none">
+            <path d="M9 18V5l12-2v13" stroke="#1db954" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="6" cy="18" r="3" stroke="#1db954" stroke-width="1.5"/>
+            <circle cx="18" cy="16" r="3" stroke="#1db954" stroke-width="1.5"/>
+          </svg>
         </div>
-
-        <div class="sidebar">
-            <div class="card card-room">
-                <div class="card-pad">
-                    <div class="section-title">The Room</div>
-                    <div class="user-row">
-                        <div class="avatar avatar-you" style="position:relative;"><span id="my-avatar-letter">Y</span>
-                            <div class="online-ring on"></div>
-                        </div>
-                        <div style="flex:1;min-width:0;">
-                            <div class="user-name" id="my-name" onclick="changeName()">You</div>
-                            <div class="user-status">tap to edit name</div>
-                        </div>
-                    </div>
-                    <div class="user-row">
-                        <div class="avatar avatar-them" style="position:relative;"><span
-                                id="friend-avatar-letter">F</span>
-                            <div class="online-ring" id="friend-ring"></div>
-                        </div>
-                        <div style="flex:1;min-width:0;">
-                            <div class="user-name" id="friend-name">Your friend</div>
-                            <div class="user-status" id="friend-state">not here yet</div>
-                        </div>
-                    </div>
-                    <div class="share-box">
-                        <div class="share-text" id="share-link-text">click "+ Invite" to get a link</div>
-                        <button class="copy-btn" onclick="copyShareLink()">copy</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card card-queue">
-                <div class="queue-header">
-                    <div class="section-title" style="margin:0;">Queue <span class="sync-badge">⚡ live</span></div>
-                    <button class="clear-btn" onclick="clearQueue()">clear all</button>
-                </div>
-                <div class="queue-list" id="queue-list">
-                    <div class="queue-empty">nothing queued yet ♪</div>
-                </div>
-            </div>
-
-            <div class="card card-chat">
-                <div style="padding:1.1rem 1.1rem .7rem;">
-                    <div class="section-title">Chat <span class="sync-badge">⚡ live</span></div>
-                </div>
-                <div class="chat-body">
-                    <div class="chat-messages" id="chat-messages"></div>
-                    <div class="chat-row">
-                        <input class="chat-input" id="chat-input" placeholder="say something…"
-                            onkeydown="if(event.key==='Enter')sendMsg()" />
-                        <button class="send-btn" onclick="sendMsg()">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
+        <div class="mob-track-info">
+          <div class="mob-track-text">
+            <div class="mob-track-title" id="mob-track-title">Nothing playing</div>
+            <div class="mob-track-channel" id="mob-track-channel">add a song below</div>
+          </div>
+          <button class="mob-like-btn" onclick="shareCurrentSong()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          </button>
         </div>
+        <div class="mob-controls">
+          <button class="mob-ctrl-svg" onclick="playPrev()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+          </button>
+          <button class="mob-play-svg" id="mob-play-svg-btn" onclick="togglePlayPause()">
+            <svg id="mob-svg-play" width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            <svg id="mob-svg-pause" width="26" height="26" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+          </button>
+          <button class="mob-ctrl-svg" onclick="skipNext()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6h2v12h-2z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="now-playing-bar">
+        <img class="np-thumb" id="np-thumb" src="" onerror="this.style.opacity='0.1'" />
+        <div class="np-info">
+          <div class="np-title-row">
+            <div class="np-title" id="np-title">Nothing playing</div>
+            <div class="eq-bars" id="eq-bars" style="display:none;">
+              <div class="eq-bar" style="height:40%;"></div>
+              <div class="eq-bar" style="height:100%;"></div>
+              <div class="eq-bar" style="height:55%;"></div>
+              <div class="eq-bar" style="height:80%;"></div>
+            </div>
+          </div>
+          <div class="np-channel" id="np-channel">add a song from search below</div>
+        </div>
+        <div class="np-actions">
+          <button class="icon-btn" title="Share song" onclick="shareCurrentSong()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="controls-bar">
+        <button class="ctrl-btn" onclick="playPrev()" title="Previous">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+        </button>
+        <button class="ctrl-btn play-pause" id="play-pause-btn" onclick="togglePlayPause()">
+          <svg id="pp-icon-play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <svg id="pp-icon-pause" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+        </button>
+        <button class="ctrl-btn" onclick="skipNext()" title="Next">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zm2-8.14L11.03 12 8 14.14V9.86zM16 6h2v12h-2z"/></svg>
+        </button>
+      </div>
+
+      <div class="reactions-bar">
+        <span class="react-label">react</span>
+        <button class="react-btn" onclick="sendReaction('🔥')">🔥 fire</button>
+        <button class="react-btn" onclick="sendReaction('❤️')">❤️ love</button>
+        <button class="react-btn" onclick="sendReaction('😭')">😭 feels</button>
+        <button class="react-btn" onclick="sendReaction('🎉')">🎉 bop</button>
+        <button class="react-btn" onclick="sendReaction('✨')">✨ vibe</button>
+        <button class="react-btn" onclick="sendReaction('🤌')">🤌 chef</button>
+      </div>
     </div>
 
-    <!-- Mobile bar -->
-    <div class="mob-bar">
-        <img class="mob-thumb" id="mob-thumb" src="" onerror="this.style.opacity='0.1'" />
-        <div class="mob-info">
-            <div class="mob-title" id="mob-title">Nothing playing</div>
-            <div class="mob-ch" id="mob-ch">add a song above</div>
+    <!-- Search -->
+    <div class="card card-search">
+      <div class="card-pad" style="padding-bottom:.75rem;">
+        <div class="section-title">Find Music</div>
+        <div class="search-tabs">
+          <button class="s-tab active" onclick="setTab('search',this)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:middle;margin-right:4px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Search
+          </button>
+          <button class="s-tab" onclick="setTab('url',this)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:middle;margin-right:4px;"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Link
+          </button>
         </div>
-        <div class="mob-actions">
-            <button class="mob-ctrl" onclick="playPrev()">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" />
-                </svg>
+        <div id="tab-search">
+          <div class="search-row">
+            <input class="search-input" id="search-input" placeholder="song, artist, album…"
+              oninput="onSearchInput()" onkeydown="if(event.key==='Enter')doSearch()"/>
+            <button class="search-btn" id="search-btn" onclick="doSearch()">
+              <span id="search-btn-text">Search</span>
             </button>
-            <button class="mob-ctrl play" id="mob-play-btn" onclick="togglePlayPause()">
-                <svg id="mob-icon-play" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M8 5v14l11-7z" />
-                </svg>
-                <svg id="mob-icon-pause" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"
-                    style="display:none;">
-                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-                </svg>
-            </button>
-            <button class="mob-ctrl" onclick="skipNext()">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M6 18l8.5-6L6 6v12zM16 6h2v12h-2z" />
-                </svg>
-            </button>
-            <button class="mob-ctrl" onclick="sendReaction('🔥')">🔥</button>
+          </div>
+          <div class="results-list" id="results-list">
+            <div class="search-empty">🎵 type to search songs</div>
+          </div>
         </div>
+        <div id="tab-url" style="display:none;">
+          <div class="search-row">
+            <input class="search-input" id="url-input" placeholder="https://youtube.com/watch?v=…"
+              onkeydown="if(event.key==='Enter')addFromUrl()"/>
+            <button class="search-btn" onclick="addFromUrl()">Add</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar">
+    <div class="card card-room">
+      <div class="card-pad">
+        <div class="section-title">The Room</div>
+        <div class="user-row">
+          <div class="avatar avatar-you" style="position:relative;"><span id="my-avatar-letter">Y</span><div class="online-ring on"></div></div>
+          <div style="flex:1;min-width:0;"><div class="user-name" id="my-name" onclick="changeName()">You</div><div class="user-status">tap to edit name</div></div>
+        </div>
+        <div class="user-row">
+          <div class="avatar avatar-them" style="position:relative;"><span id="friend-avatar-letter">F</span><div class="online-ring" id="friend-ring"></div></div>
+          <div style="flex:1;min-width:0;"><div class="user-name" id="friend-name">Your friend</div><div class="user-status" id="friend-state">not here yet</div></div>
+        </div>
+        <div class="share-box">
+          <div class="share-text" id="share-link-text">click "+ Invite" to get a link</div>
+          <button class="copy-btn" onclick="copyShareLink()">copy</button>
+        </div>
+      </div>
     </div>
 
-    <div id="toast"></div>
+    <div class="card card-queue">
+      <div class="queue-header">
+        <div class="section-title" style="margin:0;">Queue <span class="sync-badge">⚡ live</span></div>
+        <button class="clear-btn" onclick="clearQueue()">clear all</button>
+      </div>
+      <div class="queue-list" id="queue-list"><div class="queue-empty">nothing queued yet ♪</div></div>
+    </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getDatabase, ref, set, push, remove, onValue, onDisconnect, serverTimestamp }
-            from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+    <div class="card card-chat">
+      <div style="padding:1.1rem 1.1rem .7rem;"><div class="section-title">Chat <span class="sync-badge">⚡ live</span></div></div>
+      <div class="chat-body">
+        <div class="chat-messages" id="chat-messages"></div>
+        <div class="chat-row">
+          <input class="chat-input" id="chat-input" placeholder="say something…" onkeydown="if(event.key==='Enter')sendMsg()"/>
+          <button class="send-btn" onclick="sendMsg()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-        /* ── CONFIG ── */
-        const YT_KEY = 'AIzaSyAy5Lo0jp8eipVgjBSeUh0Z2p2Jnye7Jz0';
-        const db = getDatabase(initializeApp({
-            apiKey: "AIzaSyBTP9LLpbHUD9IgPhxoGEtnEVNrq29ZD_Y",
-            authDomain: "bobotunes-e2eaa.firebaseapp.com",
-            databaseURL: "https://bobotunes-e2eaa-default-rtdb.firebaseio.com",
-            projectId: "bobotunes-e2eaa",
-            storageBucket: "bobotunes-e2eaa.firebasestorage.app",
-            messagingSenderId: "204304527499",
-            appId: "1:204304527499:web:bf80e706fe4bee3139a48e"
-        }));
+<!-- Mobile bar -->
+<div class="mob-bar">
+  <img class="mob-thumb" id="mob-thumb" src="" onerror="this.style.opacity='0.1'"/>
+  <div class="mob-info">
+    <div class="mob-title" id="mob-title">Nothing playing</div>
+    <div class="mob-ch" id="mob-ch">add a song above</div>
+  </div>
+  <div class="mob-actions">
+    <button class="mob-ctrl" onclick="playPrev()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+    </button>
+    <button class="mob-ctrl play" id="mob-play-btn" onclick="togglePlayPause()">
+      <svg id="mob-icon-play" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      <svg id="mob-icon-pause" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+    </button>
+    <button class="mob-ctrl" onclick="skipNext()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6h2v12h-2z"/></svg>
+    </button>
+    <button class="mob-ctrl" onclick="sendReaction('🔥')">🔥</button>
+  </div>
+</div>
 
-        /* ── IDENTITY ── */
-        if (!localStorage.getItem('bt_uid'))
-            localStorage.setItem('bt_uid', Math.random().toString(36).slice(2, 12));
-        const MY_ID = localStorage.getItem('bt_uid');
-        const myName = () => localStorage.getItem('bt_name') || 'You';
+<div id="toast"></div>
 
-        // Persistent room — always the same room for this device pair
-        if (!localStorage.getItem('bt_room'))
-            localStorage.setItem('bt_room', Math.random().toString(36).slice(2, 7).toUpperCase());
-        const PERSISTENT_ROOM = localStorage.getItem('bt_room');
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, push, remove, onValue, onDisconnect, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-        /* ── STATE ── */
-        let roomId = null;
-        let localQueue = [];
-        let currentIdx = -1;
-        let isPlaying = false;
-        let currentVid = null;
-        let searchTimer = null;
-        let seenMsgKeys = new Set();
-        let seenRxnKeys = new Set();
+/* ── CONFIG ── */
+const YT_KEY = 'AIzaSyAy5Lo0jp8eipVgjBSeUh0Z2p2Jnye7Jz0';
+const db = getDatabase(initializeApp({
+  apiKey:"AIzaSyBTP9LLpbHUD9IgPhxoGEtnEVNrq29ZD_Y",
+  authDomain:"bobotunes-e2eaa.firebaseapp.com",
+  databaseURL:"https://bobotunes-e2eaa-default-rtdb.firebaseio.com",
+  projectId:"bobotunes-e2eaa",
+  storageBucket:"bobotunes-e2eaa.firebasestorage.app",
+  messagingSenderId:"204304527499",
+  appId:"1:204304527499:web:bf80e706fe4bee3139a48e"
+}));
 
-        /* ── HELPERS ── */
-        const rref = p => ref(db, `rooms/${roomId}/${p}`);
-        const esc = s => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+/* ── IDENTITY ── */
+if (!localStorage.getItem('bt_uid'))
+  localStorage.setItem('bt_uid', Math.random().toString(36).slice(2,12));
+const MY_ID  = localStorage.getItem('bt_uid');
+const myName = () => localStorage.getItem('bt_name') || 'You';
 
-        // On mobile, move the iframe to a hidden container so it doesn't affect layout
-        if (window.innerWidth <= 800) {
-            const hiddenDiv = document.createElement('div');
-            hiddenDiv.style.cssText = 'position:fixed;width:1px;height:1px;top:-9999px;left:-9999px;overflow:hidden;opacity:0;pointer-events:none;z-index:-1;';
-            hiddenDiv.id = 'yt-hidden-container';
-            document.body.appendChild(hiddenDiv);
-            const iframe = document.getElementById('yt-iframe');
-            hiddenDiv.appendChild(iframe);
-        }
+// Persistent room — always the same room for this device pair
+if (!localStorage.getItem('bt_room'))
+  localStorage.setItem('bt_room', Math.random().toString(36).slice(2,7).toUpperCase());
+const PERSISTENT_ROOM = localStorage.getItem('bt_room');
 
-        window.toast = msg => {
-            const el = document.getElementById('toast');
-            el.textContent = msg; el.classList.add('show');
-            clearTimeout(window._tt);
-            window._tt = setTimeout(() => el.classList.remove('show'), 2800);
-        };
+/* ── STATE ── */
+let roomId      = null;
+let localQueue  = [];
+let currentIdx  = -1;
+let isPlaying   = false;
+let currentVid  = null;
+let searchTimer = null;
+let seenMsgKeys = new Set();
+let seenRxnKeys = new Set();
 
-        /* ── IFRAME PLAYER ── */
-        // Simple, reliable: set iframe src directly. autoplay=1 starts playing.
-        // Pause = reload src without autoplay. Resume = reload with autoplay=1.
-        // This always works regardless of browser/platform.
+/* ── HELPERS ── */
+const rref  = p => ref(db, `rooms/${roomId}/${p}`);
+const esc   = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
-        function buildSrc(vid) {
-            return `https://www.youtube.com/embed/${vid}?autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1`;
-        }
+// On mobile, move the iframe to a hidden container so it doesn't affect layout
+if (window.innerWidth <= 800) {
+  // On mobile: remove the visible iframe entirely and replace with
+  // a truly isolated hidden one that cannot affect layout
+  const visibleIframe = document.getElementById('yt-iframe');
+  visibleIframe.remove(); // remove from DOM completely
 
-        function loadIframe(vid, play = true) {
-            const iframe = document.getElementById('yt-iframe');
-            if (!currentVid || currentVid !== vid) {
-                iframe.src = buildSrc(vid);
-                // Only show iframe visually on desktop
-                if (window.innerWidth > 800) {
-                    iframe.style.display = 'block';
-                    document.getElementById('vid-placeholder').style.display = 'none';
-                }
-            }
-            currentVid = vid;
-            setTimeout(() => {
-                try {
-                    const cmd = play ? '{"event":"command","func":"playVideo","args":""}' : '{"event":"command","func":"pauseVideo","args":""}';
-                    iframe.contentWindow.postMessage(cmd, '*');
-                } catch (e) { }
-            }, 400);
-            setPlaying(play);
-        }
+  const hiddenIframe = document.createElement('iframe');
+  hiddenIframe.id = 'yt-iframe';
+  hiddenIframe.style.cssText = 'position:fixed;width:0;height:0;top:0;left:0;border:none;opacity:0;pointer-events:none;';
+  hiddenIframe.setAttribute('allow', 'autoplay; encrypted-media');
+  hiddenIframe.setAttribute('allowfullscreen', '');
+  document.body.appendChild(hiddenIframe);
+}
 
-        function clearIframe() {
-            const iframe = document.getElementById('yt-iframe');
-            iframe.src = ''; iframe.style.display = 'none';
-            document.getElementById('vid-placeholder').style.display = 'flex';
-            currentVid = null; setPlaying(false);
-        }
+window.toast = msg => {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  clearTimeout(window._tt);
+  window._tt = setTimeout(() => el.classList.remove('show'), 2800);
+};
 
-        function setPlaying(p) {
-            isPlaying = p;
-            // Desktop icons
-            document.getElementById('pp-icon-play').style.display = p ? 'none' : 'block';
-            document.getElementById('pp-icon-pause').style.display = p ? 'block' : 'none';
-            // Mobile bottom bar icons
-            document.getElementById('mob-icon-play').style.display = p ? 'none' : 'block';
-            document.getElementById('mob-icon-pause').style.display = p ? 'block' : 'none';
-            // Mobile spotify player icons
-            document.getElementById('mob-svg-play').style.display = p ? 'none' : 'block';
-            document.getElementById('mob-svg-pause').style.display = p ? 'block' : 'none';
-            // EQ bars
-            document.getElementById('eq-bars').style.display = p ? 'flex' : 'none';
-        }
+/* ── IFRAME PLAYER ── */
+// Simple, reliable: set iframe src directly. autoplay=1 starts playing.
+// Pause = reload src without autoplay. Resume = reload with autoplay=1.
+// This always works regardless of browser/platform.
 
-        function updateNowPlaying(item) {
-            // Desktop
-            document.getElementById('np-title').textContent = item ? item.title : 'Nothing playing';
-            document.getElementById('np-channel').textContent = item ? item.channel || '' : 'add a song from search below';
-            const t = document.getElementById('np-thumb');
-            t.src = item ? item.thumb : ''; t.style.opacity = item ? '1' : '0.1';
-            // Mobile bar
-            document.getElementById('mob-title').textContent = item ? item.title : 'Nothing playing';
-            document.getElementById('mob-ch').textContent = item ? item.channel || '' : '';
-            const m = document.getElementById('mob-thumb');
-            m.src = item ? item.thumb : ''; m.style.opacity = item ? '1' : '0.1';
-            // Mobile spotify player
-            document.getElementById('mob-track-title').textContent = item ? item.title : 'Nothing playing';
-            document.getElementById('mob-track-channel').textContent = item ? item.channel || '' : 'add a song below';
-            const art = document.getElementById('mob-album-art');
-            const ph = document.getElementById('mob-album-placeholder');
-            if (item && item.thumb) {
-                art.src = item.thumb; art.style.display = 'block'; art.style.opacity = '1';
-                ph.style.display = 'none';
-            } else {
-                art.style.display = 'none'; ph.style.display = 'flex';
-            }
-        }
+function buildSrc(vid) {
+  return `https://www.youtube.com/embed/${vid}?autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1`;
+}
 
-        /* ── TOGGLE PLAY/PAUSE ── */
-        window.togglePlayPause = function () {
-            if (!currentVid) return;
-            const newPlaying = !isPlaying;
-            loadIframe(currentVid, newPlaying);
-            // Sync to Firebase
-            if (roomId) {
-                set(rref('playback/state'), { playing: newPlaying, vid: currentVid, by: MY_ID, ts: Date.now() });
-            }
-        };
+function loadIframe(vid, play=true) {
+  const iframe = document.getElementById('yt-iframe');
+  const isMobile = window.innerWidth <= 800;
+  if (!currentVid || currentVid !== vid) {
+    iframe.src = buildSrc(vid);
+    if (!isMobile) {
+      iframe.style.display = 'block';
+      document.getElementById('vid-placeholder').style.display = 'none';
+    }
+  }
+  currentVid = vid;
+  setTimeout(() => {
+    try {
+      const cmd = play
+        ? '{"event":"command","func":"playVideo","args":""}'
+        : '{"event":"command","func":"pauseVideo","args":""}';
+      iframe.contentWindow.postMessage(cmd, '*');
+    } catch(e) {}
+  }, 400);
+  setPlaying(play);
+}
 
-        /* ── INIT ── */
-        document.getElementById('my-name').textContent = myName();
-        document.getElementById('my-avatar-letter').textContent = myName()[0].toUpperCase();
+function clearIframe() {
+  const iframe = document.getElementById('yt-iframe');
+  iframe.src = '';
+  if (window.innerWidth > 800) {
+    iframe.style.display = 'none';
+    document.getElementById('vid-placeholder').style.display = 'flex';
+  }
+  currentVid = null;
+  setPlaying(false);
+}
 
-        const params = new URLSearchParams(location.search);
-        const paramRoom = params.get('room');
-        const paramVid = params.get('v');
+function setPlaying(p) {
+  isPlaying = p;
+  // Desktop icons
+  document.getElementById('pp-icon-play').style.display  = p ? 'none' : 'block';
+  document.getElementById('pp-icon-pause').style.display = p ? 'block' : 'none';
+  // Mobile bottom bar icons
+  document.getElementById('mob-icon-play').style.display  = p ? 'none' : 'block';
+  document.getElementById('mob-icon-pause').style.display = p ? 'block' : 'none';
+  // Mobile spotify player icons
+  document.getElementById('mob-svg-play').style.display  = p ? 'none' : 'block';
+  document.getElementById('mob-svg-pause').style.display = p ? 'block' : 'none';
+  // EQ bars
+  document.getElementById('eq-bars').style.display = p ? 'flex' : 'none';
+}
 
-        // Always enter the persistent room (or the one from URL)
-        const roomToJoin = paramRoom || PERSISTENT_ROOM;
-        enterRoom(roomToJoin);
-        // Update URL to reflect the room
-        if (!paramRoom) history.replaceState({}, '', `?room=${roomToJoin}`);
+function updateNowPlaying(item) {
+  // Desktop
+  document.getElementById('np-title').textContent   = item ? item.title   : 'Nothing playing';
+  document.getElementById('np-channel').textContent = item ? item.channel||'' : 'add a song from search below';
+  const t = document.getElementById('np-thumb');
+  t.src = item?item.thumb:''; t.style.opacity = item?'1':'0.1';
+  // Mobile bar
+  document.getElementById('mob-title').textContent = item?item.title:'Nothing playing';
+  document.getElementById('mob-ch').textContent    = item?item.channel||'':'';
+  const m = document.getElementById('mob-thumb');
+  m.src = item?item.thumb:''; m.style.opacity = item?'1':'0.1';
+  // Mobile spotify player
+  document.getElementById('mob-track-title').textContent   = item?item.title:'Nothing playing';
+  document.getElementById('mob-track-channel').textContent = item?item.channel||'':'add a song below';
+  const art = document.getElementById('mob-album-art');
+  const ph  = document.getElementById('mob-album-placeholder');
+  if (item && item.thumb) {
+    art.src = item.thumb; art.style.display='block'; art.style.opacity='1';
+    ph.style.display='none';
+  } else {
+    art.style.display='none'; ph.style.display='flex';
+  }
+}
 
-        if (paramVid) setTimeout(async () => {
-            const item = await fetchVideoDetails(paramVid);
-            if (item) addItemToQueue(item);
-        }, 1200);
+/* ── TOGGLE PLAY/PAUSE ── */
+window.togglePlayPause = function() {
+  if (!currentVid) return;
+  const newPlaying = !isPlaying;
+  loadIframe(currentVid, newPlaying);
+  // Sync to Firebase
+  if (roomId) {
+    set(rref('playback/state'), { playing: newPlaying, vid: currentVid, by: MY_ID, ts: Date.now() });
+  }
+};
 
-        /* ── ROOM ── */
-        window.openRoom = function () {
-            // Always use the same persistent room link
-            const link = `${location.origin}${location.pathname}?room=${roomId}`;
-            document.getElementById('share-link-text').textContent = link;
-            navigator.clipboard.writeText(link).catch(() => { });
-            toast('🔗 Room link copied — send to your friend!');
-        };
+/* ── INIT ── */
+document.getElementById('my-name').textContent          = myName();
+document.getElementById('my-avatar-letter').textContent = myName()[0].toUpperCase();
 
-        function enterRoom(id) {
-            roomId = id;
-            document.getElementById('conn-dot').classList.add('live');
-            document.getElementById('conn-label').textContent = 'room ' + id;
-            document.getElementById('share-link-text').textContent =
-                `${location.origin}${location.pathname}?room=${id}`;
+const params    = new URLSearchParams(location.search);
+const paramRoom = params.get('room');
+const paramVid  = params.get('v');
 
-            // Presence
-            const presRef = ref(db, `rooms/${roomId}/presence/${MY_ID}`);
-            set(presRef, { name: myName(), online: true, ts: serverTimestamp() });
-            onDisconnect(presRef).remove();
+// Always enter the persistent room (or the one from URL)
+const roomToJoin = paramRoom || PERSISTENT_ROOM;
+enterRoom(roomToJoin);
+// Update URL to reflect the room
+if (!paramRoom) history.replaceState({}, '', `?room=${roomToJoin}`);
 
-            // ── Presence listener ──
-            onValue(ref(db, `rooms/${roomId}/presence`), snap => {
-                const data = snap.val() || {};
-                const others = Object.entries(data).filter(([k]) => k !== MY_ID);
-                if (others.length > 0) {
-                    const fname = others[0][1].name || 'Friend';
-                    document.getElementById('friend-name').textContent = fname;
-                    document.getElementById('friend-avatar-letter').textContent = fname[0].toUpperCase();
-                    document.getElementById('friend-ring').classList.add('on');
-                    document.getElementById('friend-state').textContent = '● online';
-                } else {
-                    document.getElementById('friend-ring').classList.remove('on');
-                    document.getElementById('friend-state').textContent = 'not here yet';
-                }
-            });
+if (paramVid) setTimeout(async () => {
+  const item = await fetchVideoDetails(paramVid);
+  if (item) addItemToQueue(item);
+}, 1200);
 
-            // ── Queue listener ──
-            onValue(ref(db, `rooms/${roomId}/queue`), snap => {
-                const raw = snap.val() || {};
-                localQueue = Object.entries(raw).map(([k, v]) => ({ ...v, _key: k }));
-                renderQueue();
-            });
+/* ── ROOM ── */
+window.openRoom = function() {
+  // Always use the same persistent room link
+  const link = `${location.origin}${location.pathname}?room=${roomId}`;
+  document.getElementById('share-link-text').textContent = link;
+  navigator.clipboard.writeText(link).catch(()=>{});
+  toast('🔗 Room link copied — send to your friend!');
+};
 
-            // ── Playback current video listener ──
-            onValue(rref('playback/current'), snap => {
-                if (!snap.val()) return;
-                const { idx, vid, title, channel, thumb } = snap.val();
-                currentIdx = typeof idx === 'number' ? idx : -1;
-                updateNowPlaying({ vid, title, channel, thumb });
-                renderQueue();
-                // Load video for BOTH users (it starts playing via autoplay=1)
-                loadIframe(vid, true);
-            });
+function enterRoom(id) {
+  roomId = id;
+  document.getElementById('conn-dot').classList.add('live');
+  document.getElementById('conn-label').textContent = 'room '+id;
+  document.getElementById('share-link-text').textContent =
+    `${location.origin}${location.pathname}?room=${id}`;
 
-            // ── Play/pause state listener ──
-            onValue(rref('playback/state'), snap => {
-                if (!snap.val()) return;
-                const { playing, vid, by } = snap.val();
-                if (by === MY_ID) return; // ignore own events — already applied locally
-                if (!vid) return;
-                loadIframe(vid, playing);
-            });
+  // Presence
+  const presRef = ref(db, `rooms/${roomId}/presence/${MY_ID}`);
+  set(presRef, { name: myName(), online: true, ts: serverTimestamp() });
+  onDisconnect(presRef).remove();
 
-            // ── Reactions listener ──
-            onValue(rref('reactions'), snap => {
-                if (!snap.val()) return;
-                Object.entries(snap.val()).forEach(([key, rx]) => {
-                    if (seenRxnKeys.has(key)) return;
-                    seenRxnKeys.add(key);
-                    if (rx.by !== MY_ID && Date.now() - rx.ts < 5000)
-                        for (let i = 0; i < 4; i++) setTimeout(() => spawnEmoji(rx.emoji), i * 120);
-                });
-            });
+  // ── Presence listener ──
+  onValue(ref(db,`rooms/${roomId}/presence`), snap => {
+    const data   = snap.val()||{};
+    const others = Object.entries(data).filter(([k])=>k!==MY_ID);
+    if (others.length > 0) {
+      const fname = others[0][1].name || 'Friend';
+      document.getElementById('friend-name').textContent          = fname;
+      document.getElementById('friend-avatar-letter').textContent = fname[0].toUpperCase();
+      document.getElementById('friend-ring').classList.add('on');
+      document.getElementById('friend-state').textContent = '● online';
+    } else {
+      document.getElementById('friend-ring').classList.remove('on');
+      document.getElementById('friend-state').textContent = 'not here yet';
+    }
+  });
 
-            // ── Chat listener ──
-            onValue(rref('chat'), snap => {
-                if (!snap.val()) return;
-                Object.entries(snap.val()).forEach(([key, msg]) => {
-                    if (seenMsgKeys.has(key)) return;
-                    seenMsgKeys.add(key);
-                    appendBubble(msg.text, msg.uid === MY_ID, msg.name, msg.ts);
-                });
-            });
-        }
+  // ── Queue listener ──
+  onValue(ref(db,`rooms/${roomId}/queue`), snap => {
+    const raw = snap.val()||{};
+    localQueue = Object.entries(raw).map(([k,v])=>({...v,_key:k}));
+    renderQueue();
+  });
 
-        /* ── PLAYBACK ── */
-        function playIdx(i) {
-            if (i < 0 || i >= localQueue.length) return;
-            currentIdx = i;
-            const item = localQueue[i];
-            updateNowPlaying(item);
-            loadIframe(item.vid, true);
-            renderQueue();
-            // Sync to Firebase
-            if (roomId) {
-                set(rref('playback/current'), {
-                    idx: i, vid: item.vid,
-                    title: item.title, channel: item.channel || '', thumb: item.thumb,
-                    by: MY_ID, ts: Date.now()
-                });
-                // Also set state to playing
-                set(rref('playback/state'), { playing: true, vid: item.vid, by: MY_ID, ts: Date.now() });
-            }
-        }
+  // ── Playback current video listener ──
+  onValue(rref('playback/current'), snap => {
+    if (!snap.val()) return;
+    const { idx, vid, title, channel, thumb } = snap.val();
+    currentIdx = typeof idx==='number' ? idx : -1;
+    updateNowPlaying({ vid, title, channel, thumb });
+    renderQueue();
+    // Load video for BOTH users (it starts playing via autoplay=1)
+    loadIframe(vid, true);
+  });
 
-        window.skipNext = function () {
-            if (currentIdx < localQueue.length - 1) playIdx(currentIdx + 1);
-            else toast('🎵 End of queue');
-        };
+  // ── Play/pause state listener ──
+  onValue(rref('playback/state'), snap => {
+    if (!snap.val()) return;
+    const { playing, vid, by } = snap.val();
+    if (by === MY_ID) return; // ignore own events — already applied locally
+    if (!vid) return;
+    loadIframe(vid, playing);
+  });
 
-        window.playPrev = function () {
-            if (currentIdx > 0) playIdx(currentIdx - 1);
-        };
+  // ── Reactions listener ──
+  onValue(rref('reactions'), snap => {
+    if (!snap.val()) return;
+    Object.entries(snap.val()).forEach(([key, rx]) => {
+      if (seenRxnKeys.has(key)) return;
+      seenRxnKeys.add(key);
+      if (rx.by !== MY_ID && Date.now()-rx.ts < 5000)
+        for(let i=0;i<4;i++) setTimeout(()=>spawnEmoji(rx.emoji),i*120);
+    });
+  });
 
-        /* ── QUEUE ── */
-        function addItemToQueue(item) {
-            if (!roomId) {
-                localQueue.push({ ...item, _key: Date.now().toString() });
-                renderQueue();
-                if (currentIdx < 0) playIdx(0);
-                else toast(`Added: ${item.title.slice(0, 36)}…`);
-                return;
-            }
-            push(rref('queue'), { vid: item.vid, title: item.title, channel: item.channel || '', thumb: item.thumb });
-            toast(`Added: ${item.title.slice(0, 36)}…`);
-            // Auto-play first song
-            if (currentIdx < 0) setTimeout(() => { if (localQueue.length > 0 && currentIdx < 0) playIdx(0); }, 900);
-        }
+  // ── Chat listener ──
+  onValue(rref('chat'), snap => {
+    if (!snap.val()) return;
+    Object.entries(snap.val()).forEach(([key, msg]) => {
+      if (seenMsgKeys.has(key)) return;
+      seenMsgKeys.add(key);
+      appendBubble(msg.text, msg.uid===MY_ID, msg.name, msg.ts);
+    });
+  });
+}
 
-        function renderQueue() {
-            const list = document.getElementById('queue-list');
-            if (!localQueue.length) { list.innerHTML = '<div class="queue-empty">nothing queued yet ♪</div>'; return; }
-            list.innerHTML = '';
-            localQueue.forEach((item, i) => {
-                const el = document.createElement('div');
-                el.className = 'q-item' + (i === currentIdx ? ' playing' : '');
-                el.innerHTML = `
-      <div class="q-num">${i === currentIdx ? '▶' : i + 1}</div>
+/* ── PLAYBACK ── */
+function playIdx(i) {
+  if (i < 0 || i >= localQueue.length) return;
+  currentIdx = i;
+  const item = localQueue[i];
+  updateNowPlaying(item);
+  loadIframe(item.vid, true);
+  renderQueue();
+  // Sync to Firebase
+  if (roomId) {
+    set(rref('playback/current'), {
+      idx: i, vid: item.vid,
+      title: item.title, channel: item.channel||'', thumb: item.thumb,
+      by: MY_ID, ts: Date.now()
+    });
+    // Also set state to playing
+    set(rref('playback/state'), { playing: true, vid: item.vid, by: MY_ID, ts: Date.now() });
+  }
+}
+
+window.skipNext = function() {
+  if (currentIdx < localQueue.length-1) playIdx(currentIdx+1);
+  else toast('🎵 End of queue');
+};
+
+window.playPrev = function() {
+  if (currentIdx > 0) playIdx(currentIdx-1);
+};
+
+/* ── QUEUE ── */
+function addItemToQueue(item) {
+  if (!roomId) {
+    localQueue.push({...item, _key: Date.now().toString()});
+    renderQueue();
+    if (currentIdx < 0) playIdx(0);
+    else toast(`Added: ${item.title.slice(0,36)}…`);
+    return;
+  }
+  push(rref('queue'), { vid:item.vid, title:item.title, channel:item.channel||'', thumb:item.thumb });
+  toast(`Added: ${item.title.slice(0,36)}…`);
+  // Auto-play first song
+  if (currentIdx < 0) setTimeout(() => { if(localQueue.length>0 && currentIdx<0) playIdx(0); }, 900);
+}
+
+function renderQueue() {
+  const list = document.getElementById('queue-list');
+  if (!localQueue.length) { list.innerHTML='<div class="queue-empty">nothing queued yet ♪</div>'; return; }
+  list.innerHTML='';
+  localQueue.forEach((item,i) => {
+    const el = document.createElement('div');
+    el.className = 'q-item'+(i===currentIdx?' playing':'');
+    el.innerHTML = `
+      <div class="q-num">${i===currentIdx?'▶':i+1}</div>
       <img class="q-thumb" src="${esc(item.thumb)}" onerror="this.style.opacity='0.1'" loading="lazy"/>
-      <div class="q-info"><div class="q-title">${esc(item.title)}</div><div class="q-ch">${esc(item.channel || '')}</div></div>
+      <div class="q-info"><div class="q-title">${esc(item.title)}</div><div class="q-ch">${esc(item.channel||'')}</div></div>
       <button class="q-del">✕</button>`;
-                el.querySelector('.q-del').addEventListener('click', e => { e.stopPropagation(); removeFromQueue(i, item._key); });
-                el.addEventListener('click', () => playIdx(i));
-                list.appendChild(el);
-            });
-        }
+    el.querySelector('.q-del').addEventListener('click', e => { e.stopPropagation(); removeFromQueue(i,item._key); });
+    el.addEventListener('click', () => playIdx(i));
+    list.appendChild(el);
+  });
+}
 
-        function removeFromQueue(i, key) {
-            if (!roomId) {
-                localQueue.splice(i, 1);
-                if (i === currentIdx) { currentIdx = -1; clearIframe(); updateNowPlaying(null); }
-                renderQueue(); return;
-            }
-            if (key) remove(ref(db, `rooms/${roomId}/queue/${key}`));
-        }
+function removeFromQueue(i, key) {
+  if (!roomId) {
+    localQueue.splice(i,1);
+    if(i===currentIdx){currentIdx=-1;clearIframe();updateNowPlaying(null);}
+    renderQueue(); return;
+  }
+  if (key) remove(ref(db,`rooms/${roomId}/queue/${key}`));
+}
 
-        window.clearQueue = function () {
-            if (!confirm('Clear the queue?')) return;
-            if (roomId) { remove(rref('queue')); remove(rref('playback')); }
-            localQueue = []; currentIdx = -1;
-            clearIframe(); updateNowPlaying(null); renderQueue();
-        };
+window.clearQueue = function() {
+  if (!confirm('Clear the queue?')) return;
+  if (roomId) { remove(rref('queue')); remove(rref('playback')); }
+  localQueue=[]; currentIdx=-1;
+  clearIframe(); updateNowPlaying(null); renderQueue();
+};
 
-        /* ── SEARCH ── */
-        window.onSearchInput = function () {
-            clearTimeout(searchTimer);
-            if (document.getElementById('search-input').value.trim().length >= 2)
-                searchTimer = setTimeout(doSearch, 500);
-        };
+/* ── SEARCH ── */
+window.onSearchInput = function() {
+  clearTimeout(searchTimer);
+  if (document.getElementById('search-input').value.trim().length >= 2)
+    searchTimer = setTimeout(doSearch, 500);
+};
 
-        window.doSearch = async function () {
-            const q = document.getElementById('search-input').value.trim(); if (!q) return;
-            const btn = document.getElementById('search-btn'), txt = document.getElementById('search-btn-text');
-            txt.innerHTML = '<span class="spinner"></span>'; btn.disabled = true;
-            try {
-                const res = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=${encodeURIComponent(q)}&type=video&key=${YT_KEY}`);
-                const data = await res.json();
-                if (data.error) { toast('API error: ' + data.error.message); return; }
-                renderResults((data.items || []).map(it => ({
-                    vid: it.id.videoId, title: it.snippet.title, channel: it.snippet.channelTitle,
-                    thumb: it.snippet.thumbnails?.medium?.url || it.snippet.thumbnails?.default?.url || ''
-                })));
-            } catch (e) { toast('Search failed'); console.error(e); }
-            finally { txt.textContent = 'Search'; btn.disabled = false; }
-        };
+window.doSearch = async function() {
+  const q = document.getElementById('search-input').value.trim(); if (!q) return;
+  const btn=document.getElementById('search-btn'), txt=document.getElementById('search-btn-text');
+  txt.innerHTML='<span class="spinner"></span>'; btn.disabled=true;
+  try {
+    const res  = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=${encodeURIComponent(q)}&type=video&key=${YT_KEY}`);
+    const data = await res.json();
+    if (data.error) { toast('API error: '+data.error.message); return; }
+    renderResults((data.items||[]).map(it=>({
+      vid:it.id.videoId, title:it.snippet.title, channel:it.snippet.channelTitle,
+      thumb:it.snippet.thumbnails?.medium?.url||it.snippet.thumbnails?.default?.url||''
+    })));
+  } catch(e) { toast('Search failed'); console.error(e); }
+  finally { txt.textContent='Search'; btn.disabled=false; }
+};
 
-        function renderResults(items) {
-            const list = document.getElementById('results-list');
-            if (!items.length) { list.innerHTML = '<div class="search-empty">no results found</div>'; return; }
-            list.innerHTML = '';
-            items.forEach(item => {
-                const el = document.createElement('div'); el.className = 'result-item';
-                el.innerHTML = `
+function renderResults(items) {
+  const list=document.getElementById('results-list');
+  if (!items.length) { list.innerHTML='<div class="search-empty">no results found</div>'; return; }
+  list.innerHTML='';
+  items.forEach(item => {
+    const el=document.createElement('div'); el.className='result-item';
+    el.innerHTML=`
       <img class="result-thumb" src="${esc(item.thumb)}" onerror="this.style.opacity='0.2'" loading="lazy"/>
       <div class="result-info"><div class="result-title">${esc(item.title)}</div><div class="result-channel">${esc(item.channel)}</div></div>
       <button class="add-btn">+</button>`;
-                el.querySelector('.add-btn').addEventListener('click', e => { e.stopPropagation(); addItemToQueue(item); });
-                el.addEventListener('click', () => addItemToQueue(item));
-                list.appendChild(el);
-            });
-        }
+    el.querySelector('.add-btn').addEventListener('click',e=>{e.stopPropagation();addItemToQueue(item);});
+    el.addEventListener('click',()=>addItemToQueue(item));
+    list.appendChild(el);
+  });
+}
 
-        async function fetchVideoDetails(vid) {
-            try {
-                const res = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${vid}&key=${YT_KEY}`);
-                const data = await res.json(); const it = data.items?.[0]; if (!it) return null;
-                return { vid, title: it.snippet.title, channel: it.snippet.channelTitle, thumb: it.snippet.thumbnails?.medium?.url || `https://i.ytimg.com/vi/${vid}/mqdefault.jpg` };
-            } catch { return { vid, title: 'YouTube video', channel: '', thumb: `https://i.ytimg.com/vi/${vid}/mqdefault.jpg` }; }
-        }
+async function fetchVideoDetails(vid) {
+  try {
+    const res=await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${vid}&key=${YT_KEY}`);
+    const data=await res.json(); const it=data.items?.[0]; if(!it) return null;
+    return {vid,title:it.snippet.title,channel:it.snippet.channelTitle,thumb:it.snippet.thumbnails?.medium?.url||`https://i.ytimg.com/vi/${vid}/mqdefault.jpg`};
+  } catch { return {vid,title:'YouTube video',channel:'',thumb:`https://i.ytimg.com/vi/${vid}/mqdefault.jpg`}; }
+}
 
-        window.addFromUrl = async function () {
-            const raw = document.getElementById('url-input').value.trim();
-            const m = raw.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([^&\n?#]+)/);
-            if (!m) { toast('⚠️ Paste a valid YouTube link'); return; }
-            const item = await fetchVideoDetails(m[1]);
-            if (item) { addItemToQueue(item); document.getElementById('url-input').value = ''; }
-        };
+window.addFromUrl = async function() {
+  const raw=document.getElementById('url-input').value.trim();
+  const m=raw.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([^&\n?#]+)/);
+  if(!m){toast('⚠️ Paste a valid YouTube link');return;}
+  const item=await fetchVideoDetails(m[1]);
+  if(item){addItemToQueue(item);document.getElementById('url-input').value='';}
+};
 
-        window.setTab = function (tab, el) {
-            document.querySelectorAll('.s-tab').forEach(t => t.classList.remove('active')); el.classList.add('active');
-            document.getElementById('tab-search').style.display = tab === 'search' ? 'block' : 'none';
-            document.getElementById('tab-url').style.display = tab === 'url' ? 'block' : 'none';
-        };
+window.setTab = function(tab,el) {
+  document.querySelectorAll('.s-tab').forEach(t=>t.classList.remove('active')); el.classList.add('active');
+  document.getElementById('tab-search').style.display=tab==='search'?'block':'none';
+  document.getElementById('tab-url').style.display=tab==='url'?'block':'none';
+};
 
-        /* ── CHAT ── */
-        window.sendMsg = function () {
-            const input = document.getElementById('chat-input'), msg = input.value.trim(); if (!msg) return; input.value = '';
-            if (!roomId) { appendBubble(msg, true, myName(), Date.now()); return; }
-            push(rref('chat'), { text: msg, name: myName(), uid: MY_ID, ts: Date.now() });
-        };
+/* ── CHAT ── */
+window.sendMsg = function() {
+  const input=document.getElementById('chat-input'), msg=input.value.trim(); if(!msg) return; input.value='';
+  if(!roomId){appendBubble(msg,true,myName(),Date.now());return;}
+  push(rref('chat'),{text:msg,name:myName(),uid:MY_ID,ts:Date.now()});
+};
 
-        function appendBubble(text, isMe, name, ts) {
-            const box = document.getElementById('chat-messages'), el = document.createElement('div');
-            el.className = 'msg ' + (isMe ? 'me' : 'them');
-            const time = new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            el.innerHTML = `<div class="bubble">${esc(text)}</div><div class="msg-time">${time} · ${esc(name)}</div>`;
-            box.appendChild(el); box.scrollTop = box.scrollHeight;
-        }
+function appendBubble(text,isMe,name,ts) {
+  const box=document.getElementById('chat-messages'), el=document.createElement('div');
+  el.className='msg '+(isMe?'me':'them');
+  const time=new Date(ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  el.innerHTML=`<div class="bubble">${esc(text)}</div><div class="msg-time">${time} · ${esc(name)}</div>`;
+  box.appendChild(el); box.scrollTop=box.scrollHeight;
+}
 
-        /* ── REACTIONS ── */
-        window.sendReaction = function (emoji) {
-            for (let i = 0; i < 4; i++) setTimeout(() => spawnEmoji(emoji), i * 120);
-            if (roomId) { push(rref('reactions'), { emoji, by: MY_ID, ts: Date.now() }); push(rref('chat'), { text: `reacted ${emoji}`, name: myName(), uid: MY_ID, ts: Date.now() }); }
-            else appendBubble(`reacted ${emoji}`, true, myName(), Date.now());
-        };
+/* ── REACTIONS ── */
+window.sendReaction = function(emoji) {
+  for(let i=0;i<4;i++) setTimeout(()=>spawnEmoji(emoji),i*120);
+  if(roomId){push(rref('reactions'),{emoji,by:MY_ID,ts:Date.now()});push(rref('chat'),{text:`reacted ${emoji}`,name:myName(),uid:MY_ID,ts:Date.now()});}
+  else appendBubble(`reacted ${emoji}`,true,myName(),Date.now());
+};
 
-        function spawnEmoji(emoji) {
-            const el = document.createElement('div'); el.className = 'float-emoji'; el.textContent = emoji;
-            el.style.left = (10 + Math.random() * 80) + 'vw'; el.style.bottom = '90px';
-            document.body.appendChild(el); setTimeout(() => el.remove(), 2600);
-        }
+function spawnEmoji(emoji) {
+  const el=document.createElement('div'); el.className='float-emoji'; el.textContent=emoji;
+  el.style.left=(10+Math.random()*80)+'vw'; el.style.bottom='90px';
+  document.body.appendChild(el); setTimeout(()=>el.remove(),2600);
+}
 
-        /* ── SHARE ── */
-        window.shareCurrentSong = function () {
-            if (currentIdx < 0 || !localQueue[currentIdx]) { toast('Nothing playing'); return; }
-            const item = localQueue[currentIdx];
-            const url = `${location.origin}${location.pathname}?v=${item.vid}${roomId ? '&room=' + roomId : ''}`;
-            navigator.clipboard.writeText(url).catch(() => { }); toast('🔗 Song link copied!');
-        };
+/* ── SHARE ── */
+window.shareCurrentSong = function() {
+  if(currentIdx<0||!localQueue[currentIdx]){toast('Nothing playing');return;}
+  const item=localQueue[currentIdx];
+  const url=`${location.origin}${location.pathname}?v=${item.vid}${roomId?'&room='+roomId:''}`;
+  navigator.clipboard.writeText(url).catch(()=>{}); toast('🔗 Song link copied!');
+};
 
-        window.copyShareLink = function () {
-            const t = document.getElementById('share-link-text').textContent;
-            if (t.startsWith('click')) { openRoom(); return; }
-            navigator.clipboard.writeText(t).catch(() => { }); toast('✓ Link copied!');
-        };
+window.copyShareLink = function() {
+  const t=document.getElementById('share-link-text').textContent;
+  if(t.startsWith('click')){openRoom();return;}
+  navigator.clipboard.writeText(t).catch(()=>{}); toast('✓ Link copied!');
+};
 
-        /* ── NAME ── */
-        window.changeName = function () {
-            const n = prompt('Your name in Bobo Tunes:', myName()); if (!n || !n.trim()) return;
-            const name = n.trim(); localStorage.setItem('bt_name', name);
-            document.getElementById('my-name').textContent = name;
-            document.getElementById('my-avatar-letter').textContent = name[0].toUpperCase();
-            if (roomId) set(ref(db, `rooms/${roomId}/presence/${MY_ID}/name`), name);
-        };
-    </script>
+/* ── NAME ── */
+window.changeName = function() {
+  const n=prompt('Your name in Bobo Tunes:',myName()); if(!n||!n.trim()) return;
+  const name=n.trim(); localStorage.setItem('bt_name',name);
+  document.getElementById('my-name').textContent=name;
+  document.getElementById('my-avatar-letter').textContent=name[0].toUpperCase();
+  if(roomId) set(ref(db,`rooms/${roomId}/presence/${MY_ID}/name`),name);
+};
+</script>
 </body>
-
 </html>
