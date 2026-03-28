@@ -1719,7 +1719,7 @@
     <script>
         // ── STATE ──────────────────────────────────────────────────────────
         const S = {
-            apiKey: localStorage.getItem('bt_api_key') || '',
+            apiKey: localStorage.getItem('bt_api_key') || 'AIzaSyAy5Lo0jp8eipVgjBSeUh0Z2p2Jnye7Jz0',
             myName: localStorage.getItem('bt_name') || 'You',
             queue: [],
             currentIdx: -1,
@@ -1729,7 +1729,7 @@
 
         // ── INIT ──────────────────────────────────────────────────────────
         (function init() {
-            if (S.apiKey) hide('setup-screen');
+            hide('setup-screen'); // API key baked in — no setup needed
             document.getElementById('my-name').textContent = S.myName;
             document.getElementById('my-avatar').childNodes[0].textContent = S.myName[0].toUpperCase();
 
