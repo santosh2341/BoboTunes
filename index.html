@@ -267,7 +267,7 @@
             .wrap {
                 display: flex;
                 flex-direction: column;
-                padding: 68px 12px 90px;
+                padding: 68px 12px 100px;
                 gap: 12px;
                 width: 100%;
                 max-width: 100vw;
@@ -275,6 +275,26 @@
 
             .sidebar>* {
                 width: 100%;
+            }
+
+            .reacts {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+
+            .reacts::-webkit-scrollbar {
+                display: none;
+            }
+
+            nav {
+                width: 100%;
+                overflow: hidden;
+            }
+
+            .pill {
+                max-width: 95px;
             }
         }
 
@@ -1169,7 +1189,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            height: 70px;
+            height: 74px;
             z-index: 200;
             background: rgba(12, 12, 20, .98);
             backdrop-filter: blur(24px);
@@ -1249,7 +1269,7 @@
         /* ── TOAST ── */
         #toast {
             position: fixed;
-            bottom: 82px;
+            bottom: 86px;
             left: 50%;
             transform: translateX(-50%) translateY(60px);
             background: rgba(28, 28, 40, .97);
@@ -1972,8 +1992,10 @@
                 const oth = Object.entries(d).filter(([k]) => k !== UID);
                 if (oth.length) {
                     const fn = oth[0][1].name || 'Friend';
-                    document.getElementById('fr-name').textContent = fn;
-                    document.getElementById('fr-av').textContent = fn[0].toUpperCase();
+                    // Don't show own name for friend slot
+                    const displayName = fn === name() ? (fn + ' 👤') : fn;
+                    document.getElementById('fr-name').textContent = displayName;
+                    document.getElementById('fr-av').textContent = displayName[0].toUpperCase();
                     document.getElementById('fr-ring').classList.add('on');
                     document.getElementById('fr-st').textContent = '● online';
                 } else {
@@ -2160,9 +2182,15 @@
         }
 
         // ── Queue ──
+        let addLock = new Set(); // prevent duplicate adds
+
         function addQ(item) {
+            if (addLock.has(item.vid)) return;
+            addLock.add(item.vid);
+            setTimeout(() => addLock.delete(item.vid), 1500);
+
             push(rr('queue'), { vid: item.vid, title: item.title, channel: item.channel || '', thumb: item.thumb });
-            toast(`Added: ${item.title.slice(0, 38)}…`);
+            toast(`Added to queue: ${item.title.slice(0, 32)}…`);
             if (idx < 0) setTimeout(() => { if (queue.length > 0 && idx < 0) playIdx(0); }, 900);
         }
 
@@ -2314,22 +2342,20 @@
         }
 
         // ── Play Now (skip queue) ──
+        let playNowLock = false;
         function playNow(item) {
-            // Add to front of queue right after current, then play it
+            if (playNowLock) return;
+            playNowLock = true;
+            setTimeout(() => playNowLock = false, 1500);
+
+            setNowPlaying(item);
+            playVid(item.vid, true);
+            curVid = item.vid;
+            set(rr('playback/cur'), { i: -1, vid: item.vid, title: item.title, channel: item.channel || '', thumb: item.thumb, by: UID, ts: Date.now() });
+            set(rr('playback/state'), { p: true, vid: item.vid, by: UID, ts: Date.now() });
+            // Also add to queue so it shows up
             push(rr('queue'), { vid: item.vid, title: item.title, channel: item.channel || '', thumb: item.thumb });
-            toast(`▶ Playing now: ${item.title.slice(0, 30)}…`);
-            // Play after queue updates
-            setTimeout(() => {
-                const newIdx = queue.findIndex(q => q.vid === item.vid);
-                if (newIdx >= 0) playIdx(newIdx);
-                else {
-                    // Fallback: play directly
-                    setNowPlaying(item);
-                    playVid(item.vid, true);
-                    set(rr('playback/cur'), { i: -1, vid: item.vid, title: item.title, channel: item.channel || '', thumb: item.thumb, by: UID, ts: Date.now() });
-                    set(rr('playback/state'), { p: true, vid: item.vid, by: UID, ts: Date.now() });
-                }
-            }, 700);
+            toast(`▶ Playing: ${item.title.slice(0, 30)}…`);
         }
 
         // ── Context Menu ──
