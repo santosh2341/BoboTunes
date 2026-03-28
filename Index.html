@@ -1,0 +1,2068 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>Bobo Tunes 🎵</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --bg2: #111118;
+            --bg3: #18181f;
+            --bg4: #1f1f2a;
+            --surface: #232332;
+            --surface2: #2a2a3d;
+            --border: rgba(255, 255, 255, 0.06);
+            --border2: rgba(255, 255, 255, 0.12);
+            --accent: #1db954;
+            --accent2: #1ed760;
+            --accent-dim: rgba(29, 185, 84, 0.15);
+            --accent-glow: rgba(29, 185, 84, 0.35);
+            --purple: #7c3aed;
+            --purple2: #a78bfa;
+            --pink: #ec4899;
+            --blue: #3b82f6;
+            --text: #ffffff;
+            --text2: #b3b3b3;
+            --text3: #6b6b80;
+            --red: #ef4444;
+            --yellow: #fbbf24;
+            --r: 16px;
+            --r-sm: 10px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            height: 100%;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ── ANIMATED BG ── */
+        .bg-orbs {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.18;
+            animation: orbFloat 12s ease-in-out infinite;
+        }
+
+        .orb1 {
+            width: 400px;
+            height: 400px;
+            background: var(--accent);
+            top: -100px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+
+        .orb2 {
+            width: 300px;
+            height: 300px;
+            background: var(--purple);
+            top: 30%;
+            right: -80px;
+            animation-delay: -4s;
+        }
+
+        .orb3 {
+            width: 250px;
+            height: 250px;
+            background: var(--pink);
+            bottom: 20%;
+            left: 20%;
+            animation-delay: -8s;
+        }
+
+        .orb4 {
+            width: 200px;
+            height: 200px;
+            background: var(--blue);
+            bottom: -50px;
+            right: 30%;
+            animation-delay: -2s;
+        }
+
+        @keyframes orbFloat {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -20px) scale(1.05);
+            }
+
+            66% {
+                transform: translate(-20px, 15px) scale(0.95);
+            }
+        }
+
+        /* Grid noise */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 9998;
+        }
+
+        /* ── SETUP SCREEN ── */
+        #setup-screen {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 10, 15, 0.97);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            padding: 1.5rem;
+            backdrop-filter: blur(20px);
+        }
+
+        .setup-card {
+            background: var(--bg3);
+            border: 1px solid var(--border2);
+            border-radius: 24px;
+            padding: 2.5rem 2rem;
+            max-width: 440px;
+            width: 100%;
+            box-shadow: 0 0 80px rgba(29, 185, 84, 0.1), 0 32px 64px rgba(0, 0, 0, 0.6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .setup-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--purple), var(--pink));
+        }
+
+        .setup-logo {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            text-align: center;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .setup-sub {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text3);
+            margin-bottom: 2rem;
+        }
+
+        .setup-steps {
+            background: var(--bg4);
+            border: 1px solid var(--border);
+            border-radius: var(--r-sm);
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.75rem;
+            color: var(--text2);
+            line-height: 2;
+        }
+
+        .setup-steps a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .setup-steps a:hover {
+            text-decoration: underline;
+        }
+
+        .setup-input {
+            width: 100%;
+            background: var(--bg4);
+            border: 1.5px solid var(--border2);
+            border-radius: var(--r-sm);
+            padding: 13px 16px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.85rem;
+            color: var(--text);
+            outline: none;
+            margin-bottom: 0.75rem;
+            transition: border 0.2s, box-shadow 0.2s;
+        }
+
+        .setup-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-dim);
+        }
+
+        .setup-input::placeholder {
+            color: var(--text3);
+        }
+
+        .setup-btn {
+            width: 100%;
+            background: var(--accent);
+            color: #000;
+            border: none;
+            border-radius: var(--r-sm);
+            padding: 14px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.02em;
+        }
+
+        .setup-btn:hover {
+            background: var(--accent2);
+            transform: scale(1.02);
+        }
+
+        .setup-btn:active {
+            transform: scale(0.98);
+        }
+
+        .setup-note {
+            text-align: center;
+            font-size: 0.65rem;
+            color: var(--text3);
+            margin-top: 0.75rem;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.25rem;
+            height: 64px;
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 4px 32px rgba(0, 0, 0, 0.4);
+            position: relative;
+            z-index: 200;
+        }
+
+        .logo {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--accent);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .logo-text {
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 100px;
+            background: var(--bg3);
+            border: 1px solid var(--border2);
+            font-size: 0.65rem;
+            color: var(--text3);
+            font-weight: 500;
+        }
+
+        .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--text3);
+        }
+
+        .dot.live {
+            background: var(--accent);
+            box-shadow: 0 0 8px var(--accent);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 8px var(--accent);
+            }
+
+            50% {
+                box-shadow: 0 0 16px var(--accent), 0 0 32px var(--accent-glow);
+            }
+        }
+
+        .nav-btn {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            border-radius: 100px;
+            padding: 8px 18px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover {
+            background: var(--accent2);
+            transform: scale(1.04);
+        }
+
+        .nav-btn-ghost {
+            background: var(--bg3);
+            color: var(--text3);
+            border: 1px solid var(--border2);
+            border-radius: 100px;
+            padding: 8px 14px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .nav-btn-ghost:hover {
+            background: var(--surface);
+            color: var(--text);
+        }
+
+        /* ── LAYOUT ── */
+        .app {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 1rem;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1rem 1rem 6rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 860px) {
+            .app {
+                grid-template-columns: 1fr;
+                padding: 0.75rem 0.75rem 8rem;
+            }
+
+            .sidebar {
+                order: 2;
+            }
+
+            .main-col {
+                order: 1;
+            }
+        }
+
+        /* ── CARDS ── */
+        .card {
+            background: rgba(24, 24, 31, 0.7);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            backdrop-filter: blur(12px);
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+
+        .card:hover {
+            border-color: var(--border2);
+        }
+
+        .card-pad {
+            padding: 1.25rem;
+        }
+
+        .section-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text3);
+            margin-bottom: 1rem;
+        }
+
+        /* ── PLAYER CARD ── */
+        .player-card {
+            margin-bottom: 1rem;
+        }
+
+        .video-wrap {
+            position: relative;
+            aspect-ratio: 16/9;
+            background: var(--bg2);
+            overflow: hidden;
+        }
+
+        .vid-placeholder {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            color: var(--text3);
+            font-size: 0.8rem;
+            background: radial-gradient(ellipse at center, var(--bg3) 0%, var(--bg) 100%);
+        }
+
+        .pulse-ring {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: var(--accent-dim);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .pulse-ring::before,
+        .pulse-ring::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            animation: ringPulse 2.5s ease-out infinite;
+        }
+
+        .pulse-ring::before {
+            width: 100%;
+            height: 100%;
+            animation-delay: 0s;
+            opacity: 0.4;
+        }
+
+        .pulse-ring::after {
+            width: 140%;
+            height: 140%;
+            animation-delay: -1.25s;
+            opacity: 0.2;
+        }
+
+        @keyframes ringPulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1.6);
+                opacity: 0;
+            }
+        }
+
+        .pulse-icon {
+            font-size: 28px;
+        }
+
+        #yt-iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: none;
+        }
+
+        /* Now Playing Bar */
+        .now-playing-bar {
+            padding: 1rem 1.25rem;
+            background: linear-gradient(135deg, rgba(29, 185, 84, 0.08) 0%, rgba(124, 58, 237, 0.05) 100%);
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .np-art-wrap {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .np-thumb {
+            width: 52px;
+            height: 52px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: var(--bg4);
+            display: block;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .np-playing-anim {
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 14px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 3px;
+            padding: 2px 3px;
+        }
+
+        .np-bar {
+            width: 3px;
+            background: var(--accent);
+            border-radius: 2px;
+            animation: barBounce 0.8s ease-in-out infinite;
+        }
+
+        .np-bar:nth-child(1) {
+            animation-delay: 0s;
+            height: 60%;
+        }
+
+        .np-bar:nth-child(2) {
+            animation-delay: 0.15s;
+            height: 100%;
+        }
+
+        .np-bar:nth-child(3) {
+            animation-delay: 0.3s;
+            height: 40%;
+        }
+
+        .np-bar:nth-child(4) {
+            animation-delay: 0.45s;
+            height: 80%;
+        }
+
+        @keyframes barBounce {
+
+            0%,
+            100% {
+                transform: scaleY(0.4);
+            }
+
+            50% {
+                transform: scaleY(1);
+            }
+        }
+
+        .np-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .np-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--text);
+        }
+
+        .np-channel {
+            font-size: 0.68rem;
+            color: var(--text3);
+            margin-top: 3px;
+        }
+
+        .np-actions {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .icon-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--bg4);
+            border: 1px solid var(--border2);
+            color: var(--text2);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .icon-btn:hover {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        /* ── REACTIONS ── */
+        .reactions-bar {
+            padding: 0.85rem 1.25rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .react-label {
+            font-size: 0.6rem;
+            color: var(--text3);
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-right: 4px;
+        }
+
+        .react-btn {
+            background: var(--bg4);
+            border: 1px solid var(--border2);
+            border-radius: 100px;
+            padding: 6px 14px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            color: var(--text2);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .react-btn:hover {
+            background: var(--surface);
+            border-color: var(--accent);
+            color: var(--text);
+            transform: scale(1.06);
+        }
+
+        .react-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Float emoji */
+        .float-emoji {
+            position: fixed;
+            font-size: 32px;
+            pointer-events: none;
+            z-index: 9997;
+            animation: floatUp 2.5s ease-out forwards;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) scale(0.8) rotate(-10deg);
+                opacity: 1;
+            }
+
+            40% {
+                transform: translateY(-100px) scale(1.3) rotate(5deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-250px) scale(0.4) rotate(15deg);
+                opacity: 0;
+            }
+        }
+
+        /* ── SEARCH CARD ── */
+        .search-tabs {
+            display: flex;
+            gap: 4px;
+            background: var(--bg);
+            border-radius: var(--r-sm);
+            padding: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .s-tab {
+            flex: 1;
+            padding: 8px;
+            border-radius: 8px;
+            border: none;
+            background: none;
+            color: var(--text3);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-align: center;
+        }
+
+        .s-tab.active {
+            background: var(--surface);
+            color: var(--text);
+        }
+
+        .search-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .search-input {
+            flex: 1;
+            background: var(--bg);
+            border: 1.5px solid var(--border2);
+            border-radius: var(--r-sm);
+            padding: 11px 14px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.82rem;
+            color: var(--text);
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-dim);
+        }
+
+        .search-input::placeholder {
+            color: var(--text3);
+        }
+
+        .search-btn {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            border-radius: var(--r-sm);
+            padding: 11px 20px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .search-btn:hover {
+            background: var(--accent2);
+        }
+
+        .search-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .results-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            max-height: 280px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--surface) transparent;
+        }
+
+        .results-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .results-list::-webkit-scrollbar-thumb {
+            background: var(--surface);
+            border-radius: 4px;
+        }
+
+        .result-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            border-radius: var(--r-sm);
+            cursor: pointer;
+            transition: all 0.15s;
+            border: 1px solid transparent;
+        }
+
+        .result-item:hover {
+            background: var(--surface);
+            border-color: var(--border2);
+        }
+
+        .result-thumb {
+            width: 68px;
+            height: 44px;
+            border-radius: 6px;
+            object-fit: cover;
+            flex-shrink: 0;
+            background: var(--bg4);
+        }
+
+        .result-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .result-title {
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: var(--text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .result-channel {
+            font-size: 0.62rem;
+            color: var(--text3);
+            margin-top: 2px;
+        }
+
+        .add-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--bg4);
+            border: 1px solid var(--border2);
+            color: var(--accent);
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.15s;
+        }
+
+        .add-btn:hover {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+            transform: scale(1.15);
+        }
+
+        .search-empty {
+            padding: 2.5rem 1rem;
+            text-align: center;
+            font-size: 0.78rem;
+            color: var(--text3);
+        }
+
+        .search-empty-icon {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 0.5rem;
+            opacity: 0.4;
+        }
+
+        /* ── SIDEBAR ── */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* Room card */
+        .room-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .user-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .user-row:last-child {
+            border-bottom: none;
+        }
+
+        .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .avatar-you {
+            background: linear-gradient(135deg, var(--accent), #0a8f39);
+            color: #000;
+        }
+
+        .avatar-them {
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            color: white;
+        }
+
+        .online-ring {
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+        }
+
+        .online-ring.on {
+            border-color: var(--accent);
+        }
+
+        .online-ring.on::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 2px solid var(--bg3);
+        }
+
+        .user-name {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        .user-name:hover {
+            color: var(--accent);
+        }
+
+        .user-status {
+            font-size: 0.62rem;
+            color: var(--text3);
+            margin-top: 2px;
+        }
+
+        .share-box {
+            margin-top: 0.75rem;
+            background: var(--bg);
+            border: 1px dashed var(--border2);
+            border-radius: var(--r-sm);
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .share-text {
+            flex: 1;
+            font-size: 0.62rem;
+            color: var(--text3);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-family: monospace;
+        }
+
+        .copy-btn {
+            background: none;
+            border: 1px solid var(--border2);
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-size: 0.62rem;
+            color: var(--accent);
+            cursor: pointer;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+
+        .copy-btn:hover {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+
+        /* Queue */
+        .queue-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 1.25rem 0.75rem;
+        }
+
+        .clear-btn {
+            background: none;
+            border: none;
+            font-size: 0.62rem;
+            color: var(--text3);
+            cursor: pointer;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: color 0.15s;
+        }
+
+        .clear-btn:hover {
+            color: var(--red);
+        }
+
+        .queue-list {
+            padding: 0 1rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            max-height: 320px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--surface) transparent;
+        }
+
+        .queue-list::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .queue-list::-webkit-scrollbar-thumb {
+            background: var(--surface);
+            border-radius: 3px;
+        }
+
+        .q-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.12s;
+            border: 1px solid transparent;
+        }
+
+        .q-item:hover {
+            background: var(--surface);
+            border-color: var(--border2);
+        }
+
+        .q-item.playing {
+            background: rgba(29, 185, 84, 0.08);
+            border-color: rgba(29, 185, 84, 0.2);
+        }
+
+        .q-num {
+            font-size: 0.6rem;
+            color: var(--text3);
+            width: 16px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .q-item.playing .q-num {
+            color: var(--accent);
+        }
+
+        .q-thumb {
+            width: 40px;
+            height: 28px;
+            border-radius: 4px;
+            object-fit: cover;
+            background: var(--bg4);
+            flex-shrink: 0;
+        }
+
+        .q-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .q-title {
+            font-size: 0.72rem;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--text);
+        }
+
+        .q-item.playing .q-title {
+            color: var(--accent);
+        }
+
+        .q-ch {
+            font-size: 0.58rem;
+            color: var(--text3);
+        }
+
+        .q-del {
+            background: none;
+            border: none;
+            color: var(--text3);
+            cursor: pointer;
+            font-size: 12px;
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.12s;
+        }
+
+        .q-item:hover .q-del {
+            opacity: 1;
+        }
+
+        .q-del:hover {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--red);
+        }
+
+        .queue-empty {
+            padding: 2rem;
+            text-align: center;
+            font-size: 0.72rem;
+            color: var(--text3);
+            font-style: italic;
+        }
+
+        /* ── CHAT ── */
+        .chat-body {
+            padding: 0 1.25rem 1.25rem;
+        }
+
+        .chat-messages {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--surface) transparent;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: var(--surface);
+            border-radius: 3px;
+        }
+
+        .msg {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .msg.me {
+            align-items: flex-end;
+        }
+
+        .msg.them {
+            align-items: flex-start;
+        }
+
+        .bubble {
+            max-width: 90%;
+            padding: 8px 12px;
+            font-size: 0.76rem;
+            line-height: 1.5;
+            border-radius: 14px;
+        }
+
+        .msg.me .bubble {
+            background: var(--accent);
+            color: #000;
+            border-bottom-right-radius: 4px;
+            font-weight: 500;
+        }
+
+        .msg.them .bubble {
+            background: var(--surface);
+            color: var(--text);
+            border-bottom-left-radius: 4px;
+            border: 1px solid var(--border2);
+        }
+
+        .msg-time {
+            font-size: 0.56rem;
+            color: var(--text3);
+        }
+
+        .chat-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-input {
+            flex: 1;
+            background: var(--bg);
+            border: 1.5px solid var(--border2);
+            border-radius: var(--r-sm);
+            padding: 10px 14px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.78rem;
+            color: var(--text);
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .chat-input:focus {
+            border-color: var(--accent);
+        }
+
+        .chat-input::placeholder {
+            color: var(--text3);
+        }
+
+        .send-btn {
+            background: var(--accent);
+            border: none;
+            border-radius: var(--r-sm);
+            color: #000;
+            padding: 10px 16px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 700;
+            transition: all 0.15s;
+        }
+
+        .send-btn:hover {
+            background: var(--accent2);
+            transform: scale(1.05);
+        }
+
+        /* ── MOBILE BOTTOM BAR ── */
+        .mobile-player {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(18, 18, 24, 0.95);
+            backdrop-filter: blur(24px);
+            border-top: 1px solid var(--border2);
+            padding: 12px 16px 28px;
+            z-index: 300;
+            box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        @media (max-width: 860px) {
+            .mobile-player {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+        }
+
+        .mobile-thumb {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: var(--bg4);
+            flex-shrink: 0;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+        }
+
+        .mobile-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .mobile-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .mobile-ch {
+            font-size: 0.62rem;
+            color: var(--text3);
+            margin-top: 2px;
+        }
+
+        .mobile-actions {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .mob-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--bg3);
+            border: 1px solid var(--border2);
+            color: var(--text2);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .mob-btn:hover {
+            background: var(--accent);
+            color: #000;
+        }
+
+        /* ── TOAST ── */
+        #toast {
+            position: fixed;
+            bottom: 5rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(60px);
+            background: var(--bg3);
+            color: var(--text);
+            border: 1px solid var(--border2);
+            border-radius: 100px;
+            padding: 10px 22px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            z-index: 9999;
+            pointer-events: none;
+            transition: transform 0.3s cubic-bezier(.34, 1.56, .64, 1);
+            white-space: nowrap;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        #toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ── SPINNER ── */
+        .spinner {
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(0, 0, 0, 0.3);
+            border-top-color: #000;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ── DIVIDER ── */
+        .divider {
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* Staggered card entry */
+        .card {
+            animation: cardIn 0.4s ease both;
+        }
+
+        .card:nth-child(1) {
+            animation-delay: 0.05s;
+        }
+
+        .card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .card:nth-child(3) {
+            animation-delay: 0.15s;
+        }
+
+        .card:nth-child(4) {
+            animation-delay: 0.2s;
+        }
+
+        @keyframes cardIn {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Scrollbar global */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--surface);
+            border-radius: 4px;
+        }
+
+        /* ── MOBILE TABS ── */
+        @media (max-width: 860px) {
+            .sidebar .card:nth-child(1) {
+                display: block;
+            }
+        }
+
+        /* Small screen tweaks */
+        @media (max-width: 480px) {
+            nav {
+                padding: 0 1rem;
+            }
+
+            .logo-text {
+                font-size: 1.1rem;
+            }
+
+            .nav-btn {
+                padding: 7px 14px;
+                font-size: 0.68rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- BG ORBS -->
+    <div class="bg-orbs">
+        <div class="orb orb1"></div>
+        <div class="orb orb2"></div>
+        <div class="orb orb3"></div>
+        <div class="orb orb4"></div>
+    </div>
+
+    <!-- ── SETUP SCREEN ── -->
+    <div id="setup-screen">
+        <div class="setup-card">
+            <div class="setup-logo">🎵 Bobo Tunes</div>
+            <div class="setup-sub">just for the two of you</div>
+
+            <div class="setup-steps">
+                <strong style="color:#fff;">One-time setup — get your free YouTube API key:</strong><br>
+                1. Go to <a href="https://console.cloud.google.com" target="_blank">console.cloud.google.com</a><br>
+                2. Create project → Enable <strong>YouTube Data API v3</strong><br>
+                3. Credentials → Create API Key → paste below
+            </div>
+
+            <input class="setup-input" id="api-key-input" type="text" placeholder="AIza… (YouTube Data API key)" />
+            <button class="setup-btn" onclick="saveApiKey()">Start listening together ♪</button>
+            <div class="setup-note">🔒 Your key stays in your browser only — never sent to us.</div>
+        </div>
+    </div>
+
+    <!-- ── NAV ── -->
+    <nav>
+        <div class="logo">
+            <div class="logo-icon">🎵</div>
+            <span class="logo-text">Bobo Tunes</span>
+        </div>
+        <div class="nav-right">
+            <div class="pill">
+                <div class="dot" id="conn-dot"></div>
+                <span id="conn-label">solo</span>
+            </div>
+            <button class="nav-btn" onclick="openRoom()">+ invite</button>
+            <button class="nav-btn-ghost" onclick="resetApiKey()">⚙</button>
+        </div>
+    </nav>
+
+    <!-- ── APP ── -->
+    <div class="app">
+
+        <!-- MAIN COLUMN -->
+        <div class="main-col" style="display:flex;flex-direction:column;gap:1rem;">
+
+            <!-- Player -->
+            <div class="card player-card">
+                <div class="video-wrap">
+                    <div class="vid-placeholder" id="vid-placeholder">
+                        <div class="pulse-ring"><span class="pulse-icon">♫</span></div>
+                        <div style="text-align:center;">
+                            <div
+                                style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;color:var(--text2);">
+                                Nothing playing yet</div>
+                            <div style="font-size:0.7rem;margin-top:4px;opacity:0.5;">search a song and add it to the
+                                queue</div>
+                        </div>
+                    </div>
+                    <iframe id="yt-iframe" allowfullscreen
+                        allow="autoplay; encrypted-media; gyroscope; picture-in-picture"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-forms"></iframe>
+                </div>
+
+                <div class="now-playing-bar">
+                    <div class="np-art-wrap">
+                        <img class="np-thumb" id="np-thumb" src="" onerror="this.style.opacity='0.2'" />
+                        <div class="np-playing-anim" id="np-anim" style="display:none;">
+                            <div class="np-bar"></div>
+                            <div class="np-bar"></div>
+                            <div class="np-bar"></div>
+                            <div class="np-bar"></div>
+                        </div>
+                    </div>
+                    <div class="np-info">
+                        <div class="np-title" id="np-title">Nothing playing</div>
+                        <div class="np-channel" id="np-channel">add a song from search</div>
+                    </div>
+                    <div class="np-actions">
+                        <button class="icon-btn" title="Share song" onclick="shareCurrentSong()">↗</button>
+                        <button class="icon-btn" title="Skip" onclick="skipNext()">⏭</button>
+                    </div>
+                </div>
+
+                <!-- Reactions -->
+                <div class="reactions-bar">
+                    <span class="react-label">react</span>
+                    <button class="react-btn" onclick="sendReaction('🔥')">🔥 fire</button>
+                    <button class="react-btn" onclick="sendReaction('❤️')">❤️ love</button>
+                    <button class="react-btn" onclick="sendReaction('😭')">😭 feels</button>
+                    <button class="react-btn" onclick="sendReaction('🎉')">🎉 bop</button>
+                    <button class="react-btn" onclick="sendReaction('✨')">✨ vibe</button>
+                    <button class="react-btn" onclick="sendReaction('🤌')">🤌 chef's kiss</button>
+                </div>
+            </div>
+
+            <!-- Search -->
+            <div class="card">
+                <div class="card-pad" style="padding-bottom:0.75rem;">
+                    <div class="section-title">Find Music</div>
+
+                    <div class="search-tabs">
+                        <button class="s-tab active" onclick="setTab('search',this)">🔍 Search YouTube</button>
+                        <button class="s-tab" onclick="setTab('url',this)">🔗 Paste Link</button>
+                    </div>
+
+                    <div id="tab-search">
+                        <div class="search-row">
+                            <input class="search-input" id="search-input" placeholder="song, artist, album…"
+                                onkeydown="if(event.key==='Enter')doSearch()" />
+                            <button class="search-btn" id="search-btn" onclick="doSearch()">
+                                <span id="search-btn-text">Search</span>
+                            </button>
+                        </div>
+                        <div class="results-list" id="results-list">
+                            <div class="search-empty">
+                                <span class="search-empty-icon">🎵</span>
+                                search for any song or artist
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tab-url" style="display:none;">
+                        <div class="search-row">
+                            <input class="search-input" id="url-input" placeholder="https://youtube.com/watch?v=…"
+                                onkeydown="if(event.key==='Enter')addFromUrl()" />
+                            <button class="search-btn" onclick="addFromUrl()">Add</button>
+                        </div>
+                        <p style="font-size:0.7rem;color:var(--text3);text-align:center;padding:0.5rem;">
+                            Paste any YouTube link — watch, shorts, or youtu.be
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+
+            <!-- Room -->
+            <div class="card">
+                <div class="card-pad">
+                    <div class="section-title">The Room</div>
+                    <div class="user-row">
+                        <div class="avatar avatar-you" id="my-avatar" style="position:relative;">
+                            Y<div class="online-ring on"></div>
+                        </div>
+                        <div class="user-meta" style="flex:1;">
+                            <div class="user-name" id="my-name" onclick="changeName()">You</div>
+                            <div class="user-status">tap name to edit</div>
+                        </div>
+                    </div>
+                    <div class="user-row">
+                        <div class="avatar avatar-them" id="friend-avatar" style="position:relative;">
+                            F<div class="online-ring" id="friend-ring"></div>
+                        </div>
+                        <div style="flex:1;">
+                            <div class="user-name" id="friend-name">Your friend</div>
+                            <div class="user-status" id="friend-state">not here yet</div>
+                        </div>
+                    </div>
+                    <div class="share-box">
+                        <div class="share-text" id="share-link-text">click "+ invite" to get a link</div>
+                        <button class="copy-btn" onclick="copyShareLink()">copy</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Queue -->
+            <div class="card">
+                <div class="queue-header">
+                    <div class="section-title" style="margin:0;">Queue</div>
+                    <button class="clear-btn" onclick="clearQueue()">clear all</button>
+                </div>
+                <div class="queue-list" id="queue-list">
+                    <div class="queue-empty" id="q-empty">nothing queued yet ♪</div>
+                </div>
+            </div>
+
+            <!-- Chat -->
+            <div class="card">
+                <div style="padding:1.25rem 1.25rem 0.75rem;">
+                    <div class="section-title">Chat</div>
+                </div>
+                <div class="chat-body">
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="msg them">
+                            <div class="bubble">hey! add something good 🎵</div>
+                            <div class="msg-time">Bobo Tunes · just now</div>
+                        </div>
+                    </div>
+                    <div class="chat-row">
+                        <input class="chat-input" id="chat-input" placeholder="say something…"
+                            onkeydown="if(event.key==='Enter')sendMsg()" />
+                        <button class="send-btn" onclick="sendMsg()">→</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MOBILE PLAYER BAR -->
+    <div class="mobile-player" id="mobile-player" style="display:none;">
+        <img class="mobile-thumb" id="mob-thumb" src="" onerror="this.style.opacity='0.2'" />
+        <div class="mobile-info">
+            <div class="mobile-title" id="mob-title">Nothing playing</div>
+            <div class="mobile-ch" id="mob-ch">add a song above</div>
+        </div>
+        <div class="mobile-actions">
+            <button class="mob-btn" onclick="sendReaction('🔥')">🔥</button>
+            <button class="mob-btn" onclick="skipNext()">⏭</button>
+        </div>
+    </div>
+
+    <div id="toast"></div>
+
+    <script>
+        // ── STATE ──────────────────────────────────────────────────────────
+        const S = {
+            apiKey: localStorage.getItem('bt_api_key') || '',
+            myName: localStorage.getItem('bt_name') || 'You',
+            queue: [],
+            currentIdx: -1,
+            roomId: null,
+            tab: 'search',
+        };
+
+        // ── INIT ──────────────────────────────────────────────────────────
+        (function init() {
+            if (S.apiKey) hide('setup-screen');
+            document.getElementById('my-name').textContent = S.myName;
+            document.getElementById('my-avatar').childNodes[0].textContent = S.myName[0].toUpperCase();
+
+            const p = new URLSearchParams(location.search);
+            if (p.get('room')) joinRoom(p.get('room'));
+            if (p.get('v')) {
+                fetchVideoDetails(p.get('v')).then(item => {
+                    if (item) { S.queue.push(item); renderQueue(); if (S.currentIdx < 0) playIdx(0); }
+                });
+            }
+
+            // Show mobile bar on mobile
+            if (window.innerWidth <= 860) {
+                document.getElementById('mobile-player').style.display = 'flex';
+            }
+        })();
+
+        // ── HELPERS ───────────────────────────────────────────────────────
+        function hide(id) { document.getElementById(id).style.display = 'none'; }
+        function show(id, d = 'block') { document.getElementById(id).style.display = d; }
+        function esc(s) {
+            return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function toast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            clearTimeout(window._tt);
+            window._tt = setTimeout(() => t.classList.remove('show'), 2800);
+        }
+
+        // ── API KEY ────────────────────────────────────────────────────────
+        function saveApiKey() {
+            const key = document.getElementById('api-key-input').value.trim();
+            if (!key || !key.startsWith('AIza')) { toast('⚠️ Paste a valid API key (starts with AIza)'); return; }
+            S.apiKey = key;
+            localStorage.setItem('bt_api_key', key);
+            hide('setup-screen');
+            toast('🎵 Welcome to Bobo Tunes!');
+        }
+
+        function resetApiKey() {
+            if (confirm('Change your YouTube API key?')) {
+                document.getElementById('api-key-input').value = S.apiKey;
+                show('setup-screen', 'flex');
+            }
+        }
+
+        // ── TABS ──────────────────────────────────────────────────────────
+        function setTab(tab, el) {
+            S.tab = tab;
+            document.querySelectorAll('.s-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('tab-search').style.display = tab === 'search' ? 'block' : 'none';
+            document.getElementById('tab-url').style.display = tab === 'url' ? 'block' : 'none';
+        }
+
+        // ── SEARCH ────────────────────────────────────────────────────────
+        async function doSearch() {
+            const q = document.getElementById('search-input').value.trim();
+            if (!q) return;
+
+            const btn = document.getElementById('search-btn');
+            const btnText = document.getElementById('search-btn-text');
+            btnText.innerHTML = '<span class="spinner"></span>';
+            btn.disabled = true;
+
+            try {
+                const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=${encodeURIComponent(q)}&type=video&key=${S.apiKey}`;
+                const res = await fetch(url);
+                const data = await res.json();
+
+                if (data.error) { toast('API error: ' + (data.error.message || 'check your key')); renderResults([]); return; }
+
+                const items = (data.items || []).map(item => ({
+                    vid: item.id.videoId,
+                    title: item.snippet.title,
+                    channel: item.snippet.channelTitle,
+                    thumb: item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url,
+                }));
+
+                renderResults(items);
+            } catch (e) {
+                toast('Search failed — check your API key');
+                console.error(e);
+            } finally {
+                btnText.textContent = 'Search';
+                btn.disabled = false;
+            }
+        }
+
+        function renderResults(items) {
+            const list = document.getElementById('results-list');
+            if (!items.length) {
+                list.innerHTML = '<div class="search-empty"><span class="search-empty-icon">🔍</span>no results found</div>';
+                return;
+            }
+            list.innerHTML = '';
+            items.forEach(item => {
+                const el = document.createElement('div');
+                el.className = 'result-item';
+                el.innerHTML = `
+      <img class="result-thumb" src="${esc(item.thumb)}" onerror="this.style.opacity='0.2'" loading="lazy" />
+      <div class="result-info">
+        <div class="result-title">${esc(item.title)}</div>
+        <div class="result-channel">${esc(item.channel)}</div>
+      </div>
+      <button class="add-btn" title="Add to queue">+</button>
+    `;
+                el.querySelector('.add-btn').onclick = e => { e.stopPropagation(); addItem(item); };
+                el.onclick = () => addItem(item);
+                list.appendChild(el);
+            });
+        }
+
+        async function fetchVideoDetails(vid) {
+            if (!S.apiKey) return { vid, title: 'YouTube video', channel: '', thumb: `https://i.ytimg.com/vi/${vid}/mqdefault.jpg` };
+            try {
+                const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${vid}&key=${S.apiKey}`;
+                const res = await fetch(url);
+                const data = await res.json();
+                const item = data.items?.[0];
+                if (!item) return null;
+                return {
+                    vid, title: item.snippet.title, channel: item.snippet.channelTitle,
+                    thumb: item.snippet.thumbnails?.medium?.url || `https://i.ytimg.com/vi/${vid}/mqdefault.jpg`,
+                };
+            } catch { return { vid, title: 'YouTube video', channel: '', thumb: `https://i.ytimg.com/vi/${vid}/mqdefault.jpg` }; }
+        }
+
+        // ── ADD FROM URL ──────────────────────────────────────────────────
+        async function addFromUrl() {
+            const raw = document.getElementById('url-input').value.trim();
+            const vid = extractId(raw);
+            if (!vid) { toast('⚠️ Paste a valid YouTube link'); return; }
+            const item = await fetchVideoDetails(vid);
+            if (item) { addItem(item); document.getElementById('url-input').value = ''; }
+        }
+
+        function extractId(url) {
+            const m = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([^&\n?#]+)/);
+            return m ? m[1] : null;
+        }
+
+        // ── QUEUE ─────────────────────────────────────────────────────────
+        function addItem(item) {
+            S.queue.push(item);
+            renderQueue();
+            if (S.currentIdx < 0) playIdx(0);
+            else toast(`Added: ${item.title.slice(0, 38)}…`);
+        }
+
+        function renderQueue() {
+            const list = document.getElementById('queue-list');
+            if (!S.queue.length) {
+                list.innerHTML = '<div class="queue-empty">nothing queued yet ♪</div>';
+                return;
+            }
+            list.innerHTML = '';
+            S.queue.forEach((item, i) => {
+                const el = document.createElement('div');
+                el.className = 'q-item' + (i === S.currentIdx ? ' playing' : '');
+                el.innerHTML = `
+      <div class="q-num">${i === S.currentIdx ? '▶' : i + 1}</div>
+      <img class="q-thumb" src="${esc(item.thumb)}" onerror="this.style.opacity='0.1'" loading="lazy" />
+      <div class="q-info">
+        <div class="q-title">${esc(item.title)}</div>
+        <div class="q-ch">${esc(item.channel || '')}</div>
+      </div>
+      <button class="q-del" onclick="removeItem(${i},event)">✕</button>
+    `;
+                el.onclick = e => { if (!e.target.classList.contains('q-del')) playIdx(i); };
+                list.appendChild(el);
+            });
+        }
+
+        function removeItem(i, e) {
+            e.stopPropagation();
+            S.queue.splice(i, 1);
+            if (i < S.currentIdx) S.currentIdx--;
+            else if (i === S.currentIdx) {
+                if (S.queue.length) playIdx(Math.min(i, S.queue.length - 1));
+                else { S.currentIdx = -1; clearPlayer(); }
+            }
+            renderQueue();
+        }
+
+        function clearQueue() {
+            if (!S.queue.length) return;
+            if (!confirm('Clear the queue?')) return;
+            S.queue = []; S.currentIdx = -1;
+            renderQueue(); clearPlayer();
+        }
+
+        function skipNext() {
+            if (S.currentIdx < S.queue.length - 1) playIdx(S.currentIdx + 1);
+            else toast('🎵 End of queue');
+        }
+
+        // ── PLAYER ────────────────────────────────────────────────────────
+        function playIdx(i) {
+            if (i < 0 || i >= S.queue.length) return;
+            S.currentIdx = i;
+            const item = S.queue[i];
+
+            // Build embed URL — no autoplay to avoid restriction issues when on file://
+            // Use origin param to whitelist — falls back gracefully
+            const origin = location.origin.startsWith('file') ? '' : `&origin=${encodeURIComponent(location.origin)}`;
+            const src = `https://www.youtube.com/embed/${item.vid}?autoplay=1&rel=0&modestbranding=1&playsinline=1${origin}`;
+
+            const iframe = document.getElementById('yt-iframe');
+            iframe.setAttribute('src', src);
+            iframe.style.display = 'block';
+            hide('vid-placeholder');
+
+            // Update now playing
+            document.getElementById('np-title').textContent = item.title;
+            document.getElementById('np-channel').textContent = item.channel || '';
+            const npThumb = document.getElementById('np-thumb');
+            npThumb.src = item.thumb; npThumb.style.opacity = '1';
+            show('np-anim', 'flex');
+
+            // Mobile bar
+            document.getElementById('mob-title').textContent = item.title;
+            document.getElementById('mob-ch').textContent = item.channel || '';
+            const mobThumb = document.getElementById('mob-thumb');
+            mobThumb.src = item.thumb; mobThumb.style.opacity = '1';
+
+            renderQueue();
+        }
+
+        function clearPlayer() {
+            const iframe = document.getElementById('yt-iframe');
+            iframe.removeAttribute('src');
+            iframe.style.display = 'none';
+            show('vid-placeholder', 'flex');
+            document.getElementById('np-title').textContent = 'Nothing playing';
+            document.getElementById('np-channel').textContent = 'add a song from search';
+            document.getElementById('np-thumb').src = '';
+            hide('np-anim');
+            document.getElementById('mob-title').textContent = 'Nothing playing';
+            document.getElementById('mob-ch').textContent = 'add a song above';
+            document.getElementById('mob-thumb').src = '';
+        }
+
+        // ── SHARE ─────────────────────────────────────────────────────────
+        function shareCurrentSong() {
+            const item = S.queue[S.currentIdx];
+            if (!item) { toast('Nothing playing'); return; }
+            const url = `${location.origin}${location.pathname}?v=${item.vid}${S.roomId ? '&room=' + S.roomId : ''}`;
+            navigator.clipboard.writeText(url).catch(() => { });
+            toast('🔗 Song link copied!');
+        }
+
+        // ── ROOM ──────────────────────────────────────────────────────────
+        function openRoom() {
+            if (!S.roomId) S.roomId = Math.random().toString(36).slice(2, 9).toUpperCase();
+            const link = `${location.origin}${location.pathname}?room=${S.roomId}`;
+            document.getElementById('share-link-text').textContent = link;
+            navigator.clipboard.writeText(link).catch(() => { });
+            document.getElementById('conn-dot').classList.add('live');
+            document.getElementById('conn-label').textContent = 'room ' + S.roomId;
+            toast('🔗 Room link copied — send to your friend!');
+        }
+
+        function joinRoom(id) {
+            S.roomId = id;
+            const link = `${location.origin}${location.pathname}?room=${id}`;
+            document.getElementById('share-link-text').textContent = link;
+            document.getElementById('conn-dot').classList.add('live');
+            document.getElementById('conn-label').textContent = 'room ' + id;
+            document.getElementById('friend-ring').classList.add('on');
+            document.getElementById('friend-state').textContent = 'in the room ✓';
+            toast('Joined room ' + id);
+        }
+
+        function copyShareLink() {
+            const t = document.getElementById('share-link-text').textContent;
+            if (t.startsWith('click')) { openRoom(); return; }
+            navigator.clipboard.writeText(t).catch(() => { });
+            toast('✓ Copied!');
+        }
+
+        // ── NAME ──────────────────────────────────────────────────────────
+        function changeName() {
+            const n = prompt('Your name in Bobo Tunes:', S.myName);
+            if (n && n.trim()) {
+                S.myName = n.trim();
+                localStorage.setItem('bt_name', S.myName);
+                document.getElementById('my-name').textContent = S.myName;
+                document.getElementById('my-avatar').childNodes[0].textContent = S.myName[0].toUpperCase();
+            }
+        }
+
+        // ── REACTIONS ─────────────────────────────────────────────────────
+        function sendReaction(emoji) {
+            for (let i = 0; i < 4; i++) setTimeout(() => spawnEmoji(emoji), i * 100);
+            appendMsg(`reacted ${emoji}`, true, true);
+        }
+
+        function spawnEmoji(emoji) {
+            const el = document.createElement('div');
+            el.className = 'float-emoji';
+            el.textContent = emoji;
+            el.style.left = (15 + Math.random() * 70) + 'vw';
+            el.style.bottom = '100px';
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 2600);
+        }
+
+        // ── CHAT ──────────────────────────────────────────────────────────
+        function sendMsg() {
+            const input = document.getElementById('chat-input');
+            const msg = input.value.trim();
+            if (!msg) return;
+            appendMsg(msg, true);
+            input.value = '';
+        }
+
+        function appendMsg(text, isMe) {
+            const box = document.getElementById('chat-messages');
+            const el = document.createElement('div');
+            el.className = 'msg ' + (isMe ? 'me' : 'them');
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            el.innerHTML = `
+    <div class="bubble">${esc(text)}</div>
+    <div class="msg-time">${time} · ${isMe ? esc(S.myName) : 'Friend'}</div>
+  `;
+            box.appendChild(el);
+            box.scrollTop = box.scrollHeight;
+        }
+    </script>
+</body>
+
+</html>
