@@ -23,14 +23,14 @@
             --purple: #7c3aed;
             --pink: #ec4899;
             --blue: #3b82f6;
-            --text: #ffffff;
+            --text: #fff;
             --text2: #b3b3b3;
             --text3: #6b6b80;
             --red: #ef4444;
             --r: 14px;
             --r-sm: 10px;
-            --nav-h: 60px;
-            --mob-bar-h: 76px;
+            --nav: 60px;
+            --mob: 72px;
         }
 
         * {
@@ -53,7 +53,7 @@
             overflow-x: hidden;
         }
 
-        /* ── BACKGROUND ORBS ── */
+        /* BG */
         .bg-orbs {
             position: fixed;
             inset: 0;
@@ -76,7 +76,6 @@
             background: var(--accent);
             top: -150px;
             left: -150px;
-            animation-delay: 0s;
         }
 
         .orb2 {
@@ -132,14 +131,14 @@
             z-index: 9998;
         }
 
-        /* ── NAV ── */
+        /* NAV */
         nav {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             z-index: 200;
-            height: var(--nav-h);
+            height: var(--nav);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -149,22 +148,21 @@
             border-bottom: 1px solid var(--border);
         }
 
-        /* SVG LOGO */
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 9px;
             text-decoration: none;
         }
 
         .logo-svg {
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
             flex-shrink: 0;
         }
 
         .logo-text {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: 800;
             background: linear-gradient(135deg, #fff 30%, var(--accent));
             -webkit-background-clip: text;
@@ -173,7 +171,7 @@
             letter-spacing: -0.02em;
         }
 
-        @media (max-width: 400px) {
+        @media(max-width:380px) {
             .logo-text {
                 display: none;
             }
@@ -196,8 +194,7 @@
             font-size: 0.62rem;
             color: var(--text3);
             font-weight: 600;
-            max-width: 130px;
-            overflow: hidden;
+            max-width: 120px;
         }
 
         .pill-text {
@@ -241,7 +238,7 @@
             font-size: 0.7rem;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all .2s;
             white-space: nowrap;
         }
 
@@ -251,7 +248,7 @@
         }
 
         .nav-btn:active {
-            transform: scale(0.97);
+            transform: scale(0.96);
         }
 
         .nav-btn-ghost {
@@ -260,9 +257,9 @@
             border: 1px solid var(--border2);
             border-radius: 100px;
             padding: 7px 12px;
-            font-size: 0.78rem;
+            font-size: 0.8rem;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all .2s;
         }
 
         .nav-btn-ghost:hover {
@@ -270,25 +267,23 @@
             color: var(--text);
         }
 
-        /* ── LAYOUT ── */
+        /* LAYOUT */
         .app {
             display: grid;
-            grid-template-columns: 1fr 290px;
+            grid-template-columns: 1fr 288px;
             gap: 1rem;
             max-width: 1080px;
             margin: 0 auto;
-            padding: calc(var(--nav-h) + 1rem) 1rem 2rem;
+            padding: calc(var(--nav) + 1rem) 1rem 2rem;
             position: relative;
             z-index: 1;
-            min-height: 100vh;
         }
 
-        /* ── MOBILE LAYOUT ── */
-        @media (max-width: 800px) {
+        @media(max-width:800px) {
             .app {
                 grid-template-columns: 1fr;
-                padding: calc(var(--nav-h) + 0.75rem) 0.75rem calc(var(--mob-bar-h) + 1rem);
-                gap: 0.75rem;
+                padding: calc(var(--nav) + .75rem) .75rem calc(var(--mob) + 1rem);
+                gap: .75rem;
             }
 
             .sidebar {
@@ -316,14 +311,14 @@
             }
         }
 
-        /* ── CARDS ── */
+        /* CARDS */
         .card {
-            background: rgba(20, 20, 28, 0.8);
+            background: rgba(20, 20, 28, 0.82);
             border: 1px solid var(--border);
             border-radius: var(--r);
             backdrop-filter: blur(16px);
             overflow: hidden;
-            transition: border-color 0.2s;
+            transition: border-color .2s;
         }
 
         .card:hover {
@@ -337,26 +332,25 @@
         .section-title {
             font-size: 0.58rem;
             font-weight: 700;
-            letter-spacing: 0.14em;
+            letter-spacing: .14em;
             text-transform: uppercase;
             color: var(--text3);
-            margin-bottom: 0.9rem;
+            margin-bottom: .9rem;
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
         .sync-badge {
-            font-size: 0.5rem;
+            font-size: .5rem;
             color: var(--accent);
             background: var(--accent-dim);
             border-radius: 100px;
             padding: 1px 6px;
             font-weight: 700;
-            letter-spacing: 0.05em;
         }
 
-        /* ── PLAYER ── */
+        /* VIDEO */
         .video-wrap {
             position: relative;
             aspect-ratio: 16/9;
@@ -420,16 +414,18 @@
             }
         }
 
-        #player-div {
+        #yt-iframe {
             position: absolute;
             inset: 0;
             width: 100%;
             height: 100%;
+            border: none;
+            display: none;
         }
 
-        /* ── NOW PLAYING ── */
+        /* NOW PLAYING */
         .now-playing-bar {
-            padding: 0.9rem 1.1rem;
+            padding: .9rem 1.1rem;
             background: linear-gradient(135deg, rgba(29, 185, 84, 0.07), rgba(124, 58, 237, 0.04));
             border-top: 1px solid var(--border);
             display: flex;
@@ -459,7 +455,7 @@
         }
 
         .np-title {
-            font-size: 0.85rem;
+            font-size: .85rem;
             font-weight: 700;
             white-space: nowrap;
             overflow: hidden;
@@ -467,7 +463,7 @@
         }
 
         .np-channel {
-            font-size: 0.64rem;
+            font-size: .64rem;
             color: var(--text3);
             margin-top: 3px;
         }
@@ -490,7 +486,7 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.18s;
+            transition: all .18s;
         }
 
         .icon-btn:hover {
@@ -500,11 +496,7 @@
             transform: scale(1.1);
         }
 
-        .icon-btn:active {
-            transform: scale(0.95);
-        }
-
-        /* EQ bars */
+        /* EQ */
         .eq-bars {
             display: flex;
             align-items: flex-end;
@@ -516,30 +508,30 @@
         .eq-bar {
             width: 3px;
             border-radius: 2px;
-            animation: eqBounce 0.9s ease-in-out infinite;
+            animation: eqB .9s ease-in-out infinite;
         }
 
         .eq-bar:nth-child(1) {
-            background: #1db954;
+            background: var(--accent);
             animation-delay: 0s;
         }
 
         .eq-bar:nth-child(2) {
-            background: #1ed760;
+            background: var(--accent2);
             animation-delay: .18s;
         }
 
         .eq-bar:nth-child(3) {
-            background: #1db954;
+            background: var(--accent);
             animation-delay: .36s;
         }
 
         .eq-bar:nth-child(4) {
-            background: #1ed760;
+            background: var(--accent2);
             animation-delay: .54s;
         }
 
-        @keyframes eqBounce {
+        @keyframes eqB {
 
             0%,
             100% {
@@ -551,9 +543,9 @@
             }
         }
 
-        /* ── CONTROLS BAR ── */
+        /* CONTROLS */
         .controls-bar {
-            padding: 0.7rem 1.1rem;
+            padding: .7rem 1.1rem;
             border-top: 1px solid var(--border);
             display: flex;
             align-items: center;
@@ -573,17 +565,16 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.18s;
+            transition: all .18s;
         }
 
         .ctrl-btn:hover {
             background: var(--surface);
             color: var(--text);
-            border-color: var(--border2);
         }
 
         .ctrl-btn:active {
-            transform: scale(0.92);
+            transform: scale(0.9);
         }
 
         .ctrl-btn.play-pause {
@@ -600,16 +591,9 @@
             background: var(--accent2);
         }
 
-        .sync-note {
-            font-size: 0.58rem;
-            color: var(--text3);
-            text-align: center;
-            padding: 0 1.1rem 0.6rem;
-        }
-
-        /* ── REACTIONS ── */
+        /* REACTIONS */
         .reactions-bar {
-            padding: 0.75rem 1.1rem;
+            padding: .75rem 1.1rem;
             border-top: 1px solid var(--border);
             display: flex;
             align-items: center;
@@ -618,10 +602,10 @@
         }
 
         .react-label {
-            font-size: 0.58rem;
+            font-size: .58rem;
             color: var(--text3);
             font-weight: 700;
-            letter-spacing: 0.08em;
+            letter-spacing: .08em;
             text-transform: uppercase;
             margin-right: 3px;
             flex-shrink: 0;
@@ -632,11 +616,11 @@
             border: 1px solid var(--border2);
             border-radius: 100px;
             padding: 5px 11px;
-            font-size: 0.72rem;
+            font-size: .72rem;
             cursor: pointer;
             color: var(--text2);
             font-family: 'Plus Jakarta Sans', sans-serif;
-            transition: all 0.15s;
+            transition: all .15s;
             display: flex;
             align-items: center;
             gap: 4px;
@@ -678,14 +662,14 @@
             }
         }
 
-        /* ── SEARCH ── */
+        /* SEARCH */
         .search-tabs {
             display: flex;
             gap: 4px;
             background: var(--bg);
             border-radius: var(--r-sm);
             padding: 3px;
-            margin-bottom: 0.9rem;
+            margin-bottom: .9rem;
         }
 
         .s-tab {
@@ -696,10 +680,10 @@
             background: none;
             color: var(--text3);
             font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 0.7rem;
+            font-size: .7rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.15s;
+            transition: all .15s;
             text-align: center;
         }
 
@@ -711,7 +695,7 @@
         .search-row {
             display: flex;
             gap: 7px;
-            margin-bottom: 0.9rem;
+            margin-bottom: .9rem;
         }
 
         .search-input {
@@ -721,10 +705,10 @@
             border-radius: var(--r-sm);
             padding: 10px 13px;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 0.8rem;
+            font-size: .8rem;
             color: var(--text);
             outline: none;
-            transition: all 0.2s;
+            transition: all .2s;
         }
 
         .search-input:focus {
@@ -743,10 +727,10 @@
             border-radius: var(--r-sm);
             padding: 10px 16px;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 0.75rem;
+            font-size: .75rem;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all .2s;
             white-space: nowrap;
             display: flex;
             align-items: center;
@@ -758,7 +742,7 @@
         }
 
         .search-btn:disabled {
-            opacity: 0.4;
+            opacity: .4;
             cursor: not-allowed;
         }
 
@@ -788,7 +772,7 @@
             padding: 7px 9px;
             border-radius: var(--r-sm);
             cursor: pointer;
-            transition: all 0.14s;
+            transition: all .14s;
             border: 1px solid transparent;
         }
 
@@ -816,7 +800,7 @@
         }
 
         .result-title {
-            font-size: 0.76rem;
+            font-size: .76rem;
             font-weight: 600;
             color: var(--text);
             white-space: nowrap;
@@ -825,7 +809,7 @@
         }
 
         .result-channel {
-            font-size: 0.6rem;
+            font-size: .6rem;
             color: var(--text3);
             margin-top: 2px;
         }
@@ -843,7 +827,7 @@
             justify-content: center;
             cursor: pointer;
             flex-shrink: 0;
-            transition: all 0.15s;
+            transition: all .15s;
         }
 
         .add-btn:hover {
@@ -856,11 +840,11 @@
         .search-empty {
             padding: 2rem 1rem;
             text-align: center;
-            font-size: 0.76rem;
+            font-size: .76rem;
             color: var(--text3);
         }
 
-        /* ── ROOM ── */
+        /* ROOM */
         .user-row {
             display: flex;
             align-items: center;
@@ -877,7 +861,7 @@
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            font-size: 0.8rem;
+            font-size: .8rem;
             font-weight: 800;
             display: flex;
             align-items: center;
@@ -920,7 +904,7 @@
         }
 
         .user-name {
-            font-size: 0.8rem;
+            font-size: .8rem;
             font-weight: 700;
             color: var(--text);
             cursor: pointer;
@@ -931,13 +915,13 @@
         }
 
         .user-status {
-            font-size: 0.6rem;
+            font-size: .6rem;
             color: var(--text3);
             margin-top: 2px;
         }
 
         .share-box {
-            margin-top: 0.75rem;
+            margin-top: .75rem;
             background: var(--bg);
             border: 1px dashed var(--border2);
             border-radius: var(--r-sm);
@@ -949,7 +933,7 @@
 
         .share-text {
             flex: 1;
-            font-size: 0.6rem;
+            font-size: .6rem;
             color: var(--text3);
             overflow: hidden;
             text-overflow: ellipsis;
@@ -962,12 +946,12 @@
             border: 1px solid var(--border2);
             border-radius: 6px;
             padding: 3px 9px;
-            font-size: 0.6rem;
+            font-size: .6rem;
             color: var(--accent);
             cursor: pointer;
             font-family: 'Plus Jakarta Sans', sans-serif;
             font-weight: 700;
-            transition: all 0.15s;
+            transition: all .15s;
             white-space: nowrap;
         }
 
@@ -977,22 +961,22 @@
             border-color: var(--accent);
         }
 
-        /* ── QUEUE ── */
+        /* QUEUE */
         .queue-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 1.1rem 1.1rem 0.7rem;
+            padding: 1.1rem 1.1rem .7rem;
         }
 
         .clear-btn {
             background: none;
             border: none;
-            font-size: 0.6rem;
+            font-size: .6rem;
             color: var(--text3);
             cursor: pointer;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            transition: color 0.15s;
+            transition: color .15s;
         }
 
         .clear-btn:hover {
@@ -1000,7 +984,7 @@
         }
 
         .queue-list {
-            padding: 0 0.9rem 0.9rem;
+            padding: 0 .9rem .9rem;
             display: flex;
             flex-direction: column;
             gap: 2px;
@@ -1026,7 +1010,7 @@
             padding: 7px;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.12s;
+            transition: all .12s;
             border: 1px solid transparent;
         }
 
@@ -1045,7 +1029,7 @@
         }
 
         .q-num {
-            font-size: 0.58rem;
+            font-size: .58rem;
             color: var(--text3);
             width: 14px;
             text-align: center;
@@ -1071,7 +1055,7 @@
         }
 
         .q-title {
-            font-size: 0.7rem;
+            font-size: .7rem;
             font-weight: 600;
             white-space: nowrap;
             overflow: hidden;
@@ -1084,7 +1068,7 @@
         }
 
         .q-ch {
-            font-size: 0.57rem;
+            font-size: .57rem;
             color: var(--text3);
         }
 
@@ -1101,7 +1085,7 @@
             align-items: center;
             justify-content: center;
             opacity: 0;
-            transition: all 0.12s;
+            transition: all .12s;
         }
 
         .q-item:hover .q-del {
@@ -1116,12 +1100,12 @@
         .queue-empty {
             padding: 1.5rem;
             text-align: center;
-            font-size: 0.7rem;
+            font-size: .7rem;
             color: var(--text3);
             font-style: italic;
         }
 
-        /* ── CHAT ── */
+        /* CHAT */
         .chat-body {
             padding: 0 1.1rem 1.1rem;
         }
@@ -1163,7 +1147,7 @@
         .bubble {
             max-width: 88%;
             padding: 7px 11px;
-            font-size: 0.74rem;
+            font-size: .74rem;
             line-height: 1.5;
             border-radius: 13px;
         }
@@ -1183,7 +1167,7 @@
         }
 
         .msg-time {
-            font-size: 0.54rem;
+            font-size: .54rem;
             color: var(--text3);
         }
 
@@ -1199,10 +1183,10 @@
             border-radius: var(--r-sm);
             padding: 9px 13px;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 0.76rem;
+            font-size: .76rem;
             color: var(--text);
             outline: none;
-            transition: all 0.2s;
+            transition: all .2s;
         }
 
         .chat-input:focus {
@@ -1222,7 +1206,7 @@
             cursor: pointer;
             font-size: 15px;
             font-weight: 700;
-            transition: all 0.15s;
+            transition: all .15s;
         }
 
         .send-btn:hover {
@@ -1233,14 +1217,14 @@
             transform: scale(0.94);
         }
 
-        /* ── MOBILE BOTTOM PLAYER BAR ── */
-        .mob-player {
+        /* MOBILE BAR */
+        .mob-bar {
             display: none;
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            height: var(--mob-bar-h);
+            height: var(--mob);
             background: rgba(12, 12, 20, 0.98);
             backdrop-filter: blur(28px);
             border-top: 1px solid var(--border2);
@@ -1250,20 +1234,20 @@
             gap: 10px;
         }
 
-        @media (max-width: 800px) {
-            .mob-player {
+        @media(max-width:800px) {
+            .mob-bar {
                 display: flex;
             }
         }
 
         .mob-thumb {
-            width: 46px;
-            height: 46px;
+            width: 44px;
+            height: 44px;
             border-radius: 8px;
             object-fit: cover;
             background: var(--bg4);
             flex-shrink: 0;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
         }
 
         .mob-info {
@@ -1272,7 +1256,7 @@
         }
 
         .mob-title {
-            font-size: 0.78rem;
+            font-size: .76rem;
             font-weight: 700;
             white-space: nowrap;
             overflow: hidden;
@@ -1280,30 +1264,30 @@
         }
 
         .mob-ch {
-            font-size: 0.6rem;
+            font-size: .6rem;
             color: var(--text3);
             margin-top: 2px;
         }
 
         .mob-actions {
             display: flex;
-            gap: 6px;
+            gap: 5px;
             align-items: center;
         }
 
         .mob-ctrl {
-            width: 36px;
-            height: 36px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             background: var(--bg3);
             border: 1px solid var(--border2);
             color: var(--text2);
-            font-size: 14px;
+            font-size: 13px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.18s;
+            transition: all .18s;
         }
 
         .mob-ctrl:hover {
@@ -1319,29 +1303,29 @@
             background: var(--accent);
             color: #000;
             border-color: var(--accent);
-            font-size: 16px;
+            font-size: 15px;
         }
 
         .mob-ctrl.play:hover {
             background: var(--accent2);
         }
 
-        /* ── TOAST ── */
+        /* TOAST */
         #toast {
             position: fixed;
-            bottom: calc(var(--mob-bar-h) + 0.75rem);
+            bottom: calc(var(--mob) + .6rem);
             left: 50%;
             transform: translateX(-50%) translateY(80px);
-            background: rgba(30, 30, 42, 0.95);
+            background: rgba(28, 28, 40, 0.97);
             color: var(--text);
             border: 1px solid var(--border2);
             border-radius: 100px;
             padding: 9px 20px;
-            font-size: 0.73rem;
+            font-size: .72rem;
             font-weight: 600;
             z-index: 9999;
             pointer-events: none;
-            transition: transform 0.3s cubic-bezier(.34, 1.56, .64, 1);
+            transition: transform .3s cubic-bezier(.34, 1.56, .64, 1);
             white-space: nowrap;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
         }
@@ -1350,14 +1334,13 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        /* Spinner */
         .spinner {
             width: 13px;
             height: 13px;
             border: 2px solid rgba(0, 0, 0, 0.25);
             border-top-color: #000;
             border-radius: 50%;
-            animation: spin 0.65s linear infinite;
+            animation: spin .65s linear infinite;
             display: inline-block;
             vertical-align: middle;
         }
@@ -1379,37 +1362,31 @@
         <div class="orb orb4"></div>
     </div>
 
-    <!-- ── NAV ── -->
     <nav>
         <a class="logo" href="#">
-            <!-- Custom SVG logo: headphones with a waveform -->
-            <svg class="logo-svg" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="38" height="38" rx="11" fill="#1db954" />
-                <path d="M10 20.5C10 15.253 14.253 11 19.5 11C24.747 11 29 15.253 29 20.5" stroke="white"
-                    stroke-width="2" stroke-linecap="round" />
-                <rect x="8" y="20" width="4" height="7" rx="2" fill="white" />
-                <rect x="26" y="20" width="4" height="7" rx="2" fill="white" />
-                <rect x="14.5" y="22" width="2" height="5" rx="1" fill="rgba(255,255,255,0.6)" />
-                <rect x="18" y="20" width="2" height="9" rx="1" fill="rgba(255,255,255,0.9)" />
-                <rect x="21.5" y="23" width="2" height="4" rx="1" fill="rgba(255,255,255,0.6)" />
+            <svg class="logo-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="36" height="36" rx="10" fill="#1db954" />
+                <path d="M9 19C9 14.029 13.029 10 18 10C22.971 10 27 14.029 27 19" stroke="white" stroke-width="2.2"
+                    stroke-linecap="round" />
+                <rect x="7" y="19" width="4" height="7" rx="2" fill="white" />
+                <rect x="25" y="19" width="4" height="7" rx="2" fill="white" />
+                <rect x="13.5" y="21" width="2.2" height="4.5" rx="1.1" fill="rgba(0,50,20,0.7)" />
+                <rect x="16.9" y="19.5" width="2.2" height="7.5" rx="1.1" fill="rgba(0,50,20,0.9)" />
+                <rect x="20.3" y="22" width="2.2" height="3.5" rx="1.1" fill="rgba(0,50,20,0.7)" />
             </svg>
             <span class="logo-text">Bobo Tunes</span>
         </a>
         <div class="nav-right">
             <div class="pill">
-                <div class="dot" id="conn-dot"></div>
-                <span class="pill-text" id="conn-label">solo</span>
+                <div class="dot" id="conn-dot"></div><span class="pill-text" id="conn-label">solo</span>
             </div>
             <button class="nav-btn" onclick="openRoom()">+ Invite</button>
             <button class="nav-btn-ghost" onclick="changeName()">✏</button>
         </div>
     </nav>
 
-    <!-- ── APP ── -->
     <div class="app">
-
-        <!-- LEFT COLUMN -->
-        <div style="display:flex;flex-direction:column;gap:0.9rem;">
+        <div style="display:flex;flex-direction:column;gap:.9rem;">
 
             <!-- Player -->
             <div class="card card-player">
@@ -1424,15 +1401,18 @@
                             </svg>
                         </div>
                         <div style="text-align:center;">
-                            <div style="font-weight:700;font-size:0.88rem;color:var(--text2);">Nothing playing yet</div>
-                            <div style="font-size:0.68rem;margin-top:5px;color:var(--text3);">search a song and add it
-                                to the queue</div>
+                            <div style="font-weight:700;font-size:.88rem;color:var(--text2);">Nothing playing yet</div>
+                            <div style="font-size:.68rem;margin-top:5px;color:var(--text3);">search a song and add it to
+                                the queue</div>
                         </div>
                     </div>
-                    <div id="player-div"></div>
+                    <iframe id="yt-iframe" allowfullscreen
+                        allow="autoplay; encrypted-media; gyroscope; picture-in-picture"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-forms">
+                    </iframe>
                 </div>
 
-                <!-- Now playing -->
                 <div class="now-playing-bar">
                     <img class="np-thumb" id="np-thumb" src="" onerror="this.style.opacity='0.1'" />
                     <div class="np-info">
@@ -1452,16 +1432,12 @@
                     </div>
                 </div>
 
-                <!-- Controls -->
                 <div class="controls-bar">
-                    <button class="ctrl-btn" title="Previous" onclick="playPrev()">⏮</button>
-                    <button class="ctrl-btn play-pause" id="play-pause-btn" title="Play/Pause"
-                        onclick="togglePlayPause()">▶</button>
-                    <button class="ctrl-btn" title="Skip" onclick="skipNext()">⏭</button>
+                    <button class="ctrl-btn" onclick="playPrev()">⏮</button>
+                    <button class="ctrl-btn play-pause" id="play-pause-btn" onclick="togglePlayPause()">▶</button>
+                    <button class="ctrl-btn" onclick="skipNext()">⏭</button>
                 </div>
-                <div class="sync-note" id="sync-note" style="display:none;">⚡ pause/play syncs to both devices</div>
 
-                <!-- Reactions -->
                 <div class="reactions-bar">
                     <span class="react-label">react</span>
                     <button class="react-btn" onclick="sendReaction('🔥')">🔥 fire</button>
@@ -1475,7 +1451,7 @@
 
             <!-- Search -->
             <div class="card card-search">
-                <div class="card-pad" style="padding-bottom:0.75rem;">
+                <div class="card-pad" style="padding-bottom:.75rem;">
                     <div class="section-title">Find Music</div>
                     <div class="search-tabs">
                         <button class="s-tab active" onclick="setTab('search',this)">🔍 Search YouTube</button>
@@ -1484,7 +1460,7 @@
                     <div id="tab-search">
                         <div class="search-row">
                             <input class="search-input" id="search-input" placeholder="song, artist, album…"
-                                oninput="onSearchInput()" onkeydown="if(event.key==='Enter') doSearch()" />
+                                oninput="onSearchInput()" onkeydown="if(event.key==='Enter')doSearch()" />
                             <button class="search-btn" id="search-btn" onclick="doSearch()">
                                 <span id="search-btn-text">Search</span>
                             </button>
@@ -1496,7 +1472,7 @@
                     <div id="tab-url" style="display:none;">
                         <div class="search-row">
                             <input class="search-input" id="url-input" placeholder="https://youtube.com/watch?v=…"
-                                onkeydown="if(event.key==='Enter') addFromUrl()" />
+                                onkeydown="if(event.key==='Enter')addFromUrl()" />
                             <button class="search-btn" onclick="addFromUrl()">Add</button>
                         </div>
                     </div>
@@ -1504,16 +1480,12 @@
             </div>
         </div>
 
-        <!-- SIDEBAR -->
         <div class="sidebar">
-
-            <!-- Room -->
             <div class="card card-room">
                 <div class="card-pad">
                     <div class="section-title">The Room</div>
                     <div class="user-row">
-                        <div class="avatar avatar-you" style="position:relative;">
-                            <span id="my-avatar-letter">Y</span>
+                        <div class="avatar avatar-you" style="position:relative;"><span id="my-avatar-letter">Y</span>
                             <div class="online-ring on"></div>
                         </div>
                         <div style="flex:1;min-width:0;">
@@ -1522,8 +1494,8 @@
                         </div>
                     </div>
                     <div class="user-row">
-                        <div class="avatar avatar-them" style="position:relative;">
-                            <span id="friend-avatar-letter">F</span>
+                        <div class="avatar avatar-them" style="position:relative;"><span
+                                id="friend-avatar-letter">F</span>
                             <div class="online-ring" id="friend-ring"></div>
                         </div>
                         <div style="flex:1;min-width:0;">
@@ -1538,7 +1510,6 @@
                 </div>
             </div>
 
-            <!-- Queue -->
             <div class="card card-queue">
                 <div class="queue-header">
                     <div class="section-title" style="margin:0;">Queue <span class="sync-badge">⚡ live</span></div>
@@ -1549,26 +1520,24 @@
                 </div>
             </div>
 
-            <!-- Chat -->
             <div class="card card-chat">
-                <div style="padding:1.1rem 1.1rem 0.7rem;">
+                <div style="padding:1.1rem 1.1rem .7rem;">
                     <div class="section-title">Chat <span class="sync-badge">⚡ live</span></div>
                 </div>
                 <div class="chat-body">
                     <div class="chat-messages" id="chat-messages"></div>
                     <div class="chat-row">
                         <input class="chat-input" id="chat-input" placeholder="say something…"
-                            onkeydown="if(event.key==='Enter') sendMsg()" />
+                            onkeydown="if(event.key==='Enter')sendMsg()" />
                         <button class="send-btn" onclick="sendMsg()">→</button>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
-    <!-- ── MOBILE BOTTOM PLAYER ── -->
-    <div class="mob-player" id="mob-player">
+    <!-- Mobile bar -->
+    <div class="mob-bar">
         <img class="mob-thumb" id="mob-thumb" src="" onerror="this.style.opacity='0.1'" />
         <div class="mob-info">
             <div class="mob-title" id="mob-title">Nothing playing</div>
@@ -1584,24 +1553,14 @@
 
     <div id="toast"></div>
 
-    <!-- ══════════════════════════════════
-     YOUTUBE IFrame API
-══════════════════════════════════ -->
-    <script src="https://www.youtube.com/iframe_api"></script>
-
-    <!-- ══════════════════════════════════
-     FIREBASE + APP
-══════════════════════════════════ -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import {
-            getDatabase, ref, set, push, remove, onValue, onDisconnect, serverTimestamp
-        } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+        import { getDatabase, ref, set, push, remove, onValue, onDisconnect, serverTimestamp }
+            from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-        /* ─── CONFIG ─────────────────────────────── */
+        /* ── CONFIG ── */
         const YT_KEY = 'AIzaSyAy5Lo0jp8eipVgjBSeUh0Z2p2Jnye7Jz0';
-
-        const fbApp = initializeApp({
+        const db = getDatabase(initializeApp({
             apiKey: "AIzaSyBTP9LLpbHUD9IgPhxoGEtnEVNrq29ZD_Y",
             authDomain: "bobotunes-e2eaa.firebaseapp.com",
             databaseURL: "https://bobotunes-e2eaa-default-rtdb.firebaseio.com",
@@ -1609,149 +1568,132 @@
             storageBucket: "bobotunes-e2eaa.firebasestorage.app",
             messagingSenderId: "204304527499",
             appId: "1:204304527499:web:bf80e706fe4bee3139a48e"
-        });
-        const db = getDatabase(fbApp);
+        }));
 
-        /* ─── IDENTITY ───────────────────────────── */
+        /* ── IDENTITY ── */
         if (!localStorage.getItem('bt_uid'))
             localStorage.setItem('bt_uid', Math.random().toString(36).slice(2, 12));
-
         const MY_ID = localStorage.getItem('bt_uid');
         const myName = () => localStorage.getItem('bt_name') || 'You';
 
-        /* ─── STATE ──────────────────────────────── */
+        /* ── STATE ── */
         let roomId = null;
         let localQueue = [];
         let currentIdx = -1;
-        let ytPlayer = null;  // YouTube IFrame Player instance
-        let ytReady = false;
         let isPlaying = false;
-        let ignoreStateChange = false; // prevent feedback loop
+        let currentVid = null;
         let searchTimer = null;
         let seenMsgKeys = new Set();
         let seenRxnKeys = new Set();
 
-        /* ─── YT PLAYER API ──────────────────────── */
-        // Called by YouTube API when ready
-        window.onYouTubeIframeAPIReady = function () {
-            ytReady = true;
-            ytPlayer = new YT.Player('player-div', {
-                height: '100%', width: '100%',
-                playerVars: { autoplay: 0, rel: 0, modestbranding: 1, playsinline: 1 },
-                events: {
-                    onReady: () => { },
-                    onStateChange: onYTStateChange
-                }
-            });
-        };
+        /* ── HELPERS ── */
+        const rref = p => ref(db, `rooms/${roomId}/${p}`);
+        const esc = s => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-        function onYTStateChange(event) {
-            if (ignoreStateChange) return;
-            if (!roomId) { updatePlayPauseBtn(event.data === YT.PlayerState.PLAYING); return; }
-
-            if (event.data === YT.PlayerState.PLAYING) {
-                isPlaying = true;
-                updatePlayPauseBtn(true);
-                // Sync play to Firebase
-                set(ref(db, `rooms/${roomId}/playback/state`), { playing: true, by: MY_ID, ts: Date.now() });
-            } else if (event.data === YT.PlayerState.PAUSED) {
-                isPlaying = false;
-                updatePlayPauseBtn(false);
-                // Sync pause to Firebase
-                set(ref(db, `rooms/${roomId}/playback/state`), { playing: false, by: MY_ID, ts: Date.now() });
-            } else if (event.data === YT.PlayerState.ENDED) {
-                // Auto-play next
-                if (currentIdx < localQueue.length - 1) playIdx(currentIdx + 1);
-            }
-        }
-
-        function updatePlayPauseBtn(playing) {
-            isPlaying = playing;
-            document.getElementById('play-pause-btn').textContent = playing ? '⏸' : '▶';
-            document.getElementById('mob-play-btn').textContent = playing ? '⏸' : '▶';
-            document.getElementById('eq-bars').style.display = playing ? 'flex' : 'none';
-        }
-
-        window.togglePlayPause = function () {
-            if (!ytPlayer || !ytReady) return;
-            if (isPlaying) ytPlayer.pauseVideo();
-            else ytPlayer.playVideo();
-        };
-
-        /* ─── HELPERS ────────────────────────────── */
-        function rref(path) { return ref(db, `rooms/${roomId}/${path}`); }
-
-        function esc(s) {
-            return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-        }
-
-        window.toast = function (msg) {
+        window.toast = msg => {
             const el = document.getElementById('toast');
             el.textContent = msg; el.classList.add('show');
             clearTimeout(window._tt);
             window._tt = setTimeout(() => el.classList.remove('show'), 2800);
         };
 
+        /* ── IFRAME PLAYER ── */
+        // Simple, reliable: set iframe src directly. autoplay=1 starts playing.
+        // Pause = reload src without autoplay. Resume = reload with autoplay=1.
+        // This always works regardless of browser/platform.
+
+        function buildSrc(vid, play) {
+            return `https://www.youtube.com/embed/${vid}?autoplay=${play ? 1 : 0}&rel=0&modestbranding=1&playsinline=1`;
+        }
+
+        function loadIframe(vid, play = true) {
+            const iframe = document.getElementById('yt-iframe');
+            iframe.src = buildSrc(vid, play);
+            iframe.style.display = 'block';
+            document.getElementById('vid-placeholder').style.display = 'none';
+            currentVid = vid;
+            setPlaying(play);
+        }
+
+        function clearIframe() {
+            const iframe = document.getElementById('yt-iframe');
+            iframe.src = ''; iframe.style.display = 'none';
+            document.getElementById('vid-placeholder').style.display = 'flex';
+            currentVid = null; setPlaying(false);
+        }
+
+        function setPlaying(p) {
+            isPlaying = p;
+            document.getElementById('play-pause-btn').textContent = p ? '⏸' : '▶';
+            document.getElementById('mob-play-btn').textContent = p ? '⏸' : '▶';
+            document.getElementById('eq-bars').style.display = p ? 'flex' : 'none';
+        }
+
         function updateNowPlaying(item) {
             document.getElementById('np-title').textContent = item ? item.title : 'Nothing playing';
-            document.getElementById('np-channel').textContent = item ? (item.channel || '') : 'add a song from search below';
+            document.getElementById('np-channel').textContent = item ? item.channel || '' : 'add a song from search below';
             const t = document.getElementById('np-thumb');
             t.src = item ? item.thumb : ''; t.style.opacity = item ? '1' : '0.1';
             document.getElementById('mob-title').textContent = item ? item.title : 'Nothing playing';
-            document.getElementById('mob-ch').textContent = item ? (item.channel || '') : '';
+            document.getElementById('mob-ch').textContent = item ? item.channel || '' : '';
             const m = document.getElementById('mob-thumb');
             m.src = item ? item.thumb : ''; m.style.opacity = item ? '1' : '0.1';
         }
 
-        /* ─── INIT ───────────────────────────────── */
+        /* ── TOGGLE PLAY/PAUSE ── */
+        window.togglePlayPause = function () {
+            if (!currentVid) return;
+            const newPlaying = !isPlaying;
+            loadIframe(currentVid, newPlaying);
+            // Sync to Firebase
+            if (roomId) {
+                set(rref('playback/state'), { playing: newPlaying, vid: currentVid, by: MY_ID, ts: Date.now() });
+            }
+        };
+
+        /* ── INIT ── */
         document.getElementById('my-name').textContent = myName();
         document.getElementById('my-avatar-letter').textContent = myName()[0].toUpperCase();
 
-        const urlParams = new URLSearchParams(location.search);
-        const paramRoom = urlParams.get('room');
-        const paramVid = urlParams.get('v');
+        const params = new URLSearchParams(location.search);
+        const paramRoom = params.get('room');
+        const paramVid = params.get('v');
 
         if (paramRoom) enterRoom(paramRoom);
-        if (paramVid) {
-            setTimeout(async () => {
-                const item = await fetchVideoDetails(paramVid);
-                if (item) addItemToQueue(item);
-            }, 1200);
-        }
+        if (paramVid) setTimeout(async () => {
+            const item = await fetchVideoDetails(paramVid);
+            if (item) addItemToQueue(item);
+        }, 1200);
 
-        /* ─── ROOM ───────────────────────────────── */
+        /* ── ROOM ── */
         window.openRoom = function () {
             if (!roomId) {
-                const newId = Math.random().toString(36).slice(2, 7).toUpperCase();
-                enterRoom(newId);
-                history.replaceState({}, '', `?room=${newId}`);
+                const id = Math.random().toString(36).slice(2, 7).toUpperCase();
+                enterRoom(id);
+                history.replaceState({}, '', `?room=${id}`);
             }
-            const link = buildLink();
+            const link = `${location.origin}${location.pathname}?room=${roomId}`;
             document.getElementById('share-link-text').textContent = link;
             navigator.clipboard.writeText(link).catch(() => { });
             toast('🔗 Room link copied — send to your friend!');
         };
 
-        function buildLink() {
-            return `${location.origin}${location.pathname}?room=${roomId}`;
-        }
-
         function enterRoom(id) {
             roomId = id;
             document.getElementById('conn-dot').classList.add('live');
             document.getElementById('conn-label').textContent = 'room ' + id;
-            document.getElementById('share-link-text').textContent = buildLink();
-            document.getElementById('sync-note').style.display = 'block';
+            document.getElementById('share-link-text').textContent =
+                `${location.origin}${location.pathname}?room=${id}`;
 
-            // Write presence
+            // Presence
             const presRef = ref(db, `rooms/${roomId}/presence/${MY_ID}`);
-            set(presRef, { name: myName(), online: true, joined: serverTimestamp() });
+            set(presRef, { name: myName(), online: true, ts: serverTimestamp() });
             onDisconnect(presRef).remove();
 
             // ── Presence listener ──
             onValue(ref(db, `rooms/${roomId}/presence`), snap => {
                 const data = snap.val() || {};
-                const others = Object.entries(data).filter(([uid]) => uid !== MY_ID);
+                const others = Object.entries(data).filter(([k]) => k !== MY_ID);
                 if (others.length > 0) {
                     const fname = others[0][1].name || 'Friend';
                     document.getElementById('friend-name').textContent = fname;
@@ -1771,83 +1713,65 @@
                 renderQueue();
             });
 
-            // ── Playback: which video ──
-            onValue(ref(db, `rooms/${roomId}/playback/current`), snap => {
+            // ── Playback current video listener ──
+            onValue(rref('playback/current'), snap => {
                 if (!snap.val()) return;
-                const { idx, vid, title, channel, thumb, by } = snap.val();
+                const { idx, vid, title, channel, thumb } = snap.val();
                 currentIdx = typeof idx === 'number' ? idx : -1;
                 updateNowPlaying({ vid, title, channel, thumb });
                 renderQueue();
-                // Load the video (both users)
-                if (ytReady && ytPlayer) {
-                    ignoreStateChange = true;
-                    ytPlayer.loadVideoById(vid);
-                    document.getElementById('vid-placeholder').style.display = 'none';
-                    setTimeout(() => { ignoreStateChange = false; }, 1000);
-                }
+                // Load video for BOTH users (it starts playing via autoplay=1)
+                loadIframe(vid, true);
             });
 
-            // ── Playback: play/pause state ──
-            onValue(ref(db, `rooms/${roomId}/playback/state`), snap => {
+            // ── Play/pause state listener ──
+            onValue(rref('playback/state'), snap => {
                 if (!snap.val()) return;
-                const { playing, by } = snap.val();
-                if (by === MY_ID) return; // ignore own events
-                if (!ytPlayer || !ytReady) return;
-                ignoreStateChange = true;
-                if (playing) ytPlayer.playVideo();
-                else ytPlayer.pauseVideo();
-                setTimeout(() => { ignoreStateChange = false; }, 800);
+                const { playing, vid, by } = snap.val();
+                if (by === MY_ID) return; // ignore own events — already applied locally
+                if (!vid) return;
+                loadIframe(vid, playing);
             });
 
             // ── Reactions listener ──
-            onValue(ref(db, `rooms/${roomId}/reactions`), snap => {
+            onValue(rref('reactions'), snap => {
                 if (!snap.val()) return;
                 Object.entries(snap.val()).forEach(([key, rx]) => {
                     if (seenRxnKeys.has(key)) return;
                     seenRxnKeys.add(key);
-                    if (rx.by !== MY_ID && Date.now() - rx.ts < 5000) {
+                    if (rx.by !== MY_ID && Date.now() - rx.ts < 5000)
                         for (let i = 0; i < 4; i++) setTimeout(() => spawnEmoji(rx.emoji), i * 120);
-                    }
                 });
             });
 
             // ── Chat listener ──
-            onValue(ref(db, `rooms/${roomId}/chat`), snap => {
+            onValue(rref('chat'), snap => {
                 if (!snap.val()) return;
                 Object.entries(snap.val()).forEach(([key, msg]) => {
                     if (seenMsgKeys.has(key)) return;
                     seenMsgKeys.add(key);
-                    appendChatBubble(msg.text, msg.uid === MY_ID, msg.name, msg.ts);
+                    appendBubble(msg.text, msg.uid === MY_ID, msg.name, msg.ts);
                 });
             });
         }
 
-        /* ─── PLAYBACK ───────────────────────────── */
+        /* ── PLAYBACK ── */
         function playIdx(i) {
             if (i < 0 || i >= localQueue.length) return;
             currentIdx = i;
             const item = localQueue[i];
             updateNowPlaying(item);
+            loadIframe(item.vid, true);
             renderQueue();
-            document.getElementById('vid-placeholder').style.display = 'none';
-
-            if (ytReady && ytPlayer) {
-                ignoreStateChange = true;
-                ytPlayer.loadVideoById(item.vid);
-                setTimeout(() => { ignoreStateChange = false; }, 1000);
-            }
-
+            // Sync to Firebase
             if (roomId) {
-                // Sync which video to Firebase
                 set(rref('playback/current'), {
-                    idx: i,
-                    vid: item.vid,
-                    title: item.title,
-                    channel: item.channel || '',
-                    thumb: item.thumb,
-                    by: MY_ID,
-                    ts: Date.now()
+                    idx: i, vid: item.vid,
+                    title: item.title, channel: item.channel || '', thumb: item.thumb,
+                    by: MY_ID, ts: Date.now()
                 });
+                // Also set state to playing
+                set(rref('playback/state'), { playing: true, vid: item.vid, by: MY_ID, ts: Date.now() });
             }
         }
 
@@ -1860,7 +1784,7 @@
             if (currentIdx > 0) playIdx(currentIdx - 1);
         };
 
-        /* ─── QUEUE ──────────────────────────────── */
+        /* ── QUEUE ── */
         function addItemToQueue(item) {
             if (!roomId) {
                 localQueue.push({ ...item, _key: Date.now().toString() });
@@ -1869,11 +1793,9 @@
                 else toast(`Added: ${item.title.slice(0, 36)}…`);
                 return;
             }
-            push(rref('queue'), {
-                vid: item.vid, title: item.title,
-                channel: item.channel || '', thumb: item.thumb
-            });
+            push(rref('queue'), { vid: item.vid, title: item.title, channel: item.channel || '', thumb: item.thumb });
             toast(`Added: ${item.title.slice(0, 36)}…`);
+            // Auto-play first song
             if (currentIdx < 0) setTimeout(() => { if (localQueue.length > 0 && currentIdx < 0) playIdx(0); }, 900);
         }
 
@@ -1887,10 +1809,7 @@
                 el.innerHTML = `
       <div class="q-num">${i === currentIdx ? '▶' : i + 1}</div>
       <img class="q-thumb" src="${esc(item.thumb)}" onerror="this.style.opacity='0.1'" loading="lazy"/>
-      <div class="q-info">
-        <div class="q-title">${esc(item.title)}</div>
-        <div class="q-ch">${esc(item.channel || '')}</div>
-      </div>
+      <div class="q-info"><div class="q-title">${esc(item.title)}</div><div class="q-ch">${esc(item.channel || '')}</div></div>
       <button class="q-del">✕</button>`;
                 el.querySelector('.q-del').addEventListener('click', e => { e.stopPropagation(); removeFromQueue(i, item._key); });
                 el.addEventListener('click', () => playIdx(i));
@@ -1899,7 +1818,11 @@
         }
 
         function removeFromQueue(i, key) {
-            if (!roomId) { localQueue.splice(i, 1); if (i === currentIdx) { currentIdx = -1; updateNowPlaying(null); } renderQueue(); return; }
+            if (!roomId) {
+                localQueue.splice(i, 1);
+                if (i === currentIdx) { currentIdx = -1; clearIframe(); updateNowPlaying(null); }
+                renderQueue(); return;
+            }
             if (key) remove(ref(db, `rooms/${roomId}/queue/${key}`));
         }
 
@@ -1907,22 +1830,18 @@
             if (!confirm('Clear the queue?')) return;
             if (roomId) { remove(rref('queue')); remove(rref('playback')); }
             localQueue = []; currentIdx = -1;
-            if (ytPlayer && ytReady) ytPlayer.stopVideo();
-            updateNowPlaying(null); renderQueue();
-            document.getElementById('vid-placeholder').style.display = 'flex';
-            updatePlayPauseBtn(false);
+            clearIframe(); updateNowPlaying(null); renderQueue();
         };
 
-        /* ─── SEARCH ─────────────────────────────── */
+        /* ── SEARCH ── */
         window.onSearchInput = function () {
             clearTimeout(searchTimer);
-            const q = document.getElementById('search-input').value.trim();
-            if (q.length >= 2) searchTimer = setTimeout(doSearch, 500);
+            if (document.getElementById('search-input').value.trim().length >= 2)
+                searchTimer = setTimeout(doSearch, 500);
         };
 
         window.doSearch = async function () {
-            const q = document.getElementById('search-input').value.trim();
-            if (!q) return;
+            const q = document.getElementById('search-input').value.trim(); if (!q) return;
             const btn = document.getElementById('search-btn'), txt = document.getElementById('search-btn-text');
             txt.innerHTML = '<span class="spinner"></span>'; btn.disabled = true;
             try {
@@ -1945,10 +1864,7 @@
                 const el = document.createElement('div'); el.className = 'result-item';
                 el.innerHTML = `
       <img class="result-thumb" src="${esc(item.thumb)}" onerror="this.style.opacity='0.2'" loading="lazy"/>
-      <div class="result-info">
-        <div class="result-title">${esc(item.title)}</div>
-        <div class="result-channel">${esc(item.channel)}</div>
-      </div>
+      <div class="result-info"><div class="result-title">${esc(item.title)}</div><div class="result-channel">${esc(item.channel)}</div></div>
       <button class="add-btn">+</button>`;
                 el.querySelector('.add-btn').addEventListener('click', e => { e.stopPropagation(); addItemToQueue(item); });
                 el.addEventListener('click', () => addItemToQueue(item));
@@ -1978,14 +1894,14 @@
             document.getElementById('tab-url').style.display = tab === 'url' ? 'block' : 'none';
         };
 
-        /* ─── CHAT ───────────────────────────────── */
+        /* ── CHAT ── */
         window.sendMsg = function () {
             const input = document.getElementById('chat-input'), msg = input.value.trim(); if (!msg) return; input.value = '';
-            if (!roomId) { appendChatBubble(msg, true, myName(), Date.now()); return; }
+            if (!roomId) { appendBubble(msg, true, myName(), Date.now()); return; }
             push(rref('chat'), { text: msg, name: myName(), uid: MY_ID, ts: Date.now() });
         };
 
-        function appendChatBubble(text, isMe, name, ts) {
+        function appendBubble(text, isMe, name, ts) {
             const box = document.getElementById('chat-messages'), el = document.createElement('div');
             el.className = 'msg ' + (isMe ? 'me' : 'them');
             const time = new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -1993,13 +1909,11 @@
             box.appendChild(el); box.scrollTop = box.scrollHeight;
         }
 
-        /* ─── REACTIONS ──────────────────────────── */
+        /* ── REACTIONS ── */
         window.sendReaction = function (emoji) {
             for (let i = 0; i < 4; i++) setTimeout(() => spawnEmoji(emoji), i * 120);
-            if (roomId) {
-                push(rref('reactions'), { emoji, by: MY_ID, ts: Date.now() });
-                push(rref('chat'), { text: `reacted ${emoji}`, name: myName(), uid: MY_ID, ts: Date.now() });
-            } else appendChatBubble(`reacted ${emoji}`, true, myName(), Date.now());
+            if (roomId) { push(rref('reactions'), { emoji, by: MY_ID, ts: Date.now() }); push(rref('chat'), { text: `reacted ${emoji}`, name: myName(), uid: MY_ID, ts: Date.now() }); }
+            else appendBubble(`reacted ${emoji}`, true, myName(), Date.now());
         };
 
         function spawnEmoji(emoji) {
@@ -2008,7 +1922,7 @@
             document.body.appendChild(el); setTimeout(() => el.remove(), 2600);
         }
 
-        /* ─── SHARE ──────────────────────────────── */
+        /* ── SHARE ── */
         window.shareCurrentSong = function () {
             if (currentIdx < 0 || !localQueue[currentIdx]) { toast('Nothing playing'); return; }
             const item = localQueue[currentIdx];
@@ -2022,7 +1936,7 @@
             navigator.clipboard.writeText(t).catch(() => { }); toast('✓ Link copied!');
         };
 
-        /* ─── NAME ───────────────────────────────── */
+        /* ── NAME ── */
         window.changeName = function () {
             const n = prompt('Your name in Bobo Tunes:', myName()); if (!n || !n.trim()) return;
             const name = n.trim(); localStorage.setItem('bt_name', name);
@@ -2030,7 +1944,6 @@
             document.getElementById('my-avatar-letter').textContent = name[0].toUpperCase();
             if (roomId) set(ref(db, `rooms/${roomId}/presence/${MY_ID}/name`), name);
         };
-
     </script>
 </body>
 
