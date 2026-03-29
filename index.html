@@ -267,7 +267,7 @@
             .wrap {
                 display: flex;
                 flex-direction: column;
-                padding: 68px 12px 100px;
+                padding: 68px 12px 24px;
                 gap: 12px;
                 width: 100%;
                 max-width: 100vw;
@@ -1182,89 +1182,7 @@
             opacity: .85;
         }
 
-        /* ── MOBILE BOTTOM BAR ── */
-        .mbar {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 74px;
-            z-index: 200;
-            background: rgba(12, 12, 20, .98);
-            backdrop-filter: blur(24px);
-            border-top: 1px solid var(--b2);
-            padding: 0 14px;
-            align-items: center;
-            gap: 10px;
-            overflow: hidden;
-            width: 100%;
-        }
 
-        @media(max-width:800px) {
-            .mbar {
-                display: flex;
-            }
-        }
-
-        .mbar-img {
-            width: 42px;
-            height: 42px;
-            border-radius: 7px;
-            object-fit: cover;
-            background: var(--bg4);
-            flex-shrink: 0;
-        }
-
-        .mbar-inf {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .mbar-t {
-            font-size: .75rem;
-            font-weight: 700;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .mbar-c {
-            font-size: .6rem;
-            color: var(--t3);
-            margin-top: 2px;
-        }
-
-        .mbar-acts {
-            display: flex;
-            gap: 5px;
-            align-items: center;
-            flex-shrink: 0;
-        }
-
-        .mba {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            background: var(--bg3);
-            border: 1px solid var(--b2);
-            color: var(--t2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-
-        .mba.play {
-            background: var(--green);
-            color: #000;
-            border-color: var(--green);
-        }
-
-        .mba:active {
-            opacity: .8;
-        }
 
         /* ── TOAST ── */
         #toast {
@@ -1890,31 +1808,7 @@
         </div>
     </div>
 
-    <!-- Mobile bottom bar -->
-    <div class="mbar">
-        <img class="mbar-img" id="mbar-img" src="" onerror="this.style.opacity='.1'" />
-        <div class="mbar-inf">
-            <div class="mbar-t" id="mbar-t">Nothing playing</div>
-            <div class="mbar-c" id="mbar-c">add a song above</div>
-        </div>
-        <div class="mbar-acts">
-            <div class="mba" onclick="prevSong()"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" />
-                </svg></div>
-            <div class="mba play" id="mba-pp" onclick="togglePlay()">
-                <svg id="mb-play" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M8 5v14l11-7z" />
-                </svg>
-                <svg id="mb-pause" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display:none;">
-                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-                </svg>
-            </div>
-            <div class="mba" onclick="nextSong()"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M6 18l8.5-6L6 6v12zM16 6h2v12h-2z" />
-                </svg></div>
-            <div class="mba" onclick="react('🔥')">🔥</div>
-        </div>
-    </div>
+
 
     <div id="toast"></div>
 
@@ -1950,6 +1844,50 @@
         let seenMsg = new Set();
         let seenRxn = new Set();
         const isMob = () => window.innerWidth <= 800;
+
+        // ── Background playback keepalive ──
+        // Silent WAV audio that loops to prevent browser from suspending the tab
+        let keepaliveAudio = null;
+        function startKeepalive() {
+            if (keepaliveAudio) return;
+            try {
+                keepaliveAudio = new Audio('data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=');
+                keepaliveAudio.loop = true;
+                keepaliveAudio.volume = 0.01; // near-silent
+                keepaliveAudio.play().catch(() => {});
+            } catch(e) {}
+        }
+        function stopKeepalive() {
+            if (keepaliveAudio) {
+                keepaliveAudio.pause();
+                keepaliveAudio = null;
+            }
+        }
+
+        // ── Media Session helpers ──
+        function updateMediaSession(item) {
+            if (!('mediaSession' in navigator) || !item) return;
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: item.title || 'BoboTunes',
+                artist: item.channel || 'BoboTunes',
+                album: 'BoboTunes',
+                artwork: item.thumb ? [
+                    { src: item.thumb, sizes: '320x180', type: 'image/jpeg' },
+                    { src: item.thumb.replace('mqdefault', 'hqdefault'), sizes: '480x360', type: 'image/jpeg' }
+                ] : []
+            });
+        }
+        function updateMediaSessionState(isPlaying) {
+            if (!('mediaSession' in navigator)) return;
+            navigator.mediaSession.playbackState = isPlaying ? 'playing' : 'paused';
+        }
+        // Register Media Session action handlers for lock screen / notification controls
+        if ('mediaSession' in navigator) {
+            navigator.mediaSession.setActionHandler('play', () => window.togglePlay());
+            navigator.mediaSession.setActionHandler('pause', () => window.togglePlay());
+            navigator.mediaSession.setActionHandler('previoustrack', () => window.prevSong());
+            navigator.mediaSession.setActionHandler('nexttrack', () => window.nextSong());
+        }
 
         // ── DB helpers ──
         const rr = p => ref(db, `rooms/${ROOM}/${p}`);
@@ -2122,18 +2060,18 @@
             // Mobile spotify
             document.getElementById('m-play').style.display = p ? 'none' : 'block';
             document.getElementById('m-pause').style.display = p ? 'block' : 'none';
-            // Mobile bar
-            document.getElementById('mb-play').style.display = p ? 'none' : 'block';
-            document.getElementById('mb-pause').style.display = p ? 'block' : 'none';
             // EQ
             document.getElementById('eq').style.display = p ? 'flex' : 'none';
+            // Background playback: keepalive + media session state
+            if (p) startKeepalive(); else stopKeepalive();
+            updateMediaSessionState(p);
         }
 
         function setNowPlaying(item) {
             if (!item) {
-                ['np-name', 'mbar-t', 'mob-title'].forEach(id => document.getElementById(id).textContent = id === 'np-name' ? 'Nothing playing' : id === 'mbar-t' ? 'Nothing playing' : 'Nothing playing');
-                ['np-ch', 'mbar-c', 'mob-ch'].forEach(id => document.getElementById(id).textContent = 'add a song');
-                ['np-img', 'mbar-img'].forEach(id => { document.getElementById(id).src = ''; });
+                ['np-name', 'mob-title'].forEach(id => document.getElementById(id).textContent = 'Nothing playing');
+                ['np-ch', 'mob-ch'].forEach(id => document.getElementById(id).textContent = 'add a song');
+                document.getElementById('np-img').src = '';
                 document.getElementById('mob-art').style.display = 'none';
                 document.getElementById('mob-ph').style.display = 'flex';
                 return;
@@ -2142,14 +2080,13 @@
             document.getElementById('np-ch').textContent = item.channel || '';
             document.getElementById('mob-title').textContent = item.title;
             document.getElementById('mob-ch').textContent = item.channel || '';
-            document.getElementById('mbar-t').textContent = item.title;
-            document.getElementById('mbar-c').textContent = item.channel || '';
-            ['np-img', 'mbar-img'].forEach(id => {
-                const el = document.getElementById(id); el.src = item.thumb; el.style.opacity = '1';
-            });
+            const npImg = document.getElementById('np-img');
+            npImg.src = item.thumb; npImg.style.opacity = '1';
             const art = document.getElementById('mob-art');
             art.src = item.thumb; art.style.display = 'block';
             document.getElementById('mob-ph').style.display = 'none';
+            // Update lock screen / notification metadata
+            updateMediaSession(item);
         }
 
         window.togglePlay = function () {
@@ -2165,8 +2102,29 @@
             else toast('End of queue 🎵');
         };
 
+        // Spotify-like back button: 1st press = restart song, quick 2nd press = previous song
+        let _prevTimer = null;
+        let _prevPending = false;
+
         window.prevSong = function () {
-            if (idx > 0) playIdx(idx - 1);
+            if (_prevPending) {
+                // Double-press detected — go to previous song
+                clearTimeout(_prevTimer);
+                _prevPending = false;
+                if (idx > 0) playIdx(idx - 1);
+                else toast('Start of queue 🎵');
+                return;
+            }
+            // First press — restart current song from beginning
+            _prevPending = true;
+            if (curVid) {
+                // Force reload from start by resetting the iframe src
+                curVid = null;
+                playVid(queue[idx]?.vid || curVid, true);
+            }
+            _prevTimer = setTimeout(() => {
+                _prevPending = false;
+            }, 1500);
         };
 
         function playIdx(i) {
@@ -2186,6 +2144,11 @@
 
         function addQ(item) {
             if (addLock.has(item.vid)) return;
+            // Check if song already exists in queue
+            if (queue.some(q => q.vid === item.vid)) {
+                toast('Already in queue 🎵');
+                return;
+            }
             addLock.add(item.vid);
             setTimeout(() => addLock.delete(item.vid), 1500);
 
@@ -2353,8 +2316,10 @@
             curVid = item.vid;
             set(rr('playback/cur'), { i: -1, vid: item.vid, title: item.title, channel: item.channel || '', thumb: item.thumb, by: UID, ts: Date.now() });
             set(rr('playback/state'), { p: true, vid: item.vid, by: UID, ts: Date.now() });
-            // Also add to queue so it shows up
-            push(rr('queue'), { vid: item.vid, title: item.title, channel: item.channel || '', thumb: item.thumb });
+            // Only add to queue if not already there
+            if (!queue.some(q => q.vid === item.vid)) {
+                push(rr('queue'), { vid: item.vid, title: item.title, channel: item.channel || '', thumb: item.thumb });
+            }
             toast(`▶ Playing: ${item.title.slice(0, 30)}…`);
         }
 
@@ -2472,6 +2437,23 @@
             document.getElementById('my-av').textContent = n.trim()[0].toUpperCase();
             set(ref(db, `rooms/${ROOM}/presence/${UID}/name`), n.trim());
         };
+
+        // ── Keep playing when tab goes to background / screen off ──
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden && playing && curVid) {
+                // Re-send play command to prevent YouTube embed from auto-pausing
+                setTimeout(() => sendPlayerCmd('playVideo'), 200);
+                setTimeout(() => sendPlayerCmd('playVideo'), 800);
+                setTimeout(() => sendPlayerCmd('playVideo'), 1500);
+            }
+        });
+
+        // Web Lock API — prevents browser from fully suspending the tab
+        if (navigator.locks) {
+            navigator.locks.request('bobo_playback_lock', { mode: 'shared' }, () => {
+                return new Promise(() => {}); // Hold lock forever
+            });
+        }
     </script>
 </body>
 
