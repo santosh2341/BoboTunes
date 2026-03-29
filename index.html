@@ -2117,10 +2117,11 @@
             }
             // First press — restart current song from beginning
             _prevPending = true;
-            if (curVid) {
-                // Force reload from start by resetting the iframe src
+            if (curVid && idx >= 0 && queue[idx]) {
+                // Save vid before nulling curVid so playVid reloads iframe
+                const vid = queue[idx].vid;
                 curVid = null;
-                playVid(queue[idx]?.vid || curVid, true);
+                playVid(vid, true);
             }
             _prevTimer = setTimeout(() => {
                 _prevPending = false;
@@ -2143,14 +2144,13 @@
         let addLock = new Set(); // prevent duplicate adds
 
         function addQ(item) {
-            if (addLock.has(item.vid)) return;
-            // Check if song already exists in queue
-            if (queue.some(q => q.vid === item.vid)) {
-                toast('Already in queue 🎵');
+            // Prevent rapid double-clicks from adding the same song twice
+            if (addLock.has(item.vid)) {
+                toast('Already adding… 🎵');
                 return;
             }
             addLock.add(item.vid);
-            setTimeout(() => addLock.delete(item.vid), 1500);
+            setTimeout(() => addLock.delete(item.vid), 3000);
 
             push(rr('queue'), { vid: item.vid, title: item.title, channel: item.channel || '', thumb: item.thumb });
             toast(`Added to queue: ${item.title.slice(0, 32)}…`);
@@ -2189,7 +2189,9 @@
         window.clearQ = function () {
             if (!confirm('Clear the queue?')) return;
             remove(rr('queue')); remove(rr('playback'));
-            queue = []; idx = -1; setNowPlaying(null); renderQ(); setPlaying(false);
+            queue = []; idx = -1; curVid = null;
+            addLock.clear(); playNowLock = false;
+            setNowPlaying(null); renderQ(); setPlaying(false);
         };
 
         // ── Search ──
@@ -2248,8 +2250,8 @@
                         { icon: '↗', label: 'Share song', action: () => shareItem(it) },
                     ]);
                 };
-                // Click row = play now if something is playing, else add to queue
-                d.onclick = () => { if (curVid) playNow(it); else addQ(it); };
+                // Click row = always add to queue
+                d.onclick = () => addQ(it);
                 el.appendChild(d);
             });
         }
@@ -2309,17 +2311,15 @@
         function playNow(item) {
             if (playNowLock) return;
             playNowLock = true;
-            setTimeout(() => playNowLock = false, 1500);
+            setTimeout(() => playNowLock = false, 800);
 
             setNowPlaying(item);
             playVid(item.vid, true);
             curVid = item.vid;
             set(rr('playback/cur'), { i: -1, vid: item.vid, title: item.title, channel: item.channel || '', thumb: item.thumb, by: UID, ts: Date.now() });
             set(rr('playback/state'), { p: true, vid: item.vid, by: UID, ts: Date.now() });
-            // Only add to queue if not already there
-            if (!queue.some(q => q.vid === item.vid)) {
-                push(rr('queue'), { vid: item.vid, title: item.title, channel: item.channel || '', thumb: item.thumb });
-            }
+            // Also add to queue so it shows up (allow duplicates here since user explicitly chose Play Now)
+            push(rr('queue'), { vid: item.vid, title: item.title, channel: item.channel || '', thumb: item.thumb });
             toast(`▶ Playing: ${item.title.slice(0, 30)}…`);
         }
 
